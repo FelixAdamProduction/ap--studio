@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AP Studio">
+<meta name="theme-color" content="#ffffff">
+<title>AP Studio — Anuuk</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f7f7f5;--surface:#ffffff;--surface2:#f2f2f0;--border:#e8e8e4;--border2:#d4d4ce;
+  --text:#111111;--text2:#555550;--text3:#999990;
+  --red:#e02020;--red-light:#fff1f1;--red-mid:#ffd4d4;
+  --green:#16a34a;--green-light:#f0fdf4;--amber:#d97706;--amber-light:#fffbeb;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;overflow:hidden}
+.app{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;padding-top:calc(14px + env(safe-area-inset-top,0));display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{background:var(--red);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;padding:4px 10px}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px}
+.topbar-meta{font-size:11px;color:var(--text3)}
+/* NAV */
+.nav{background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0)}
+.nitem{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;cursor:pointer;border:none;background:none;color:var(--text3);font-family:'DM Sans',sans-serif;transition:color .15s}
+.nitem.active{color:var(--red)}
+.nitem svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nlabel{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+/* VIEWS */
+.view{display:none;padding:20px 20px 32px;animation:fadeIn .18s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+/* PANELS */
+.panel{display:none;position:fixed;inset:0;background:var(--bg);z-index:30;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideIn .22s cubic-bezier(.16,1,.3,1)}
+.panel.active{display:block}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.panel-top{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0));display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.back{background:none;border:none;color:var(--text3);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:13px;font-family:'DM Sans',sans-serif;padding:0}
+.back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
+.panel-body{padding:20px 20px 40px}
+/* TYPE */
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:20px}
+.slabel{font-size:10px;font-weight:600;letter-spacing:2.5px;color:var(--text3);text-transform:uppercase;margin:24px 0 10px}
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:8px}
+.card-sm{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:6px}
+/* KPI */
+.kpi-grid{display:grid;gap:8px;margin-bottom:8px}
+.g2{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.kl{font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:5px}
+.kv{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.5px;line-height:1}
+.kv.red{color:var(--red)}.kv.green{color:var(--green)}.kv.amber{color:var(--amber)}.kv.muted{color:var(--text3)}
+/* BAR */
+.bar-wrap{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin:10px 0 6px}
+.bar-fill{height:100%;border-radius:2px;background:var(--red);transition:width .5s cubic-bezier(.16,1,.3,1)}
+.bar-fill.green{background:var(--green)}.bar-fill.amber{background:var(--amber)}
+/* PROJECT ROW */
+.proj-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:6px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:border-color .15s,box-shadow .15s}
+.proj-row:hover{border-color:var(--border2);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.proj-row:active{background:var(--surface2)}
+.proj-row-left{flex:1;min-width:0}
+.proj-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:1px}
+.proj-song{font-size:12px;color:var(--text3);margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{display:flex;gap:12px;font-size:11px;color:var(--text3)}
+.proj-meta b{color:var(--text2);font-weight:500}
+.proj-row-right{text-align:right;flex-shrink:0}
+.proj-budget{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.5px}
+.proj-left-lbl{font-size:11px;font-weight:500;margin-top:2px}
+.proj-arrow{color:var(--text3);font-size:18px;margin-top:4px}
+/* BADGE */
+.badge{display:inline-flex;align-items:center;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:8px}
+.badge-plan{background:var(--surface2);color:var(--text3)}.badge-active{background:var(--amber-light);color:var(--amber)}.badge-done{background:var(--green-light);color:var(--green)}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;padding:8px 0;border-bottom:1px solid var(--border);text-align:left}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td{padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .tot td{background:var(--surface2);font-weight:600;border-top:1px solid var(--border2);border-bottom:none;padding:10px 0}
+.td-name{font-size:13px;font-weight:500}.td-note{font-size:11px;color:var(--text3);margin-top:2px}
+.ist-inp{background:none;border:none;border-bottom:1.5px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;width:80px;text-align:right;padding:2px;outline:none;transition:border-color .15s}
+.ist-inp:focus{border-bottom-color:var(--red)}
+/* PILLS */
+.pills{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:2px}
+.pill{background:var(--surface2);color:var(--text3);padding:7px 16px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .15s;border:none;font-family:'DM Sans',sans-serif}
+.pill.active{background:var(--red);color:#fff}
+/* FORM */
+.fgroup{margin-bottom:16px}
+.flabel{font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.finput{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 14px;outline:none;border-radius:8px;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.finput:focus{border-color:var(--red)}
+.ftextarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:11px 14px;outline:none;border-radius:8px;resize:vertical;min-height:120px;line-height:1.65;transition:border-color .15s}
+.ftextarea:focus{border-color:var(--red)}
+select.finput option{background:#fff}
+/* BUTTONS */
+.btn-red{display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;border-radius:8px;border:none;background:var(--red);color:#fff;padding:13px 20px;font-size:13px;width:100%;transition:background .15s}
+.btn-red:hover{background:#c41a1a}
+.btn-outline{display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;border-radius:8px;background:none;border:1px solid var(--border2);color:var(--text2);padding:11px 18px;font-size:12px;transition:all .15s}
+.btn-outline:hover{border-color:var(--text3)}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--text3);padding:7px 14px;font-size:11px;font-weight:600;letter-spacing:.5px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text2)}
+.btn-danger{background:none;border:1px solid var(--red-mid);color:var(--red);padding:11px 18px;font-size:12px;width:100%;margin-top:8px;cursor:pointer;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;transition:background .15s}
+.btn-danger:hover{background:var(--red-light)}
+.btn-add{width:100%;background:none;border:1.5px dashed var(--border2);color:var(--text3);padding:14px;font-size:12px;font-weight:600;cursor:pointer;border-radius:8px;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.btn-add:hover{border-color:var(--red);color:var(--red)}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0));width:100%;max-width:480px;animation:slideUp .2s cubic-bezier(.16,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:20px}
+.modal-btns{display:flex;gap:8px;margin-top:20px}
+/* MOODBOARD */
+.mb-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.mb-img-wrap{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--surface2)}
+.mb-img{width:100%;height:100%;object-fit:cover}
+.mb-del{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.92);border:none;width:26px;height:26px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;font-weight:600}
+.link-row{background:var(--surface2);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.link-row a{text-decoration:none;color:inherit;flex:1;min-width:0;display:flex;align-items:center;gap:10px}
+.link-icon{font-size:18px;flex-shrink:0}
+.link-title{font-size:13px;font-weight:500}
+.link-url{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.link-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:0 0 0 6px;flex-shrink:0;line-height:1}
+/* BELEGE */
+.beleg-row{background:var(--surface2);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.beleg-info{flex:1;min-width:0}
+.beleg-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.beleg-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.beleg-amount{font-size:13px;font-weight:600;color:var(--red);flex-shrink:0;margin-right:6px}
+.beleg-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:0;line-height:1;flex-shrink:0}
+.drive-banner{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.drive-logo{width:32px;height:32px;flex-shrink:0}
+.drive-info{flex:1}
+.drive-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.drive-sub{font-size:11px;color:var(--text3)}
+.drive-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:6px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .15s}
+.drive-btn:hover{border-color:var(--text3)}
+/* CALENDAR */
+.cal-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-month{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
+.cal-btn{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.cal-btn:hover{border-color:var(--border2)}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.dow{font-size:9px;font-weight:600;letter-spacing:1px;color:var(--text3);text-transform:uppercase;text-align:center;padding:4px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cday{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text2);gap:2px;transition:background .1s}
+.cday:hover{background:var(--surface2)}.cday.today{background:var(--red-light);color:var(--red);font-weight:600}.cday.has-ev{font-weight:600;color:var(--text)}.cday.empty{cursor:default;pointer-events:none}
+.ev-dot{width:4px;height:4px;border-radius:50%;background:var(--red)}
+.ev-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:12px 14px;margin-bottom:6px;cursor:pointer;transition:background .15s}
+.ev-card:hover{background:var(--surface2)}
+.ev-date{font-size:10px;color:var(--text3);margin-bottom:3px}
+.ev-title{font-size:13px;font-weight:500}
+.ev-proj{font-size:11px;color:var(--text3);margin-top:2px}
+/* BRIEFINGS */
+.brief-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
+.brief-card:hover{border-color:var(--border2)}
+.brief-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.brief-title{font-size:14px;font-weight:600}
+.brief-meta{font-size:11px;color:var(--text3)}
+.brief-preview{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* INVOICE */
+.inv-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.inv-row:last-child{border-bottom:none;padding-top:12px}
+.inv-row.total{font-weight:600;font-size:14px}
+.inv-label{color:var(--text2)}
+/* MISC */
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-icon{font-size:28px;margin-bottom:8px;opacity:.4}
+.empty-text{font-size:13px}
+.drive-info-box{background:var(--amber-light);border:1px solid #fcd34d;border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#92400e;line-height:1.6}
+.drive-info-box strong{display:block;margin-bottom:3px;color:#78350f}
+.upload-preview{background:var(--surface2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px}
+.upload-preview-icon{font-size:20px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><div class="logo-mark">AP</div><div class="logo-title">ANUUK</div></div>
+  <div class="topbar-meta">UNIVERSAL MUSIC</div><span id="sync-indicator" style="font-size:10px;letter-spacing:.5px;margin-left:8px;color:var(--text3)">Verbinden…</span>
+</div>
+
+<!-- SCROLL -->
+<div class="scroll" id="scroll">
+
+  <!-- BUDGET -->
+  <div class="view active" id="view-budget">
+    <div class="page-title">BUDGET</div>
+    <div class="kpi-grid g2" id="bud-kpis"></div>
+    <div class="card" style="padding:16px 18px" id="bud-bar-block"></div>
+    <div class="slabel">Projekte</div>
+    <div id="bud-proj-cards"></div>
+    <div class="slabel">Rechnung an Universal</div>
+    <div class="card" id="bud-invoice"></div>
+  </div>
+
+  <!-- KALENDER -->
+  <div class="view" id="view-kalender">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div class="page-title" style="margin-bottom:0">KALENDER</div>
+      <button class="btn-ghost" onclick="openModal('modal-event')">+ Termin</button>
+    </div>
+    <div class="card">
+      <div class="cal-nav-row"><button class="cal-btn" onclick="calPrev()">‹</button><div class="cal-month" id="cal-title"></div><button class="cal-btn" onclick="calNext()">›</button></div>
+      <div class="dow-row" id="cal-dow"></div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="slabel">Alle Termine</div>
+    <div id="cal-list"></div>
+  </div>
+
+  <!-- PROJEKTE -->
+  <div class="view" id="view-projekte">
+    <div class="page-title">PROJEKTE</div>
+    <div id="proj-list"></div>
+    <button class="btn-add" onclick="openModal('modal-new-proj')">+ Neues Projekt</button>
+  </div>
+
+  <!-- BRIEFINGS -->
+  <div class="view" id="view-briefings">
+    <div class="page-title">BRIEFINGS</div>
+    <div id="brief-list"></div>
+    <button class="btn-add" onclick="newBriefing()">+ Neues Briefing</button>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="view" id="view-settings">
+    <div class="page-title">EINSTELLUNGEN</div>
+    <div class="slabel">Projekt-Setup</div>
+    <div class="card">
+      <div class="fgroup"><div class="flabel">Budget pro Track (€)</div><input class="finput" type="number" id="s-budget" onchange="saveSetting('budgetPerTrack',+this.value)"></div>
+      <div class="fgroup" style="margin-bottom:0"><div class="flabel">Auftraggeber</div><input class="finput" id="s-client" onchange="saveSetting('client',this.value)"></div>
+    </div>
+    <div class="slabel">Google Drive — Belege</div>
+    <div class="card">
+      <div class="fgroup"><div class="flabel">Drive-Ordner URL (für Belege)</div><input class="finput" id="s-drive" placeholder="https://drive.google.com/drive/folders/…" onchange="saveSetting('driveUrl',this.value)"></div>
+      <p style="font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:0">Gib hier den Link zu deinem Google Drive Ordner ein. Über den Belege-Tab kannst du dann direkt dorthin springen und Kassenbons hochladen.</p>
+    </div>
+    <div class="slabel">Daten</div>
+    <div class="card" style="display:flex;gap:8px">
+      <button class="btn-outline" style="flex:1" onclick="exportData()">Export JSON</button>
+      <label class="btn-outline" style="flex:1;cursor:pointer">Import JSON<input type="file" accept=".json" style="display:none" onchange="importData(this)"></label>
+    </div>
+    <div class="card" style="margin-top:8px"><button class="btn-danger" onclick="if(confirm('Alles zurücksetzen?'))resetData()">Alle Daten zurücksetzen</button></div>
+    <div class="slabel">App installieren</div>
+    <div class="card"><p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px"><strong>iPhone Safari:</strong> Teilen → „Zum Home-Bildschirm"<br><strong>Chrome/Mac:</strong> Install-Icon in der Adressleiste</p><p style="font-size:11px;color:var(--text3)">Alle Daten bleiben lokal gespeichert.</p></div>
+    <div class="card-sm"><span style="font-size:12px;color:var(--text3)">AP Studio v2.1 · Anuuk × Adam Production</span></div>
+  </div>
+
+</div><!-- end scroll -->
+
+<!-- BOTTOM NAV -->
+<nav class="nav">
+  <button class="nitem active" onclick="switchView('budget',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nlabel">Budget</span></button>
+  <button class="nitem" onclick="switchView('kalender',this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="nlabel">Kalender</span></button>
+  <button class="nitem" onclick="switchView('projekte',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg><span class="nlabel">Projekte</span></button>
+  <button class="nitem" onclick="switchView('briefings',this)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="nlabel">Briefings</span></button>
+  <button class="nitem" onclick="switchView('settings',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="nlabel">Setup</span></button>
+</nav>
+</div><!-- end app -->
+
+<!-- PROJECT PANEL -->
+<div class="panel" id="panel-proj">
+  <div class="panel-top">
+    <button class="back" onclick="closePanel('panel-proj')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button>
+    <div class="panel-title" id="pp-title"></div>
+    <div style="margin-left:auto" id="pp-badge"></div>
+  </div>
+  <div class="panel-body">
+    <div class="pills" id="proj-pills">
+      <div class="pill active" onclick="showTab('t-kosten',this)">Kosten</div>
+      <div class="pill" onclick="showTab('t-moodboard',this)">Moodboard</div>
+      <div class="pill" onclick="showTab('t-belege',this)">Belege</div>
+      <div class="pill" onclick="showTab('t-info',this)">Info</div>
+    </div>
+
+    <!-- KOSTEN -->
+    <div id="t-kosten">
+      <div class="kpi-grid g4" id="pp-kpis"></div>
+      <div class="bar-wrap"><div class="bar-fill" id="pp-bar" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:20px"><span id="pp-spent-lbl" style="color:var(--red)"></span><span id="pp-left-lbl"></span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="slabel" style="margin:0">Kostenposten</div>
+        <button class="btn-ghost" onclick="openModal('modal-posten')">+ Posten</button>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Posten</th><th class="r">Geplant</th><th class="r">IST</th><th class="r">Δ</th><th></th></tr></thead>
+        <tbody id="pp-posten"></tbody>
+      </table>
+    </div>
+
+    <!-- MOODBOARD -->
+    <div id="t-moodboard" style="display:none">
+      <!-- PDF Briefing viewer (Track 01 only) -->
+      <div id="mb-pdf-viewer" style="display:none"></div>
+      <div class="slabel" style="margin-top:0">Bilder</div>
+      <div class="mb-grid" id="mb-imgs"></div>
+      <button class="btn-add" style="margin-bottom:20px" onclick="openModal('modal-mb-img')">+ Bild-URL hinzufügen</button>
+      <div class="slabel">Links & Dokumente</div>
+      <div id="mb-links"></div>
+      <button class="btn-add" onclick="openModal('modal-mb-link')">+ Link hinzufügen</button>
+    </div>
+
+    <!-- BELEGE -->
+    <div id="t-belege" style="display:none">
+      <div class="drive-banner" id="drive-banner">
+        <svg class="drive-logo" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+          <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+          <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/>
+          <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
+          <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+          <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+          <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 27h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+        </svg>
+        <div class="drive-info">
+          <div class="drive-title">Google Drive — Belege</div>
+          <div class="drive-sub" id="drive-sub-text">Kein Ordner verknüpft</div>
+        </div>
+        <button class="drive-btn" id="drive-open-btn" onclick="openDriveFolder()">Öffnen</button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="slabel" style="margin:0">Belege</div>
+        <button class="btn-ghost" onclick="openModal('modal-beleg')">+ Beleg</button>
+      </div>
+      <div id="beleg-list"></div>
+      <div style="margin-top:16px">
+        <div class="slabel" style="margin-top:0;margin-bottom:8px">Belege gesamt</div>
+        <div class="card" style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--text2)">Summe aller Belege</span>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red)" id="beleg-total">€0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div id="t-info" style="display:none">
+      <div class="fgroup"><div class="flabel">Song Titel</div><input class="finput" id="i-song" onchange="saveProjField('song',this.value)"></div>
+      <div class="fgroup"><div class="flabel">Release Datum</div><input class="finput" type="date" id="i-release" onchange="saveProjField('release',this.value)"></div>
+      <div class="fgroup"><div class="flabel">Genre / Vibe</div><input class="finput" id="i-genre" onchange="saveProjField('genre',this.value)"></div>
+      <div class="fgroup"><div class="flabel">Status</div>
+        <select class="finput" id="i-status" onchange="saveProjField('status',this.value)">
+          <option value="plan">Planung</option><option value="active">Aktiv</option><option value="done">Fertig</option>
+        </select>
+      </div>
+      <div class="fgroup"><div class="flabel">Notizen</div><textarea class="ftextarea" id="i-notes" onchange="saveProjField('notes',this.value)"></textarea></div>
+      <button class="btn-danger" onclick="deleteCurProj()">Projekt löschen</button>
+    </div>
+  </div>
+</div>
+
+<!-- BRIEFING PANEL -->
+<div class="panel" id="panel-brief">
+  <div class="panel-top">
+    <button class="back" onclick="closePanel('panel-brief')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button>
+    <div class="panel-title">BRIEFING</div>
+    <button style="margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;line-height:1" onclick="deleteCurBrief()">×</button>
+  </div>
+  <div class="panel-body">
+    <div class="fgroup"><div class="flabel">Titel</div><input class="finput" id="b-title" onchange="saveBriefField('title',this.value)"></div>
+    <div class="fgroup"><div class="flabel">Projekt</div><select class="finput" id="b-proj" onchange="saveBriefField('projectId',this.value)"><option value="">— kein Projekt —</option></select></div>
+    <div class="fgroup"><div class="flabel">Drehtag</div><input class="finput" type="date" id="b-date" onchange="saveBriefField('date',this.value)"></div>
+    <div class="fgroup"><div class="flabel">Shotlist / Notizen</div><textarea class="ftextarea" style="min-height:200px" id="b-content" onchange="saveBriefField('content',this.value)"></textarea></div>
+    <div class="fgroup"><div class="flabel">Externer Link (Google Doc, Frame.io …)</div><input class="finput" id="b-link" placeholder="https://…" onchange="saveBriefField('link',this.value)"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="modal-new-proj">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">NEUES PROJEKT</div>
+    <div class="fgroup"><div class="flabel">Name</div><input class="finput" id="np-name" placeholder="z.B. TRACK 04"></div>
+    <div class="fgroup"><div class="flabel">Song Titel</div><input class="finput" id="np-song" placeholder="— optional —"></div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">Budget (€)</div><input class="finput" type="number" id="np-budget" placeholder="2000"></div>
+    <div class="modal-btns"><button class="btn-red" onclick="addProject()">Erstellen</button><button class="btn-outline" onclick="closeModal('modal-new-proj')">Abbrechen</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-posten">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">KOSTENPOSTEN</div>
+    <div class="fgroup"><div class="flabel">Bezeichnung</div><input class="finput" id="ap-name" placeholder="z.B. Location-Miete"></div>
+    <div class="fgroup"><div class="flabel">Notiz</div><input class="finput" id="ap-note" placeholder="z.B. Studio Mitte Berlin"></div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">Geplant (€)</div><input class="finput" type="number" id="ap-plan" placeholder="300"></div>
+    <div class="modal-btns"><button class="btn-red" onclick="addPosten()">Hinzufügen</button><button class="btn-outline" onclick="closeModal('modal-posten')">Abbrechen</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-mb-img">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">BILD HINZUFÜGEN</div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">Bild-URL</div><input class="finput" id="mbi-url" placeholder="https://images.unsplash.com/…"></div>
+    <div class="modal-btns"><button class="btn-red" onclick="addMbImg()">Hinzufügen</button><button class="btn-outline" onclick="closeModal('modal-mb-img')">Abbrechen</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-mb-link">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">LINK HINZUFÜGEN</div>
+    <div class="fgroup"><div class="flabel">Titel</div><input class="finput" id="mbl-title" placeholder="z.B. Briefing Track 01 — Google Doc"></div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">URL</div><input class="finput" id="mbl-url" placeholder="https://docs.google.com/…"></div>
+    <div class="modal-btns"><button class="btn-red" onclick="addMbLink()">Hinzufügen</button><button class="btn-outline" onclick="closeModal('modal-mb-link')">Abbrechen</button></div>
+  </div>
+</div>
+
+<!-- BELEG MODAL -->
+<div class="overlay" id="modal-beleg">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">BELEG HINZUFÜGEN</div>
+    <div class="drive-info-box">
+      <strong>So funktioniert's:</strong>
+      1. Trag Beleg-Infos unten ein &amp; speichere<br>
+      2. Klick „Drive öffnen" — Ordner öffnet sich<br>
+      3. Lade Kassenbon / Foto dort hoch<br>
+      App zeigt den Beleg mit Betrag, Drive hat die Datei.
+    </div>
+    <div class="fgroup"><div class="flabel">Bezeichnung</div><input class="finput" id="bl-name" placeholder="z.B. Kassenbon Location-Miete"></div>
+    <div class="fgroup"><div class="flabel">Betrag (€)</div><input class="finput" type="number" id="bl-amount" placeholder="300" step="0.01"></div>
+    <div class="fgroup"><div class="flabel">Datum</div><input class="finput" type="date" id="bl-date"></div>
+    <div class="fgroup"><div class="flabel">Kategorie</div>
+      <select class="finput" id="bl-cat">
+        <option value="location">Location-Miete</option>
+        <option value="fahrt">Fahrtkosten</option>
+        <option value="equipment">Equipment / Licht</option>
+        <option value="casting">Darsteller / Casting</option>
+        <option value="verpflegung">Verpflegung</option>
+        <option value="sonstig">Sonstiges</option>
+      </select>
+    </div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">Notiz (optional)</div><input class="finput" id="bl-note" placeholder="z.B. Quittung Nr. 2847"></div>
+    <div class="modal-btns">
+      <button class="btn-red" onclick="addBeleg()">Speichern</button>
+      <button class="btn-outline" onclick="openDriveFolderFromModal()">Drive öffnen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-event">
+  <div class="modal"><div class="modal-handle"></div><div class="modal-title">TERMIN</div>
+    <div class="fgroup"><div class="flabel">Titel</div><input class="finput" id="ev-title" placeholder="z.B. Drehtag Track 01"></div>
+    <div class="fgroup"><div class="flabel">Datum</div><input class="finput" type="date" id="ev-date"></div>
+    <div class="fgroup"><div class="flabel">Typ</div>
+      <select class="finput" id="ev-type">
+        <option value="dreh">Drehtag</option><option value="schnitt">Schnitt-Deadline</option>
+        <option value="brief">Briefing-Call</option><option value="release">Release</option>
+        <option value="zahlung">Zahlung</option><option value="sonstig">Sonstiges</option>
+      </select>
+    </div>
+    <div class="fgroup" style="margin-bottom:0"><div class="flabel">Projekt</div><select class="finput" id="ev-proj"><option value="">— kein Projekt —</option></select></div>
+    <div class="modal-btns"><button class="btn-red" onclick="addEvent()">Speichern</button><button class="btn-outline" onclick="closeModal('modal-event')">Abbrechen</button></div>
+  </div>
+</div>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAsGQ5x5TSxdDoRneAYighZssSyuS1krIs",
+  authDomain: "ap-anuuk.firebaseapp.com",
+  databaseURL: "https://ap-anuuk-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "ap-anuuk",
+  storageBucket: "ap-anuuk.firebasestorage.app",
+  messagingSenderId: "175675308702",
+  appId: "1:175675308702:web:9bc347b9ec45646425598f"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const fbDb  = getDatabase(fbApp);
+const DBREF = ref(fbDb, 'anuuk');
+
+function showSync(state) {
+  var el = document.getElementById('sync-indicator');
+  if (!el) return;
+  var m = { saving:['↑ Speichern…','var(--amber)'], saved:['✓ Sync','var(--green)'], error:['✗ Fehler','var(--red)'], live:['● Live','var(--green)'], wait:['Verbinden…','var(--text3)'] };
+  var v = m[state] || m.wait;
+  el.textContent = v[0]; el.style.color = v[1];
+}
+
+function defaultData() {
+  var postenTemplate = [
+    {id:1,name:'Tagesgage Felix Adam',  note:'€800 / Tag',           geplant:800,ist:0},
+    {id:2,name:'Schnitt (Cut+Teaser)',  note:'Zusätzliches Editing', geplant:300,ist:0},
+    {id:3,name:'Nutzungsrecht',         note:'Commercial, Universal',geplant:220,ist:0},
+    {id:4,name:'Location-Miete',        note:'Studio / Outdoor',     geplant:300,ist:0},
+    {id:5,name:'Fahrtkosten',           note:'Zug / Auto / Parken',  geplant:100,ist:0},
+    {id:6,name:'Licht-Miete',           note:'Equipment',            geplant:80, ist:0},
+    {id:7,name:'Darsteller / Casting',  note:'1–2 Personen',         geplant:150,ist:0},
+    {id:8,name:'Sonstiges / Puffer',    note:'Props, Verpflegung',   geplant:50, ist:0}
+  ];
+  return {
+    settings: { budgetPerTrack: 2000, client: 'Universal Music', driveUrl: '' },
+    projects: [
+      {
+        id:1, name:'TRACK 01', song:'Everybody Dance Now', genre:'Club / Electronic',
+        status:'active', release:'2026-06-19', budget:2000,
+        notes:'Release: 19.06.2026\nHook ab 8.5s, Peak @19s, 161.5 BPM\nStraßenmusiker-Konzept, Spiegel als visueller USP\nInfluencer: 2–4 Personen vor Ort (50–100€/Person)\nAudio: Shure Mic → Marshall Bromley 450 + iPhone Bluetooth Playback',
+        images:[], links:[], belege:[],
+        posten:[
+          {id:1,name:'Tagesgage Felix Adam',   note:'€800 / Tag · Drehtag',          geplant:800,ist:0},
+          {id:2,name:'Schnitt (Cut+Teaser)',   note:'3–4 TikTok/IG Videos',          geplant:300,ist:0},
+          {id:3,name:'Nutzungsrecht',          note:'Commercial, Universal',          geplant:220,ist:0},
+          {id:4,name:'Marshall Bromley 450',   note:'Leihen ~€60–80 oder kaufen',    geplant:80, ist:0},
+          {id:5,name:'Fahrtkosten',            note:'Alle Locations an einem Tag',   geplant:100,ist:0},
+          {id:6,name:'Mikroinfluencer (2–4)',  note:'50–100€ pro Person vor Ort',    geplant:200,ist:0},
+          {id:7,name:'Sonstiges / Puffer',     note:'Props, Verpflegung Drehtag',    geplant:100,ist:0}
+        ]
+      },
+      {
+        id:2, name:'TRACK 02', song:'Shake Polska Remix', genre:'Club / Electronic',
+        status:'plan', release:'2026-07-24', budget:2000,
+        notes:'Release: 24.07.2026\nDirect Hit ab 0s, 161.5 BPM\nAnuuk + polnische Crew, Berliner Location (Hinterhof/Parkdeck/Halle)\nPOLSKA × BERLIN als Graffiti im Spiegel\nZwei Stativ-Shots hin-und-her geschnitten\nSeparates Lyrics-Video: schwarzer HG, weißer Text\nDual-Phone-Shot von oben',
+        images:[], links:[], belege:[],
+        posten: postenTemplate.map(function(p){ return Object.assign({},p); })
+      },
+      {
+        id:3, name:'TRACK 03', song:'Make It Clap', genre:'Club / Electronic',
+        status:'plan', release:'2026-08-14', budget:2000,
+        notes:'Release: 14.08.2026\nBuild-Up → großer Drop @52s, höchste Peak-Energie aller 3 Songs\nOutdoor Berlin, großer Spiegel / Glasfassade\nClap Challenge Format\nSpiegel-zu-Club Transition Shot',
+        images:[], links:[], belege:[],
+        posten: postenTemplate.map(function(p){ return Object.assign({},p); })
+      }
+    ],
+    events:[
+      {id:1, title:'EDN — Drehtag', date:'2026-06-11', type:'dreh', projectId:1},
+      {id:2, title:'EDN — Posting Teaser (Influencer)', date:'2026-06-12', type:'brief', projectId:1},
+      {id:3, title:'EDN — RELEASE', date:'2026-06-19', type:'release', projectId:1},
+      {id:4, title:'HIVE Festival — Shake Teaser drehen', date:'2026-06-19', type:'dreh', projectId:2},
+      {id:5, title:'Shake Polska — RELEASE', date:'2026-07-24', type:'release', projectId:2},
+      {id:6, title:'Make It Clap — RELEASE', date:'2026-08-14', type:'release', projectId:3}
+    ],
+    briefings:[
+      {
+        id:1,
+        title:'EDN — Video 01: Straßenmusiker Berlin',
+        projectId:1,
+        date:'2026-06-11',
+        link:'',
+        content:'KONZEPT\nAnuuk als Straßenmusiker an 4–5 Berliner Locations. Spiegel als visueller Anker jeder Location. Influencer (2–4) sind vor Ort und filmen Anuuk scheinbar zufällig mit dem eigenen Handy.\n\n─────────────────────────────\nAUDIO SETUP\n─────────────────────────────\nShure Mic (XLR) → Marshall Bromley 450\nPlayback läuft per Bluetooth vom iPhone\nAnuuk singt live drüber — klingt wie echter Auftritt\nWICHTIG: Vorher checken ob Shure XLR oder kabelloses System ist\n\n─────────────────────────────\nTAGESABLAUF\n─────────────────────────────\n07:30 — Aufbau + Soundcheck · East Side Gallery\n08:00–09:30 — Location 1: East Side Gallery / Oberbaumbrücke\n  → Graffiti-Background, Weitwinkel, Spiegel in Glasfassade\n10:00–11:30 — Location 2: Warschauer Str. / RAW-Gelände\n  → Street-Vibe, mehr Publikum, Reaktions-Shots\n11:30–12:30 — Location 3: Friseur Neukölln/Wedding\n  → HERO SHOT: Friseur-Spiegel, Barbier reagiert\n12:30–13:30 — Pause, Footage checken\n13:30–15:00 — Location 4: Hackescher Markt\n  → Schaufenster-Spiegelung, Touristen, Berliner Architektur\n15:30–17:00 — Location 5: Alexanderplatz\n  → INFLUENCER SHOT — meiste Leute, beste Reaktions-Chance\n\n─────────────────────────────\nSHOT-LISTE PRO LOCATION\n─────────────────────────────\nA) Spiegel-Shot (PFLICHT jede Location)\n   Anuuk im Reflex, Kamera sichtbar im Bild, handheld nah dran\n\nB) Performance-Shot (3–4 Takes)\n   Hook-Passage: 8.5s–23.5s des Songs\n   Sony A7IV, 35mm oder 50mm, verschiedene Winkel\n\nC) Reaktions-Shot (nur wenn organisch)\n   Passanten die stehenbleiben oder tanzen\n   Nicht erzwingen — kein Problem wenn niemand reagiert\n\nD) B-Roll (1–2 Shots)\n   Location ohne Anuuk, für Schnitt-Übergänge\n\n─────────────────────────────\nINFLUENCER-ABLAUF VOR ORT\n─────────────────────────────\nInfluencer kommen EINZELN zu verschiedenen Locations\n→ Nicht alle gleichzeitig — sieht sonst orchestriert aus\n→ Einer morgens ESG, einer Warschauer, einer Alexanderplatz\n\nVersion A — "Der Entdecker"\nInfluencer filmt sich selbst (Selfie), läuft an Anuuk vorbei\nVO/Text: "Sehe den seit Tagen auf meiner FYP überall in Berlin"\nSchnitt → Shot von Anuuk performend\n\nVersion B — "Der Fan vor Ort"\nInfluencer filmt sich erst selbst, dreht dann Handy zu Anuuk\nSingt Hook mit oder bewegt sich dazu\nFühlt sich an wie echter Fanmoment\n\nCaption: "Sehe diesen Typen seit Tagen auf meiner FYP überall in Berlin 😭 Kennt ihr ihn schon? @anuuk_offiziell"\n\nKEIN #ad oder Werbung-Tag — soll organisch wirken\n\n─────────────────────────────\nPOSTING-PLAN\n─────────────────────────────\n07.06 — Influencer Post 1 (TikTok)\n10.06 — Influencer Post 2 (TikTok + IG)\n13.06 — Influencer Post 3 + Anuuk Comment: "Das bin ich lol 😂"\n16.06 — Schaufenster-Shot Reel (IG)\n19.06 — RELEASE: Hero-Video + Challenge-Post\n29.06 — Reaktionsvideo + Auslosung GL-Gewinner\n\n─────────────────────────────\nCHALLENGE MECHANICS\n─────────────────────────────\nAnuuk am Release-Tag direkt in Kamera:\n"Dreht ein Video wo ihr den Song an verschiedensten Orten performt.\nSpiegel muss im Shot sein. Kreativstes Video gewinnt GL auf Veranstaltung eurer Wahl."\nHashtag: #EverybodyDanceNow\nDeadline: 7–10 Tage nach Release\nAbschluss: Reaktionsvideo + Live-Auslosung'
+      },
+      {
+        id:2,
+        title:'SHAKE — Video 01: Polska × Berlin Crew Shot',
+        projectId:2,
+        date:'',
+        link:'',
+        content:'KONZEPT\nAnuuk + polnische Crew in einer rohen Berliner Location.\nHinterhof Neukölln / Parkdeck / Industriehalle.\n\n─────────────────────────────\nUSP\n─────────────────────────────\n"POLSKA × BERLIN" als Graffiti-Tag auf Spiegel oder Wand\nZwei Performer → zwei Stativ-Shots → hin-und-her auf Beat geschnitten\nSeparates Lyrics-Video: schwarzer HG, weißer Text, Beat-Sync\nDual-Phone-Shot von oben als Meta-Format\n\n─────────────────────────────\nSCHNITT-LOGIK\n─────────────────────────────\nDirect Hit ab 0s → kein Intro, kein Aufbau\nCuts alle 0.74s (halbe Note bei 161.5 BPM)\nSHAKE-Move ist visueller Anker — beide synchron'
+      }
+    ]
+  };
+}
+
+window.DB = defaultData();
+window._fbSaveTimer = null;
+window._fbReady = false;
+
+window.save = function() {
+  showSync('saving');
+  clearTimeout(window._fbSaveTimer);
+  window._fbSaveTimer = setTimeout(function() {
+    set(DBREF, window.DB)
+      .then(function()  { showSync('saved'); setTimeout(function(){ showSync('live'); }, 2000); })
+      .catch(function() { showSync('error'); });
+  }, 700);
+};
+
+window.resetData = function() {
+  if (!confirm('Alle Daten zurücksetzen?')) return;
+  window.DB = defaultData();
+  window.save();
+  if (typeof renderBudget === 'function') renderBudget();
+  alert('Zurückgesetzt.');
+};
+
+window.exportData = function() {
+  var a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(window.DB, null, 2));
+  a.download = 'ap_anuuk_backup.json';
+  a.click();
+};
+
+window.importData = function(inp) {
+  var r = new FileReader();
+  r.onload = function(e) {
+    try {
+      var d = JSON.parse(e.target.result);
+      if (d.projects) d.projects.forEach(function(p){ if(!p.belege) p.belege=[]; });
+      window.DB = d;
+      window.save();
+      if (typeof renderBudget === 'function') renderBudget();
+      alert('Import erfolgreich!');
+    } catch(err) { alert('Fehler beim Import.'); }
+  };
+  r.readAsText(inp.files[0]);
+};
+
+onValue(DBREF, function(snapshot) {
+  var data = snapshot.val();
+  if (data) {
+    if (data.projects) data.projects.forEach(function(p){ if(!p.belege) p.belege=[]; });
+    window.DB = data;
+  }
+  if (!window._fbReady) {
+    window._fbReady = true;
+    if (typeof renderBudget === 'function') { renderBudget(); renderKalender(); }
+    showSync('live');
+  } else {
+    if (typeof renderBudget === 'function') { renderBudget(); renderProjekte(); renderBriefings(); }
+  }
+});
+</script>
+
+<script>
+// ═══ DATA ════════════════════════════════════════════════════
+
+
+// Migrate older data — add belege array if missing
+window.DB.projects.forEach(function(p) { if (!p.belege) p.belege = []; });
+if (!window.DB.settings.driveUrl) window.DB.settings.driveUrl = '';
+
+
+// ═══ UTILS ═══════════════════════════════════════════════════
+function eur(n) {
+  return new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(n || 0);
+}
+function eurDec(n) {
+  return new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2}).format(n || 0);
+}
+function pct(a, b) { return b > 0 ? Math.min(100, Math.round(a / b * 100)) : 0; }
+function nextId(arr) { return arr.length ? Math.max.apply(null, arr.map(function(x){ return x.id || 0; })) + 1 : 1; }
+function projSpent(p) { return (p.posten || []).reduce(function(s,r){ return s + (r.ist || 0); }, 0); }
+function projPlan(p) { return (p.posten || []).reduce(function(s,r){ return s + (r.geplant || 0); }, 0); }
+function belegTotal(p) { return (p.belege || []).reduce(function(s,b){ return s + (parseFloat(b.amount) || 0); }, 0); }
+
+function statusBadge(s) {
+  var map = {plan:['plan','Planung'], active:['active','Aktiv'], done:['done','Fertig']};
+  var v = map[s] || map.plan;
+  return '<span class="badge badge-' + v[0] + '">' + v[1] + '</span>';
+}
+
+// ═══ NAV ═════════════════════════════════════════════════════
+function switchView(name, btn) {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nitem').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('scroll').scrollTop = 0;
+  if (name === 'budget')    renderBudget();
+  if (name === 'kalender')  renderKalender();
+  if (name === 'projekte')  renderProjekte();
+  if (name === 'briefings') renderBriefings();
+  if (name === 'settings')  renderSettings();
+}
+
+function openPanel(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closePanel(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; renderBudget(); renderProjekte(); renderBriefings(); }
+function openModal(id) { if (id === 'modal-event') fillEvProj(); document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.overlay').forEach(function(o) {
+  o.addEventListener('click', function(e) { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ═══ BUDGET ══════════════════════════════════════════════════
+function renderBudget() {
+  var total = window.DB.projects.reduce(function(s,p){ return s + (p.budget || 0); }, 0);
+  var spent = window.DB.projects.reduce(function(s,p){ return s + projSpent(p); }, 0);
+  var left  = total - spent;
+  var p     = pct(spent, total);
+
+  document.getElementById('bud-kpis').innerHTML =
+    '<div class="kpi"><div class="kl">Ausgegeben</div><div class="kv red">' + eur(spent) + '</div></div>' +
+    '<div class="kpi"><div class="kl">Übrig</div><div class="kv ' + (left >= 0 ? 'green' : 'red') + '">' + eur(left) + '</div></div>';
+
+  document.getElementById('bud-bar-block').innerHTML =
+    '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:8px"><span>' + eur(spent) + ' ausgegeben</span><span>von ' + eur(total) + '</span></div>' +
+    '<div class="bar-wrap" style="margin:0 0 6px"><div class="bar-fill ' + (p > 80 ? 'amber' : '') + '" style="width:' + p + '%"></div></div>' +
+    '<div style="text-align:right;font-size:11px;color:var(--text3)">' + p + '% verbraucht</div>';
+
+  document.getElementById('bud-proj-cards').innerHTML = window.DB.projects.map(function(p) {
+    var sp = projSpent(p), lft = (p.budget || 0) - sp, pp = pct(sp, p.budget);
+    var lc = lft > 400 ? 'green' : lft > 0 ? 'amber' : 'red';
+    return '<div class="proj-row" onclick="openProjDetail(' + p.id + ')">' +
+      '<div class="proj-row-left">' + statusBadge(p.status) +
+      '<div class="proj-name">' + p.name + '</div>' +
+      '<div class="proj-song">' + (p.song || '— Songtitel eintragen —') + '</div>' +
+      '<div class="bar-wrap" style="margin:0 0 6px"><div class="bar-fill ' + (pp > 80 ? 'amber' : '') + '" style="width:' + pp + '%"></div></div>' +
+      '<div class="proj-meta"><span>Ausgeg.: <b>' + eur(sp) + '</b></span><span>Geplant: <b>' + eur(projPlan(p)) + '</b></span></div></div>' +
+      '<div class="proj-row-right"><div class="proj-budget">' + eur(p.budget) + '</div>' +
+      '<div class="proj-left-lbl" style="color:var(--' + lc + ')">' + eur(lft) + ' übrig</div>' +
+      '<div class="proj-arrow">›</div></div></div>';
+  }).join('');
+
+  var netto = total + 1000, mwst = netto * 0.19;
+  document.getElementById('bud-invoice').innerHTML =
+    '<div class="inv-row"><span class="inv-label">Produktion (' + window.DB.projects.length + '× Track)</span><span>' + eur(total) + '</span></div>' +
+    '<div class="inv-row"><span class="inv-label">Projektkoordination + Reserve</span><span>' + eur(1000) + '</span></div>' +
+    '<div class="inv-row"><span class="inv-label">Netto</span><span style="font-weight:600">' + eur(netto) + '</span></div>' +
+    '<div class="inv-row"><span class="inv-label" style="color:var(--text3)">19% MwSt</span><span style="color:var(--text3)">' + eur(mwst) + '</span></div>' +
+    '<div class="inv-row total"><span>Brutto</span><span style="color:var(--red)">' + eur(netto + mwst) + '</span></div>';
+}
+
+// ═══ PROJECT DETAIL ══════════════════════════════════════════
+var curProjId = null;
+
+function openProjDetail(id) {
+  curProjId = id;
+  var p = window.DB.projects.find(function(x){ return x.id === id; });
+  if (!p) return;
+  document.getElementById('pp-title').textContent = p.name;
+  document.getElementById('pp-badge').innerHTML = statusBadge(p.status);
+  document.querySelectorAll('#proj-pills .pill').forEach(function(pl, i){ pl.classList.toggle('active', i === 0); });
+  ['t-kosten','t-moodboard','t-belege','t-info'].forEach(function(t, i){ document.getElementById(t).style.display = i === 0 ? '' : 'none'; });
+  renderProjKosten(p);
+  renderProjMoodboard(p);
+  renderProjBelege(p);
+  renderProjInfo(p);
+  openPanel('panel-proj');
+}
+
+function renderProjKosten(p) {
+  var sp = projSpent(p), pl = projPlan(p), lft = (p.budget || 0) - sp, pp = pct(sp, p.budget);
+  document.getElementById('pp-kpis').innerHTML =
+    '<div class="kpi"><div class="kl">IST</div><div class="kv red">' + eur(sp) + '</div></div>' +
+    '<div class="kpi"><div class="kl">Geplant</div><div class="kv muted">' + eur(pl) + '</div></div>' +
+    '<div class="kpi"><div class="kl">Übrig</div><div class="kv ' + (lft >= 0 ? 'green' : 'red') + '">' + eur(lft) + '</div></div>' +
+    '<div class="kpi"><div class="kl">Verbraucht</div><div class="kv">' + pp + '%</div></div>';
+  document.getElementById('pp-bar').style.width = pp + '%';
+  document.getElementById('pp-bar').className = 'bar-fill' + (pp > 80 ? ' amber' : '') + (pp > 100 ? ' red' : '');
+  document.getElementById('pp-spent-lbl').textContent = eur(sp) + ' ausgegeben';
+  document.getElementById('pp-left-lbl').style.color = lft >= 0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('pp-left-lbl').textContent = eur(lft) + ' übrig';
+
+  document.getElementById('pp-posten').innerHTML = (p.posten || []).map(function(r, i) {
+    var d = r.geplant - (r.ist || 0);
+    var dc = d > 0 ? 'var(--green)' : d < -20 ? 'var(--red)' : 'var(--amber)';
+    return '<tr><td><div class="td-name">' + r.name + '</div><div class="td-note">' + (r.note || '') + '</div></td>' +
+      '<td class="r" style="color:var(--text3);font-size:12px">' + eur(r.geplant) + '</td>' +
+      '<td class="r"><input class="ist-inp" type="number" value="' + (r.ist || '') + '" placeholder="0" onchange="updPosten(' + i + ',this.value)"></td>' +
+      '<td class="r" style="font-size:12px;color:' + dc + '">' + eur(d) + '</td>' +
+      '<td style="width:24px;padding-left:4px"><button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:0;line-height:1" onclick="delPosten(' + i + ')">×</button></td></tr>';
+  }).join('') +
+  '<tr class="tot"><td style="padding-left:0">Gesamt</td><td class="r" style="font-size:12px;color:var(--text3)">' + eur(pl) + '</td><td class="r">' + eur(sp) + '</td>' +
+  '<td class="r" style="font-size:12px;color:' + (pl - sp >= 0 ? 'var(--green)' : 'var(--red)') + '">' + eur(pl - sp) + '</td><td></td></tr>';
+}
+
+function renderProjMoodboard(p) {
+  // EDN PDF link card for Track 01
+  var pdfViewer = document.getElementById('mb-pdf-viewer');
+  if (p.id === 1 && pdfViewer) {
+    pdfViewer.style.display = 'block';
+    pdfViewer.innerHTML =
+      '<div class="slabel" style="margin-top:0;margin-bottom:8px">Briefing Dokument</div>' +
+      '<a href="EDN_Briefing.pdf" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit;margin-bottom:20px">' +
+        '<span style="font-size:32px;flex-shrink:0">📄</span>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px">EDN Video Briefing</div>' +
+          '<div style="font-size:12px;color:var(--text3)">10 Seiten · Straßenmusiker, Influencer, Shooting Schedule</div>' +
+        '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--red);flex-shrink:0">Öffnen ›</div>' +
+      '</a>';
+  } else if (pdfViewer) {
+    pdfViewer.style.display = 'none';
+  }
+
+  document.getElementById('mb-imgs').innerHTML = (p.images || []).length  document.getElementById('mb-imgs').innerHTML = (p.images || []).length
+    ? (p.images || []).map(function(u, i) {
+        return '<div class="mb-img-wrap"><img class="mb-img" src="' + u + '" onerror="this.style.opacity=\'.2\'"><button class="mb-del" onclick="delMbImg(' + i + ')">×</button></div>';
+      }).join('')
+    : '<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--text3);font-size:12px">Noch keine Bilder</div>';
+
+  document.getElementById('mb-links').innerHTML = (p.links || []).length
+    ? (p.links || []).map(function(l, i) {
+        var icon = l.url.indexOf('drive') > -1 ? '📁' : l.url.indexOf('docs.google') > -1 ? '📄' : l.url.indexOf('frame.io') > -1 ? '🎬' : '🔗';
+        return '<div class="link-row"><a href="' + l.url + '" target="_blank"><span class="link-icon">' + icon + '</span><div><div class="link-title">' + l.title + '</div><div class="link-url">' + l.url + '</div></div></a><button class="link-del" onclick="delMbLink(' + i + ')">×</button></div>';
+      }).join('')
+    : '<div class="empty"><div class="empty-text">Noch keine Links</div></div>';
+}
+
+// ═══ BELEGE ══════════════════════════════════════════════════
+var catLabels = {location:'Location-Miete', fahrt:'Fahrtkosten', equipment:'Equipment/Licht', casting:'Darsteller/Casting', verpflegung:'Verpflegung', sonstig:'Sonstiges'};
+var catIcons  = {location:'🏢', fahrt:'🚆', equipment:'💡', casting:'👤', verpflegung:'🍕', sonstig:'📄'};
+
+function renderProjBelege(p) {
+  // Update drive banner
+  var driveUrl = window.DB.settings.driveUrl || '';
+  var sub = document.getElementById('drive-sub-text');
+  var btn = document.getElementById('drive-open-btn');
+  if (driveUrl) {
+    sub.textContent = 'Ordner verknüpft — klick zum Öffnen';
+    sub.style.color = 'var(--green)';
+    btn.style.display = '';
+  } else {
+    sub.textContent = 'Noch kein Ordner verknüpft — Setup → Drive-URL';
+    sub.style.color = 'var(--text3)';
+    btn.style.display = '';
+  }
+
+  var belege = p.belege || [];
+  var total  = belegTotal(p);
+  document.getElementById('beleg-total').textContent = eurDec(total);
+
+  if (!belege.length) {
+    document.getElementById('beleg-list').innerHTML = '<div class="empty"><div class="empty-icon">🧾</div><div class="empty-text">Noch keine Belege</div></div>';
+    return;
+  }
+
+  document.getElementById('beleg-list').innerHTML = belege.map(function(b, i) {
+    var icon = catIcons[b.category] || '📄';
+    var cat  = catLabels[b.category] || b.category;
+    var dateStr = b.date ? new Date(b.date + 'T12:00:00').toLocaleDateString('de-DE') : '';
+    return '<div class="beleg-row">' +
+      '<span style="font-size:20px;flex-shrink:0">' + icon + '</span>' +
+      '<div class="beleg-info"><div class="beleg-name">' + b.name + '</div>' +
+      '<div class="beleg-meta">' + cat + (dateStr ? ' · ' + dateStr : '') + (b.note ? ' · ' + b.note : '') + '</div></div>' +
+      '<div class="beleg-amount">' + eurDec(b.amount) + '</div>' +
+      '<button class="beleg-del" onclick="delBeleg(' + i + ')">×</button></div>';
+  }).join('');
+}
+
+function renderProjInfo(p) {
+  document.getElementById('i-song').value    = p.song    || '';
+  document.getElementById('i-release').value = p.release || '';
+  document.getElementById('i-genre').value   = p.genre   || '';
+  document.getElementById('i-status').value  = p.status  || 'plan';
+  document.getElementById('i-notes').value   = p.notes   || '';
+}
+
+function showTab(id, btn) {
+  ['t-kosten','t-moodboard','t-belege','t-info'].forEach(function(t){ document.getElementById(t).style.display = t === id ? '' : 'none'; });
+  document.querySelectorAll('#proj-pills .pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function updPosten(i, v) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  p.posten[i].ist = parseFloat(v) || 0;
+  save(); renderProjKosten(p);
+}
+
+function delPosten(i) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p || !confirm('Posten löschen?')) return;
+  p.posten.splice(i, 1); save(); renderProjKosten(p);
+}
+
+function saveProjField(field, val) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  p[field] = val; save();
+  document.getElementById('pp-badge').innerHTML = statusBadge(p.status);
+}
+
+function deleteCurProj() {
+  if (!confirm('Projekt löschen?')) return;
+  window.DB.projects = window.DB.projects.filter(function(p){ return p.id !== curProjId; });
+  save(); closePanel('panel-proj');
+}
+
+function addPosten() {
+  var name = document.getElementById('ap-name').value.trim();
+  var note = document.getElementById('ap-note').value.trim();
+  var plan = parseFloat(document.getElementById('ap-plan').value) || 0;
+  if (!name) return;
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  p.posten.push({id: nextId(p.posten), name: name, note: note, geplant: plan, ist: 0});
+  save(); renderProjKosten(p); closeModal('modal-posten');
+  ['ap-name','ap-note','ap-plan'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+function addMbImg() {
+  var url = document.getElementById('mbi-url').value.trim();
+  if (!url) return;
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  if (!p.images) p.images = [];
+  p.images.push(url); save(); renderProjMoodboard(p);
+  closeModal('modal-mb-img'); document.getElementById('mbi-url').value = '';
+}
+
+function delMbImg(i) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return; p.images.splice(i, 1); save(); renderProjMoodboard(p);
+}
+
+function addMbLink() {
+  var t = document.getElementById('mbl-title').value.trim();
+  var u = document.getElementById('mbl-url').value.trim();
+  if (!t || !u) return;
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  if (!p.links) p.links = [];
+  p.links.push({title: t, url: u}); save(); renderProjMoodboard(p);
+  closeModal('modal-mb-link');
+  ['mbl-title','mbl-url'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+function delMbLink(i) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return; p.links.splice(i, 1); save(); renderProjMoodboard(p);
+}
+
+// ─── Beleg functions ─────────────────────────────────────────
+function addBeleg() {
+  var name   = document.getElementById('bl-name').value.trim();
+  var amount = parseFloat(document.getElementById('bl-amount').value) || 0;
+  var date   = document.getElementById('bl-date').value;
+  var cat    = document.getElementById('bl-cat').value;
+  var note   = document.getElementById('bl-note').value.trim();
+  if (!name) return;
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p) return;
+  if (!p.belege) p.belege = [];
+  p.belege.push({id: nextId(p.belege), name: name, amount: amount, date: date, category: cat, note: note});
+  save(); renderProjBelege(p);
+  closeModal('modal-beleg');
+  ['bl-name','bl-amount','bl-date','bl-note'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+function delBeleg(i) {
+  var p = window.DB.projects.find(function(x){ return x.id === curProjId; });
+  if (!p || !confirm('Beleg löschen?')) return;
+  p.belege.splice(i, 1); save(); renderProjBelege(p);
+}
+
+function openDriveFolder() {
+  var url = window.DB.settings.driveUrl || '';
+  if (!url) { alert('Bitte zuerst Drive-URL in Setup eintragen.'); return; }
+  window.open(url, '_blank');
+}
+
+function openDriveFolderFromModal() {
+  var url = window.DB.settings.driveUrl || '';
+  if (!url) { alert('Bitte zuerst Drive-URL in Setup (letzter Tab) eintragen, dann zurückkommen.'); return; }
+  window.open(url, '_blank');
+}
+
+// ═══ PROJEKTE VIEW ═══════════════════════════════════════════
+function renderProjekte() {
+  document.getElementById('proj-list').innerHTML = window.DB.projects.map(function(p) {
+    var sp = projSpent(p), lft = (p.budget || 0) - sp, lc = lft > 400 ? 'green' : lft > 0 ? 'amber' : 'red';
+    return '<div class="proj-row" onclick="openProjDetail(' + p.id + ')">' +
+      '<div class="proj-row-left">' + statusBadge(p.status) +
+      '<div class="proj-name">' + p.name + '</div>' +
+      '<div class="proj-song">' + (p.song || '— Songtitel eintragen —') + '</div>' +
+      '<div class="proj-meta"><span>IST: <b>' + eur(sp) + '</b></span><span>Plan: <b>' + eur(projPlan(p)) + '</b></span></div></div>' +
+      '<div class="proj-row-right"><div class="proj-budget">' + eur(p.budget) + '</div>' +
+      '<div class="proj-left-lbl" style="color:var(--' + lc + ')">' + eur(lft) + ' übrig</div>' +
+      '<div class="proj-arrow">›</div></div></div>';
+  }).join('');
+}
+
+function addProject() {
+  var name   = document.getElementById('np-name').value.trim();
+  var song   = document.getElementById('np-song').value.trim();
+  var budget = parseFloat(document.getElementById('np-budget').value) || (window.DB.settings.budgetPerTrack || 2000);
+  if (!name) return;
+  var tpl = window.DB.projects[0];
+  window.DB.projects.push({
+    id: nextId(window.DB.projects), name: name, song: song, genre: '', status: 'plan',
+    release: '', notes: '', budget: budget, images: [], links: [], belege: [],
+    posten: (tpl && tpl.posten ? tpl.posten : []).map(function(r){ return Object.assign({}, r, {ist: 0}); })
+  });
+  save(); renderProjekte(); closeModal('modal-new-proj');
+  ['np-name','np-song','np-budget'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+// ═══ KALENDER ════════════════════════════════════════════════
+var calY, calM;
+(function(){ var n = new Date(); calY = n.getFullYear(); calM = n.getMonth(); })();
+
+function calPrev(){ calM--; if (calM < 0){ calM = 11; calY--; } renderKalender(); }
+function calNext(){ calM++; if (calM > 11){ calM = 0; calY++; } renderKalender(); }
+
+function renderKalender() {
+  var months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  document.getElementById('cal-title').textContent = months[calM] + ' ' + calY;
+  document.getElementById('cal-dow').innerHTML = ['Mo','Di','Mi','Do','Fr','Sa','So'].map(function(d){ return '<div class="dow">' + d + '</div>'; }).join('');
+
+  var first = (new Date(calY, calM, 1).getDay() + 6) % 7;
+  var days  = new Date(calY, calM + 1, 0).getDate();
+  var todayStr = new Date().toISOString().split('T')[0];
+  var evDates = {};
+  window.DB.events.forEach(function(e){ evDates[e.date] = true; });
+
+  var html = '';
+  for (var i = 0; i < first; i++) html += '<div class="cday empty"></div>';
+  for (var d = 1; d <= days; d++) {
+    var ds = calY + '-' + String(calM + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var isT = ds === todayStr, hasEv = !!evDates[ds];
+    html += '<div class="cday ' + (isT ? 'today' : '') + ' ' + (hasEv ? 'has-ev' : '') + '" onclick="dayClick(\'' + ds + '\')">' +
+      '<span>' + d + '</span>' + (hasEv ? '<span class="ev-dot"></span>' : '') + '</div>';
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+
+  var typeLabel = {dreh:'Drehtag', schnitt:'Schnitt', brief:'Briefing-Call', release:'Release', zahlung:'Zahlung', sonstig:'Sonstiges'};
+  var sorted = window.DB.events.slice().sort(function(a, b){ return a.date.localeCompare(b.date); });
+  document.getElementById('cal-list').innerHTML = sorted.length
+    ? sorted.map(function(ev, i) {
+        var proj = window.DB.projects.find(function(p){ return p.id == ev.projectId; });
+        var dateObj = new Date(ev.date + 'T12:00:00');
+        var dStr = dateObj.toLocaleDateString('de-DE', {weekday:'short', day:'numeric', month:'long'});
+        return '<div class="ev-card" onclick="if(confirm(\'Termin löschen?\')){ window.DB.events.splice(' + i + ',1); save(); renderKalender(); }">' +
+          '<div class="ev-date">' + dStr + ' · ' + (typeLabel[ev.type] || ev.type) + '</div>' +
+          '<div class="ev-title">' + ev.title + '</div>' +
+          (proj ? '<div class="ev-proj">' + proj.name + '</div>' : '') + '</div>';
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">Noch keine Termine</div></div>';
+}
+
+function dayClick(ds) {
+  document.getElementById('ev-date').value = ds; fillEvProj(); openModal('modal-event');
+}
+
+function fillEvProj() {
+  var sel = document.getElementById('ev-proj');
+  sel.innerHTML = '<option value="">— kein Projekt —</option>';
+  window.DB.projects.forEach(function(p){ sel.innerHTML += '<option value="' + p.id + '">' + p.name + '</option>'; });
+}
+
+function addEvent() {
+  var title  = document.getElementById('ev-title').value.trim();
+  var date   = document.getElementById('ev-date').value;
+  var type   = document.getElementById('ev-type').value;
+  var projId = document.getElementById('ev-proj').value;
+  if (!title || !date) return;
+  window.DB.events.push({id: nextId(window.DB.events), title: title, date: date, type: type, projectId: projId ? parseInt(projId) : null});
+  save(); renderKalender(); closeModal('modal-event');
+  document.getElementById('ev-title').value = '';
+}
+
+// ═══ BRIEFINGS ═══════════════════════════════════════════════
+var curBriefId = null;
+
+function renderBriefings() {
+  var list = document.getElementById('brief-list');
+  if (!window.DB.briefings.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">✏️</div><div class="empty-text">Noch keine Briefings</div></div>';
+    return;
+  }
+  list.innerHTML = window.DB.briefings.map(function(b) {
+    var proj = window.DB.projects.find(function(p){ return p.id == b.projectId; });
+    var d = b.date ? new Date(b.date + 'T12:00:00').toLocaleDateString('de-DE') : 'Kein Datum';
+    return '<div class="brief-card" onclick="openBriefing(' + b.id + ')">' +
+      '<div class="brief-top"><div class="brief-title">' + (b.title || 'Unbenanntes Briefing') + '</div>' + (proj ? statusBadge(proj.status) : '') + '</div>' +
+      '<div class="brief-meta">' + (proj ? proj.name + ' · ' : '') + d + '</div>' +
+      (b.content ? '<div class="brief-preview">' + b.content + '</div>' : '') + '</div>';
+  }).join('');
+}
+
+function newBriefing() {
+  var b = {id: nextId(window.DB.briefings), title: '', projectId: '', content: '', link: '', date: ''};
+  window.DB.briefings.push(b); save(); openBriefing(b.id);
+}
+
+function openBriefing(id) {
+  curBriefId = id;
+  var b = window.DB.briefings.find(function(x){ return x.id === id; });
+  if (!b) return;
+  document.getElementById('b-title').value   = b.title   || '';
+  document.getElementById('b-date').value    = b.date    || '';
+  document.getElementById('b-content').value = b.content || '';
+  document.getElementById('b-link').value    = b.link    || '';
+  var sel = document.getElementById('b-proj');
+  sel.innerHTML = '<option value="">— kein Projekt —</option>';
+  window.DB.projects.forEach(function(p){ sel.innerHTML += '<option value="' + p.id + '"' + (p.id == b.projectId ? ' selected' : '') + '>' + p.name + '</option>'; });
+  openPanel('panel-brief');
+}
+
+function saveBriefField(field, val) {
+  var b = window.DB.briefings.find(function(x){ return x.id === curBriefId; });
+  if (!b) return; b[field] = val; save();
+}
+
+function deleteCurBrief() {
+  if (!confirm('Briefing löschen?')) return;
+  window.DB.briefings = window.DB.briefings.filter(function(b){ return b.id !== curBriefId; });
+  save(); closePanel('panel-brief');
+}
+
+// ═══ SETTINGS ════════════════════════════════════════════════
+function renderSettings() {
+  document.getElementById('s-budget').value = window.DB.settings.budgetPerTrack || 2000;
+  document.getElementById('s-client').value = window.DB.settings.client || 'Universal Music';
+  document.getElementById('s-drive').value  = window.DB.settings.driveUrl || '';
+}
+
+function saveSetting(key, val) { window.DB.settings[key] = val; save(); }
+
+function exportData() {
+  var a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(window.DB, null, 2));
+  a.download = 'ap_anuuk_backup.json'; a.click();
+}
+
+function importData(inp) {
+  var r = new FileReader();
+  r.onload = function(e) {
+    try {
+      window.DB = JSON.parse(e.target.result);
+      window.DB.projects.forEach(function(p){ if (!p.belege) p.belege = []; });
+      save(); renderBudget(); alert('Import erfolgreich!');
+    } catch(err) { alert('Fehler beim Import. Datei prüfen.'); }
+  };
+  r.readAsText(inp.files[0]);
+}
+
+function resetData() { window.DB = defaultDB(); save(); renderBudget(); alert('Zurückgesetzt.'); }
+
+</script>
+</body>
+</html>
