@@ -172,7 +172,7 @@ select.fi option{background:#fff}
 .badd:hover{border-color:var(--red);color:var(--red)}
 
 /* MODAL */
-.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:flex-end;justify-content:center}
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:flex-end;justify-content:center}
 .ovl.open{display:flex}
 .modal{background:var(--s);border-radius:14px 14px 0 0;padding:18px 14px calc(20px + env(safe-area-inset-bottom,0));width:100%;max-width:480px;animation:sUp .2s cubic-bezier(.16,1,.3,1)}
 @keyframes sUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -471,71 +471,71 @@ hr{border:none;border-top:1px solid var(--bd);margin:12px 0}
 <div class="ovl" id="m-ap"><div class="modal" style="max-height:85vh;overflow-y:auto"><div class="mhdl"></div><div class="mtit">KOSTENPOSTEN</div>
 <div class="fg"><div class="fl">Kategorie</div>
 <select class="fi" id="ap-cat" onchange="apCatChange(this.value)">
-  <option value="">— Kategorie wählen —</option>
-  <optgroup label="Crew & Gage">
+  <option value="">— wählen —</option>
+  <optgroup label="Crew &amp; Gage">
     <option value="gage_felix">Tagesgage Felix Adam (€800)</option>
-    <option value="gage_halbtag">Halbtagssatz Felix Adam (€400)</option>
+    <option value="gage_halb">Halbtagssatz Felix Adam (€400)</option>
     <option value="gage_kamera">Kameramann 2. Kamera (€400)</option>
     <option value="gage_assi">Produktionsassistenz (€200)</option>
     <option value="darsteller">Darsteller / Casting</option>
     <option value="influencer">Mikroinfluencer vor Ort</option>
     <option value="makeup">Make-up / Hair</option>
   </optgroup>
-  <optgroup label="Transport & Fahrtkosten">
-    <option value="fahrt_bvg">Fahrtkosten BVG / ÖPNV</option>
-    <option value="fahrt_taxi">Taxi / Uber</option>
-    <option value="mietwagen">Mietwagen (Tagesmiete)</option>
+  <optgroup label="Transport &amp; Fahrt">
+    <option value="fahrt">Fahrtkosten / BVG</option>
+    <option value="taxi">Taxi / Uber</option>
+    <option value="mietwagen">Mietwagen</option>
     <option value="transporter">Transporter / Sprinter</option>
     <option value="parken">Parkgebühren</option>
     <option value="unterkunft">Unterkunft / Hotel</option>
-    <option value="bahn">Zugticket / Fernreise</option>
+    <option value="bahn">Zugticket</option>
     <option value="flug">Flug</option>
   </optgroup>
   <optgroup label="Equipment">
-    <option value="kamera_miete">Kamera-Miete (Blackmagic / Sony)</option>
-    <option value="licht_miete">Licht-Miete (LED Panel Set)</option>
-    <option value="ton_miete">Ton-Equipment (Mic + Box)</option>
-    <option value="marshall">Marshall Bromley 450 (Leihen)</option>
+    <option value="kamera">Kamera-Miete</option>
+    <option value="licht">Licht-Miete</option>
+    <option value="ton">Ton-Equipment (Mic + Box)</option>
+    <option value="marshall">Marshall Bromley 450</option>
     <option value="drone">Drohne + Pilot</option>
     <option value="stativ">Stativ / Gimbal / Slider</option>
   </optgroup>
-  <optgroup label="Location & Genehmigungen">
+  <optgroup label="Location">
     <option value="location">Location-Miete</option>
-    <option value="permit">Drehgenehmigung / Permit</option>
+    <option value="permit">Drehgenehmigung</option>
     <option value="studio">Fotostudio-Miete</option>
   </optgroup>
-  <optgroup label="Requisiten & Produktion">
+  <optgroup label="Requisiten &amp; Produktion">
     <option value="requisiten">Requisiten / Props</option>
     <option value="spiegel">Spiegel / Spiegelmiete</option>
     <option value="druck">Druck / Printing</option>
-    <option value="farbe_spray">Farbe / Spray / Graffiti</option>
+    <option value="spray">Farbe / Spray / Graffiti</option>
     <option value="kostume">Kostüme / Kleidung</option>
     <option value="verpflegung">Verpflegung / Catering</option>
   </optgroup>
   <optgroup label="Post-Production">
-    <option value="schnitt">Schnitt & Editing</option>
-    <option value="colorgrade">Color Grading</option>
-    <option value="nutzungsrecht">Nutzungsrecht (Commercial)</option>
-    <option value="musik_lizenz">Musik-Lizenz</option>
+    <option value="schnitt">Schnitt &amp; Editing</option>
+    <option value="color">Color Grading</option>
+    <option value="nutzung">Nutzungsrecht</option>
+    <option value="lizenz">Musik-Lizenz</option>
     <option value="vfx">VFX / Motion Graphics</option>
   </optgroup>
   <optgroup label="Fremdleistungen">
     <option value="fremd_mv">Fremdleistungen Musikvideo</option>
     <option value="fremd_foto">Fremdleistungen Fotografie</option>
-    <option value="fremd_ton">Fremdleistungen Ton / Mix</option>
+    <option value="fremd_ton">Fremdleistungen Ton</option>
   </optgroup>
   <optgroup label="Sonstiges">
     <option value="puffer">Puffer / Reserve</option>
-    <option value="overhead">Honorar & Overhead</option>
-    <option value="custom">✏️ Eigene Eingabe…</option>
+    <option value="overhead">Honorar &amp; Overhead</option>
+    <option value="custom">Eigene Eingabe</option>
   </optgroup>
 </select></div>
 <div class="fg"><div class="fl">Bezeichnung</div>
-  <input class="fi" id="ap-name" placeholder="z.B. Location-Miete Studio Mitte" autocomplete="off"></div>
-<div class="fg"><div class="fl">Notiz / Detail</div>
-  <input class="fi" id="ap-note" placeholder="z.B. 2 Stunden inkl. Licht" autocomplete="off"></div>
-<div class="fg" style="margin-bottom:0"><div class="fl">Geplant (€)</div>
-  <input class="fi" type="number" id="ap-plan" placeholder="0" min="0" step="10"></div>
+<input class="fi" id="ap-name" placeholder="z.B. Location-Miete" autocomplete="off"></div>
+<div class="fg"><div class="fl">Notiz</div>
+<input class="fi" id="ap-note" placeholder="z.B. 1 Tag inkl. Auf- und Abbau" autocomplete="off"></div>
+<div class="fg" style="margin-bottom:0"><div class="fl">Geplant (EUR)</div>
+<input class="fi" type="number" id="ap-plan" placeholder="0" min="0" step="10"></div>
 <div class="mbtns"><button class="bprim" onclick="addPosten()">Hinzufügen</button><button class="bout" onclick="closeModal('m-ap')">Abbrechen</button></div></div></div>
 <div class="ovl" id="m-mbi"><div class="modal"><div class="mhdl"></div><div class="mtit">BILD</div><div class="fg" style="margin-bottom:0"><div class="fl">Bild-URL</div><input class="fi" id="mbi-url" placeholder="https://images.unsplash.com/…"></div><div class="mbtns"><button class="bprim" onclick="addMbImg()">Hinzufügen</button><button class="bout" onclick="closeModal('m-mbi')">Abbrechen</button></div></div></div>
 <div class="ovl" id="m-mbl"><div class="modal"><div class="mhdl"></div><div class="mtit">LINK</div><div class="fg"><div class="fl">Titel</div><input class="fi" id="mbl-title" placeholder="z.B. EDN Briefing Doc"></div><div class="fg" style="margin-bottom:0"><div class="fl">URL</div><input class="fi" id="mbl-url" placeholder="https://docs.google.com/…"></div><div class="mbtns"><button class="bprim" onclick="addMbLink()">Hinzufügen</button><button class="bout" onclick="closeModal('m-mbl')">Abbrechen</button></div></div></div>
@@ -640,22 +640,7 @@ function defaultData() {
        posten:[{id:1,name:'Tagesgage',note:'€800/Tag',geplant:800,ist:0},{id:2,name:'Schnitt',note:'Cut+Teaser',geplant:300,ist:0},{id:3,name:'Nutzungsrecht',note:'Universal',geplant:220,ist:0},{id:4,name:'Location',note:'Hinterhof/Parkdeck',geplant:300,ist:0},{id:5,name:'Fahrtkosten',note:'',geplant:100,ist:0},{id:6,name:'Equipment',note:'',geplant:80,ist:0},{id:7,name:'Crew Polska',note:'',geplant:150,ist:0},{id:8,name:'Puffer',note:'',geplant:50,ist:0}]},
       {id:3,name:'TRACK 03',song:'Make It Clap',genre:'Club / Electronic',status:'plan',release:'2026-08-14',budget:2000,
        notes:'Release: 14.08.2026\nDrop @52s · Höchste Peak-Energie\nOutdoor Berlin · Spiegel-Dolly · Clap Challenge',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Tagesgage Felix Adam',note:'Drehtag Outdoor Berlin',geplant:800,ist:0},{id:2,name:'Schnitt & Editing',note:'Quality Video + Reels',geplant:300,ist:0},{id:3,name:'Nutzungsrecht',note:'Commercial / Universal',geplant:220,ist:0},{id:4,name:'Location',note:'Outdoor Berlin, Glasfassade',geplant:300,ist:0},{id:5,name:'Fahrtkosten',note:'Mehrere Locations',geplant:100,ist:0},{id:6,name:'Requisiten / Props',note:'Spiegel gross, Set-Dressing',geplant:80,ist:0},{id:7,name:'Darsteller / Statisten',note:'1-2 Personen',geplant:150,ist:0},{id:8,name:'Puffer',note:'Reserve',geplant:50,ist:0}]},
-      {id:4,name:'PRESSEKIT',song:'Pressekit Shooting + Instagram',genre:'Foto',status:'plan',release:'',budget:1000,
-       notes:'Professionelles Pressekit-Shooting\nInstagram Covers + Highlight-Cover Design\nBearbeitung & Retusche (40+ Bilder)\nRechnung Pos. 04 — 1.000 EUR netto',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Fotograf-Honorar',note:'Tages-Shooting',geplant:400,ist:0},{id:2,name:'Bildbearbeitung & Retusche',note:'40+ Bilder',geplant:200,ist:0},{id:3,name:'Instagram Covers & Highlights',note:'Design',geplant:150,ist:0},{id:4,name:'Styling & Location',note:'Koordination',geplant:100,ist:0},{id:5,name:'Requisiten / Props',note:'Spiegel, Accessoires',geplant:80,ist:0},{id:6,name:'Fahrtkosten',note:'',geplant:30,ist:0},{id:7,name:'Lizenzen & Dateilieferung',note:'HiRes + Web',geplant:40,ist:0}]},
-      {id:5,name:'MUSIKVIDEO 01',song:'MV — Everybody Dance Now',genre:'Musikvideo',status:'plan',release:'2026-06-19',budget:1300,
-       notes:'Vollstaendiges Musikvideo — Everybody Dance Now\nRegie & Konzept, Dreh, Schnitt, Color Grading\nFremdleistungen\nRechnung Pos. 05 — 1.300 EUR netto',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Everybody Dance Now',geplant:1300,ist:0}]},
-      {id:6,name:'MUSIKVIDEO 02',song:'MV — Make It Clap',genre:'Musikvideo',status:'plan',release:'2026-08-14',budget:1300,
-       notes:'Vollstaendiges Musikvideo — Make It Clap\nDolly-Shot, Drop-Moment @52s, Cinematic\nFremdleistungen\nRechnung Pos. 06 — 1.300 EUR netto',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Make It Clap',geplant:1300,ist:0}]},
-      {id:7,name:'HIVE FESTIVAL',song:'HIVE Festival Content 19.-21.06',genre:'Festival',status:'active',release:'2026-06-19',budget:1400,
-       notes:'HIVE Festival Content & Social Media Coverage\n3 Festival-Tage (19.-21. Juni 2026)\nFestival Recap + Teaser-Clips\nRechnung Pos. 07 — 1.400 EUR netto',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Tagesgage Felix Adam',note:'3 Festival-Tage (19.-21.06)',geplant:800,ist:0},{id:2,name:'Schnitt & Editing',note:'Festival Recap + Teaser',geplant:300,ist:0},{id:3,name:'Fahrtkosten & Unterkunft',note:'Anreise Festival',geplant:150,ist:0},{id:4,name:'Equipment & Akkreditierung',note:'',geplant:100,ist:0},{id:5,name:'Nutzungsrecht',note:'Social Media / Commercial',geplant:50,ist:0}]},
-      {id:8,name:'PUFFER',song:'Produktionspuffer & Reserve',genre:'Reserve',status:'plan',release:'',budget:2000,
-       notes:'Globaler Produktionspuffer fuer alle Produktionen\nNachdreh, Equipment-Ausfall, Mehraufwand\nRechnung Pos. 08 — 2.000 EUR netto',images:[],links:[],belege:[],
-       posten:[{id:1,name:'Nachdreh / Mehraufwand',note:'Falls benoetigt',geplant:600,ist:0},{id:2,name:'Equipment-Ausfall / Ersatz',note:'',geplant:400,ist:0},{id:3,name:'Kommunikation & Administration',note:'',geplant:300,ist:0},{id:4,name:'Fahrtkosten extra',note:'Unvorhergesehene Locations',geplant:300,ist:0},{id:5,name:'Allgemeiner Puffer',note:'Sonstiges',geplant:400,ist:0}]}
+       posten:[{id:1,name:'Tagesgage',note:'€800/Tag',geplant:800,ist:0},{id:2,name:'Schnitt',note:'Cut+Teaser',geplant:300,ist:0},{id:3,name:'Nutzungsrecht',note:'Universal',geplant:220,ist:0},{id:4,name:'Location',note:'Outdoor Berlin',geplant:300,ist:0},{id:5,name:'Fahrtkosten',note:'',geplant:100,ist:0},{id:6,name:'Equipment',note:'',geplant:80,ist:0},{id:7,name:'Darsteller',note:'1–2 Personen',geplant:150,ist:0},{id:8,name:'Puffer',note:'',geplant:50,ist:0}]}
     ],
     events:[
       {id:1,title:'EDN — Drehtag',date:'2026-06-11',type:'dreh',projectId:1},
@@ -715,41 +700,7 @@ onValue(DBREF, function(snapshot) {
   if (data) {
     if (data.projects) data.projects.forEach(function(p){ if(!p.belege) p.belege=[]; });
     window.DB = data;
-    migrateProjects();
   }
-function migrateProjects() {
-  // Add missing projects if they don't exist in Firebase yet
-  var needed = [
-    {id:4,name:'PRESSEKIT',song:'Pressekit Shooting + Instagram',genre:'Foto',status:'plan',release:'',budget:1000,
-     notes:'Pressekit Shooting + Instagram Fotos',images:[],links:[],belege:[],
-     posten:[{id:1,name:'Fotograf-Honorar',note:'Tages-Shooting',geplant:400,ist:0},{id:2,name:'Bildbearbeitung & Retusche',note:'40+ Bilder',geplant:200,ist:0},{id:3,name:'Instagram Covers & Highlights',note:'Design',geplant:150,ist:0},{id:4,name:'Styling & Location',note:'',geplant:100,ist:0},{id:5,name:'Requisiten / Props',note:'Spiegel, Accessoires',geplant:80,ist:0},{id:6,name:'Fahrtkosten',note:'',geplant:30,ist:0},{id:7,name:'Lizenzen & Dateilieferung',note:'HiRes + Web',geplant:40,ist:0}]},
-    {id:5,name:'MUSIKVIDEO 01',song:'MV — Everybody Dance Now',genre:'Musikvideo',status:'plan',release:'2026-06-19',budget:1300,
-     notes:'Fremdleistungen Musikvideo Everybody Dance Now',images:[],links:[],belege:[],
-     posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Everybody Dance Now',geplant:1300,ist:0}]},
-    {id:6,name:'MUSIKVIDEO 02',song:'MV — Make It Clap',genre:'Musikvideo',status:'plan',release:'2026-08-14',budget:1300,
-     notes:'Fremdleistungen Musikvideo Make It Clap',images:[],links:[],belege:[],
-     posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Make It Clap',geplant:1300,ist:0}]},
-    {id:7,name:'HIVE FESTIVAL',song:'HIVE Festival Content 19.-21.06',genre:'Festival',status:'active',release:'2026-06-19',budget:1400,
-     notes:'HIVE Festival Content & Social Media Coverage',images:[],links:[],belege:[],
-     posten:[{id:1,name:'Tagesgage Felix Adam',note:'3 Festival-Tage (19.-21.06)',geplant:800,ist:0},{id:2,name:'Schnitt & Editing',note:'Festival Recap + Teaser',geplant:300,ist:0},{id:3,name:'Fahrtkosten & Unterkunft',note:'Anreise Festival',geplant:150,ist:0},{id:4,name:'Equipment & Akkreditierung',note:'',geplant:100,ist:0},{id:5,name:'Nutzungsrecht',note:'Social Media / Commercial',geplant:50,ist:0}]},
-    {id:8,name:'PUFFER',song:'Produktionspuffer & Reserve',genre:'Reserve',status:'plan',release:'',budget:2000,
-     notes:'Globaler Produktionspuffer fuer alle Produktionen',images:[],links:[],belege:[],
-     posten:[{id:1,name:'Nachdreh / Mehraufwand',note:'Falls benoetigt',geplant:600,ist:0},{id:2,name:'Equipment-Ausfall / Ersatz',note:'',geplant:400,ist:0},{id:3,name:'Kommunikation & Administration',note:'',geplant:300,ist:0},{id:4,name:'Fahrtkosten extra',note:'Unvorhergesehene Locations',geplant:300,ist:0},{id:5,name:'Allgemeiner Puffer',note:'Sonstiges',geplant:400,ist:0}]}
-  ];
-  var changed = false;
-  needed.forEach(function(np) {
-    var exists = window.DB.projects.find(function(p){ return p.id === np.id; });
-    if (!exists) {
-      window.DB.projects.push(np);
-      changed = true;
-    }
-  });
-  if (changed) {
-    save();
-    console.log('Migration: ' + needed.filter(function(np){ return !window.DB.projects.find(function(p){ return p.id===np.id; }); }).length + ' projects added');
-  }
-}
-
   if (!window._ready) {
     window._ready = true;
     document.getElementById('loading').style.display = 'none';
@@ -763,6 +714,9 @@ function migrateProjects() {
 </script>
 
 <script>
+// Save alias — delegates to window.save (defined in module script after load)
+function save() { if (typeof window.save === 'function') { window.save(); } }
+
 // ── UTILS ────────────────────────────────────────────────
 function eur(n){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0); }
 function eurD(n){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2}).format(n||0); }
@@ -868,7 +822,6 @@ var curProjId = null;
 
 function openProjDetail(id) {
   curProjId = id;
-  console.log('openProjDetail: id=', id);
   var p = window.DB.projects.find(function(x){return x.id===id;});
   if (!p) return;
   document.getElementById('pp-title').textContent = p.name;
@@ -951,88 +904,78 @@ function updPosten(i,v){if(!window.isAdmin)return;var p=window.DB.projects.find(
 function delPosten(i){if(!window.isAdmin)return;var p=window.DB.projects.find(function(x){return x.id===curProjId;});if(!p||!confirm('Posten löschen?'))return;p.posten.splice(i,1);save();renderKosten(p);}
 function savePF(f,v){if(!window.isAdmin)return;var p=window.DB.projects.find(function(x){return x.id===curProjId;});if(!p)return;p[f]=v;save();}
 function delCurProj(){if(!window.isAdmin||!confirm('Projekt löschen?'))return;window.DB.projects=window.DB.projects.filter(function(p){return p.id!==curProjId;});save();closePanel('pan-proj');}
-var AP_DEFAULTS = {
-  gage_felix:   {name:'Tagesgage Felix Adam',       note:'800 EUR / Tag',            plan:800},
-  gage_halbtag: {name:'Halbtagssatz Felix Adam',    note:'400 EUR / 4h',             plan:400},
-  gage_kamera:  {name:'Kameramann 2. Kamera',       note:'Tagesgage',                plan:400},
-  gage_assi:    {name:'Produktionsassistenz',       note:'Halbtag',                  plan:200},
-  darsteller:   {name:'Darsteller / Casting',      note:'1-2 Personen',             plan:150},
-  influencer:   {name:'Mikroinfluencer vor Ort',    note:'50-100 EUR pro Person',    plan:200},
-  makeup:       {name:'Make-up / Hair',             note:'',                          plan:80},
-  fahrt_bvg:    {name:'Fahrtkosten BVG / ÖPNV',   note:'Alle Locations',            plan:20},
-  fahrt_taxi:   {name:'Taxi / Uber',                note:'',                          plan:40},
-  mietwagen:    {name:'Mietwagen',                  note:'Tagesmiete',               plan:80},
-  transporter:  {name:'Transporter / Sprinter',    note:'Equipment-Transport',       plan:120},
-  parken:       {name:'Parkgebühren',              note:'Mehrere Locations',         plan:20},
-  unterkunft:   {name:'Unterkunft / Hotel',         note:'1 Nacht',                  plan:100},
-  bahn:         {name:'Zugticket / Fernreise',      note:'Hin- und Rückfahrt',       plan:80},
-  flug:         {name:'Flug',                       note:'',                          plan:200},
-  kamera_miete: {name:'Kamera-Miete',               note:'Blackmagic / Sony',        plan:150},
-  licht_miete:  {name:'Licht-Miete',                note:'LED Panel Set',            plan:80},
-  ton_miete:    {name:'Ton-Equipment',              note:'Shure Mic + Marshall',     plan:60},
-  marshall:     {name:'Marshall Bromley 450',       note:'Leihen 1 Tag',             plan:70},
-  drone:        {name:'Drohne + Pilot',             note:'DJI Mavic, halber Tag',    plan:300},
-  stativ:       {name:'Stativ / Gimbal / Slider',  note:'',                          plan:50},
-  location:     {name:'Location-Miete',             note:'Studio / Hinterhof',       plan:300},
-  permit:       {name:'Drehgenehmigung / Permit',  note:'Bezirksamt Berlin',         plan:50},
-  studio:       {name:'Fotostudio-Miete',           note:'Halbtag',                  plan:200},
-  requisiten:   {name:'Requisiten / Props',         note:'Allgemein',                plan:80},
-  spiegel:      {name:'Spiegel / Spiegelmiete',    note:'Gross, fuer Dreh',          plan:50},
-  druck:        {name:'Druck / Printing',           note:'Tags, Plakate',            plan:30},
-  farbe_spray:  {name:'Farbe / Spray / Graffiti',  note:'',                          plan:40},
-  kostume:      {name:'Kostueme / Kleidung',       note:'',                          plan:100},
-  verpflegung:  {name:'Verpflegung / Catering',    note:'Drehtag gesamt',            plan:60},
-  schnitt:      {name:'Schnitt & Editing',          note:'Cut + Teaser + Reel',      plan:300},
-  colorgrade:   {name:'Color Grading',              note:'DaVinci Resolve',          plan:150},
-  nutzungsrecht:{name:'Nutzungsrecht',              note:'Universal / Commercial',   plan:220},
-  musik_lizenz: {name:'Musik-Lizenz',               note:'Commercial Use',           plan:220},
-  vfx:          {name:'VFX / Motion Graphics',     note:'After Effects',            plan:200},
-  fremd_mv:     {name:'Fremdleistungen',            note:'Musikvideo',               plan:1300},
-  fremd_foto:   {name:'Fremdleistungen',            note:'Fotografie / Shooting',    plan:500},
-  fremd_ton:    {name:'Fremdleistungen',            note:'Ton / Mix / Master',       plan:300},
-  puffer:       {name:'Puffer / Reserve',           note:'Unvorhergesehenes',        plan:100},
-  overhead:     {name:'Honorar & Overhead',         note:'',                          plan:200},
-  custom:       {name:'',                           note:'',                          plan:0}
+var AP_DEF = {
+  gage_felix:{n:'Tagesgage Felix Adam',x:'800 EUR / Tag',p:800},
+  gage_halb:{n:'Halbtagssatz Felix Adam',x:'400 EUR',p:400},
+  gage_kamera:{n:'Kameramann 2. Kamera',x:'Tagesgage',p:400},
+  gage_assi:{n:'Produktionsassistenz',x:'Halbtag',p:200},
+  darsteller:{n:'Darsteller / Casting',x:'1-2 Personen',p:150},
+  influencer:{n:'Mikroinfluencer vor Ort',x:'50-100 EUR / Person',p:200},
+  makeup:{n:'Make-up / Hair',x:'',p:80},
+  fahrt:{n:'Fahrtkosten BVG',x:'Alle Locations',p:25},
+  taxi:{n:'Taxi / Uber',x:'',p:40},
+  mietwagen:{n:'Mietwagen',x:'Tagesmiete',p:80},
+  transporter:{n:'Transporter / Sprinter',x:'Equipment',p:120},
+  parken:{n:'Parkgebühren',x:'',p:20},
+  unterkunft:{n:'Unterkunft / Hotel',x:'1 Nacht',p:100},
+  bahn:{n:'Zugticket',x:'Hin- und Rueckfahrt',p:80},
+  flug:{n:'Flug',x:'',p:200},
+  kamera:{n:'Kamera-Miete',x:'Blackmagic / Sony',p:150},
+  licht:{n:'Licht-Miete',x:'LED Panel Set',p:80},
+  ton:{n:'Ton-Equipment',x:'Shure Mic + Marshall',p:60},
+  marshall:{n:'Marshall Bromley 450',x:'Leihen 1 Tag',p:70},
+  drone:{n:'Drohne + Pilot',x:'DJI Mavic',p:300},
+  stativ:{n:'Stativ / Gimbal / Slider',x:'',p:50},
+  location:{n:'Location-Miete',x:'Studio / Hinterhof',p:300},
+  permit:{n:'Drehgenehmigung',x:'Bezirksamt Berlin',p:50},
+  studio:{n:'Fotostudio-Miete',x:'Halbtag',p:200},
+  requisiten:{n:'Requisiten / Props',x:'',p:80},
+  spiegel:{n:'Spiegel / Spiegelmiete',x:'Gross, fuer Dreh',p:50},
+  druck:{n:'Druck / Printing',x:'Tags, Plakate',p:30},
+  spray:{n:'Farbe / Spray / Graffiti',x:'',p:40},
+  kostume:{n:'Kostueme / Kleidung',x:'',p:100},
+  verpflegung:{n:'Verpflegung / Catering',x:'Drehtag gesamt',p:60},
+  schnitt:{n:'Schnitt & Editing',x:'Cut + Teaser + Reel',p:300},
+  color:{n:'Color Grading',x:'DaVinci Resolve',p:150},
+  nutzung:{n:'Nutzungsrecht',x:'Universal / Commercial',p:220},
+  lizenz:{n:'Musik-Lizenz',x:'Commercial Use',p:220},
+  vfx:{n:'VFX / Motion Graphics',x:'After Effects',p:200},
+  fremd_mv:{n:'Fremdleistungen',x:'Musikvideo',p:1300},
+  fremd_foto:{n:'Fremdleistungen',x:'Fotografie / Shooting',p:500},
+  fremd_ton:{n:'Fremdleistungen',x:'Ton / Mix / Master',p:300},
+  puffer:{n:'Puffer / Reserve',x:'Unvorhergesehenes',p:100},
+  overhead:{n:'Honorar & Overhead',x:'',p:200},
+  custom:{n:'',x:'',p:0}
 };
-
-window.apCatChange = function apCatChange(val) {
-  if (!val || !AP_DEFAULTS[val]) return;
-  var d = AP_DEFAULTS[val];
-  if (val !== 'custom') {
-    document.getElementById('ap-name').value = d.name;
-    document.getElementById('ap-note').value = d.note;
-    document.getElementById('ap-plan').value = d.plan || '';
-  } else {
+function apCatChange(val) {
+  var d = AP_DEF[val];
+  if (!d) return;
+  if (val === 'custom') {
     document.getElementById('ap-name').value = '';
     document.getElementById('ap-note').value = '';
     document.getElementById('ap-plan').value = '';
     document.getElementById('ap-name').focus();
+  } else {
+    document.getElementById('ap-name').value = d.n;
+    document.getElementById('ap-note').value = d.x;
+    document.getElementById('ap-plan').value = d.p;
   }
 }
-
-window.addPosten = function addPosten() {
-  if (!window.isAdmin) return;
+function addPosten() {
   var nm = document.getElementById('ap-name').value.trim();
   var nt = document.getElementById('ap-note').value.trim();
   var pl = parseFloat(document.getElementById('ap-plan').value) || 0;
   if (!nm) { document.getElementById('ap-name').focus(); return; }
-  console.log('addPosten: curProjId=', curProjId, 'projects=', window.DB ? window.DB.projects.map(function(p){return p.id;}) : 'NO DB');
-  var p = window.DB && window.DB.projects.find(function(x) { return x.id === curProjId; });
-  if (!p) {
-    // Try by name match as fallback
-    var titleEl = document.getElementById('pp-title');
-    if (titleEl && window.DB) {
-      p = window.DB.projects.find(function(x){ return x.name === titleEl.textContent.trim() || x.song === titleEl.textContent.trim(); });
-    }
-    if (!p) { alert('Projekt nicht gefunden (ID: ' + curProjId + '). Bitte Seite neu laden.'); return; }
-  }
+  if (!window.DB || !window.DB.projects) { alert('Daten noch nicht geladen.'); return; }
+  var p = window.DB.projects.find(function(x) { return x.id === curProjId; });
+  if (!p) { alert('Projekt nicht gefunden (ID:' + curProjId + '). Seite neu laden.'); return; }
+  if (!p.posten) p.posten = [];
   p.posten.push({id: nextId(p.posten), name: nm, note: nt, geplant: pl, ist: 0});
   save();
   renderKosten(p);
   closeModal('m-ap');
-  ['ap-cat','ap-name','ap-note','ap-plan'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.value = '';
+  ['ap-cat','ap-name','ap-note','ap-plan'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
   });
 }
 function addMbImg(){if(!window.isAdmin)return;var url=document.getElementById('mbi-url').value.trim();if(!url)return;var p=window.DB.projects.find(function(x){return x.id===curProjId;});if(!p)return;if(!p.images)p.images=[];p.images.push(url);save();renderMoodboard(p);closeModal('m-mbi');document.getElementById('mbi-url').value='';}
