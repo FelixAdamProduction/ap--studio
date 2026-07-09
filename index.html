@@ -715,7 +715,41 @@ onValue(DBREF, function(snapshot) {
   if (data) {
     if (data.projects) data.projects.forEach(function(p){ if(!p.belege) p.belege=[]; });
     window.DB = data;
+    migrateProjects();
   }
+function migrateProjects() {
+  // Add missing projects if they don't exist in Firebase yet
+  var needed = [
+    {id:4,name:'PRESSEKIT',song:'Pressekit Shooting + Instagram',genre:'Foto',status:'plan',release:'',budget:1000,
+     notes:'Pressekit Shooting + Instagram Fotos',images:[],links:[],belege:[],
+     posten:[{id:1,name:'Fotograf-Honorar',note:'Tages-Shooting',geplant:400,ist:0},{id:2,name:'Bildbearbeitung & Retusche',note:'40+ Bilder',geplant:200,ist:0},{id:3,name:'Instagram Covers & Highlights',note:'Design',geplant:150,ist:0},{id:4,name:'Styling & Location',note:'',geplant:100,ist:0},{id:5,name:'Requisiten / Props',note:'Spiegel, Accessoires',geplant:80,ist:0},{id:6,name:'Fahrtkosten',note:'',geplant:30,ist:0},{id:7,name:'Lizenzen & Dateilieferung',note:'HiRes + Web',geplant:40,ist:0}]},
+    {id:5,name:'MUSIKVIDEO 01',song:'MV — Everybody Dance Now',genre:'Musikvideo',status:'plan',release:'2026-06-19',budget:1300,
+     notes:'Fremdleistungen — Musikvideo Everybody Dance Now',images:[],links:[],belege:[],
+     posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Everybody Dance Now',geplant:1300,ist:0}]},
+    {id:6,name:'MUSIKVIDEO 02',song:'MV — Make It Clap',genre:'Musikvideo',status:'plan',release:'2026-08-14',budget:1300,
+     notes:'Fremdleistungen — Musikvideo Make It Clap',images:[],links:[],belege:[],
+     posten:[{id:1,name:'Fremdleistungen',note:'Musikvideo Make It Clap',geplant:1300,ist:0}]},
+    {id:7,name:'HIVE FESTIVAL',song:'HIVE Festival Content 19.-21.06',genre:'Festival',status:'active',release:'2026-06-19',budget:1400,
+     notes:'HIVE Festival Content & Social Media Coverage',images:[],links:[],belege:[],
+     posten:[{id:1,name:'Tagesgage Felix Adam',note:'3 Festival-Tage (19.-21.06)',geplant:800,ist:0},{id:2,name:'Schnitt & Editing',note:'Festival Recap + Teaser',geplant:300,ist:0},{id:3,name:'Fahrtkosten & Unterkunft',note:'Anreise Festival',geplant:150,ist:0},{id:4,name:'Equipment & Akkreditierung',note:'',geplant:100,ist:0},{id:5,name:'Nutzungsrecht',note:'Social Media / Commercial',geplant:50,ist:0}]},
+    {id:8,name:'PUFFER',song:'Produktionspuffer & Reserve',genre:'Reserve',status:'plan',release:'',budget:2000,
+     notes:'Globaler Produktionspuffer fuer alle Produktionen',images:[],links:[],belege:[],
+     posten:[{id:1,name:'Nachdreh / Mehraufwand',note:'Falls benoetigt',geplant:600,ist:0},{id:2,name:'Equipment-Ausfall / Ersatz',note:'',geplant:400,ist:0},{id:3,name:'Kommunikation & Administration',note:'',geplant:300,ist:0},{id:4,name:'Fahrtkosten extra',note:'Unvorhergesehene Locations',geplant:300,ist:0},{id:5,name:'Allgemeiner Puffer',note:'Sonstiges',geplant:400,ist:0}]}
+  ];
+  var changed = false;
+  needed.forEach(function(np) {
+    var exists = window.DB.projects.find(function(p){ return p.id === np.id; });
+    if (!exists) {
+      window.DB.projects.push(np);
+      changed = true;
+    }
+  });
+  if (changed) {
+    save();
+    console.log('Migration: ' + needed.filter(function(np){ return !window.DB.projects.find(function(p){ return p.id===np.id; }); }).length + ' projects added');
+  }
+}
+
   if (!window._ready) {
     window._ready = true;
     document.getElementById('loading').style.display = 'none';
