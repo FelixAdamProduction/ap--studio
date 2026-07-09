@@ -114,6 +114,8 @@ html,body{height:100%;background:var(--bg);color:var(--t);font-family:'DM Sans',
 .bf.gold{background:var(--gold)}.bf.green{background:var(--green)}
 
 /* PROJECT ROW */
+.proj-group-header{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);padding:12px 16px 6px;border-top:1px solid var(--bd);margin-top:4px;}
+.proj-group-header:first-child{border-top:none;margin-top:0;}
 .pr{background:var(--s);border:1px solid var(--bd);border-radius:10px;padding:11px 12px;margin-bottom:5px;cursor:pointer;display:flex;align-items:center;gap:9px;box-shadow:var(--sh);transition:box-shadow .15s,border-color .15s}
 .pr:hover{box-shadow:var(--sh2);border-color:var(--bd2)}
 .pr:active{background:var(--s2)}
@@ -300,7 +302,7 @@ hr{border:none;border-top:1px solid var(--bd);margin:12px 0}
 <div class="app" id="app">
 <div class="topbar">
   <div style="display:flex;align-items:center">
-    <div class="tap">AP</div><div class="tname">ANUUK</div>
+    <div class="tap">AP</div><div class="tname">ANUUK</div><div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:1px;margin-left:10px;align-self:center">v2.1</div>
   </div>
   <div class="tr">
     <span class="tsync wait" id="sync">● Verbinden</span>
@@ -584,6 +586,13 @@ window.doLogin = function() {
     document.getElementById('pw').value = '';
     document.getElementById('lerr').textContent = '';
     applyRole();
+    // Render all sections after login
+    if (typeof renderBudget === 'function') {
+      renderBudget();
+      renderProjekte();
+      renderKalender();
+      if (typeof renderBriefings === 'function') renderBriefings();
+    }
   } else {
     document.getElementById('lerr').textContent = 'Falsches Passwort.';
     document.getElementById('pw').value = '';
@@ -715,7 +724,12 @@ onValue(DBREF, function(snapshot) {
 
 <script>
 // Save alias — delegates to window.save (defined in module script after load)
-function save() { if (typeof window.save === 'function') { window.save(); } }
+function save() {
+  // Try multiple ways to call save (module timing fix for Safari/MacBook)
+  if (typeof window.save === 'function') { window.save(); return; }
+  // Retry after 100ms if module not loaded yet
+  setTimeout(function() { if (typeof window.save === 'function') window.save(); }, 100);
+}
 
 // ── UTILS ────────────────────────────────────────────────
 function eur(n){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0); }
@@ -814,7 +828,7 @@ function renderBudget() {
     '<div class="invr"><span class="invl">Koordination + Reserve</span><span>'+eur(1000)+'</span></div>' +
     '<div class="invr"><span class="invl">Netto</span><span style="font-weight:600">'+eur(netto)+'</span></div>' +
     '<div class="invr"><span class="invl" style="color:var(--t3)">19% MwSt</span><span style="color:var(--t3)">'+eur(mwst)+'</span></div>' +
-    '<div class="invr tot"><span>Brutto</span><span style="color:var(--red)">'+eur(netto+mwst)+'</span></div>';
+    '<div class="invr tot" style="border-top:2px solid var(--red);margin-top:4px;padding-top:8px"><span style="font-size:13px">BRUTTO</span><span style="color:var(--red);font-size:16px">'+eur(netto+mwst)+'</span></div>';
 }
 
 // ── PROJECT DETAIL ───────────────────────────────────────
@@ -990,17 +1004,53 @@ function openDrive(){var url=window.DB.settings.driveUrl||'';if(!url){alert('Dri
 function renderProjekte() {
   var addBtn=document.getElementById('btn-add-proj');
   if(addBtn)addBtn.style.display=window.isAdmin?'flex':'none';
-  document.getElementById('proj-list').innerHTML=window.DB.projects.map(function(p){
-    var sp=projSpent(p),lft=(p.budget||0)-sp,lc=lft>400?'green':lft>0?'gold':'red',pp=pct(sp,p.budget);
-    return '<div class="pr" onclick="openProjDetail('+p.id+')">'+
-      '<div class="prl">'+bdg(p.status)+'<div class="prn">'+p.name+'</div>'+
-      '<div class="prs">'+(p.song||'— eintragen —')+'</div>'+
-      '<div class="bw" style="margin:0 0 5px"><div class="bf '+(pp>80?'gold':'')+'" style="width:'+pp+'%"></div></div>'+
-      '<div class="prm"><span>IST: <b>'+eur(sp)+'</b></span><span>Plan: <b>'+eur(projPlan(p))+'</b></span></div></div>'+
-      '<div class="prright"><div class="prb">'+eur(p.budget)+'</div>'+
-      '<div class="prl2" style="color:var(--'+lc+')">'+eur(lft)+' übrig</div>'+
-      '<div class="prar">›</div></div></div>';
-  }).join('');
+  
+  // Group projects by type
+  var groups = [
+    {label:'01 · CONTENT PRODUCTION', genres:['Club / Electronic','Festival'], icon:'🎬'},
+    {label:'02 · MUSIKVIDEOS', genres:['Musikvideo'], icon:'🎥'},
+    {label:'03 · SHOOTING & PRESSE', genres:['Foto','Reserve'], icon:'📸'},
+  ];
+  
+  var html = '';
+  groups.forEach(function(g) {
+    var gProjs = window.DB.projects.filter(function(p){ return g.genres.indexOf(p.genre) !== -1; });
+    if (!gProjs.length) return;
+    html += '<div class="proj-group-header">'+g.icon+' '+g.label+'</div>';
+    gProjs.forEach(function(p) {
+      var sp=projSpent(p),lft=(p.budget||0)-sp,lc=lft>400?'green':lft>0?'gold':'red',pp=pct(sp,p.budget);
+      var days=daysUntil(p.release),dStr='';
+      if(days!==null) dStr='<span class="chip chip-'+(days<=0?'red':days<=7?'gold':'blue')+'" style="font-size:8px;margin-left:6px">'+(days<=0?'LIVE':'in '+days+'d')+'</span>';
+      html += '<div class="pr" onclick="openProjDetail('+p.id+')">'+
+        '<div class="prl">'+bdg(p.status)+dStr+'<div class="prn">'+p.name+'</div>'+
+        '<div class="prs">'+(p.song||'— eintragen —')+'</div>'+
+        '<div class="bw" style="margin:6px 0 4px"><div class="bf '+(pp>80?'gold':'')+(pp>=100?'red':'')+'" style="width:'+Math.min(pp,100)+'%"></div></div>'+
+        '<div class="prm"><span>IST: <b>'+eur(sp)+'</b></span><span>Plan: <b>'+eur(projPlan(p))+'</b></span></div></div>'+
+        '<div class="prright"><div class="prb">'+eur(p.budget)+'</div>'+
+        '<div class="prl2" style="color:var(--'+lc+')">'+eur(lft)+' übrig</div>'+
+        '<div class="prar">›</div></div></div>';
+    });
+  });
+  
+  // Uncategorized fallback
+  var catGenres = ['Club / Electronic','Festival','Musikvideo','Foto','Reserve'];
+  var uncatProjs = window.DB.projects.filter(function(p){ return catGenres.indexOf(p.genre)===-1; });
+  if(uncatProjs.length) {
+    html += '<div class="proj-group-header">📁 WEITERE PROJEKTE</div>';
+    uncatProjs.forEach(function(p) {
+      var sp=projSpent(p),lft=(p.budget||0)-sp,lc=lft>400?'green':lft>0?'gold':'red',pp=pct(sp,p.budget);
+      html += '<div class="pr" onclick="openProjDetail('+p.id+')">'+
+        '<div class="prl">'+bdg(p.status)+'<div class="prn">'+p.name+'</div>'+
+        '<div class="prs">'+(p.song||'— eintragen —')+'</div>'+
+        '<div class="bw" style="margin:6px 0 4px"><div class="bf '+(pp>80?'gold':'')+'" style="width:'+pp+'%"></div></div>'+
+        '<div class="prm"><span>IST: <b>'+eur(sp)+'</b></span><span>Plan: <b>'+eur(projPlan(p))+'</b></span></div></div>'+
+        '<div class="prright"><div class="prb">'+eur(p.budget)+'</div>'+
+        '<div class="prl2" style="color:var(--'+lc+')">'+eur(lft)+' übrig</div>'+
+        '<div class="prar">›</div></div></div>';
+    });
+  }
+  
+  document.getElementById('proj-list').innerHTML = html;
 }
 function addProject(){if(!window.isAdmin)return;var nm=document.getElementById('np-name').value.trim(),sg=document.getElementById('np-song').value.trim(),bd=parseFloat(document.getElementById('np-bud').value)||2000;if(!nm)return;var tpl=window.DB.projects[0];window.DB.projects.push({id:nextId(window.DB.projects),name:nm,song:sg,genre:'',status:'plan',release:'',notes:'',budget:bd,images:[],links:[],belege:[],posten:(tpl&&tpl.posten?tpl.posten:[]).map(function(r){return Object.assign({},r,{ist:0});})});save();renderProjekte();closeModal('m-np');['np-name','np-song','np-bud'].forEach(function(id){document.getElementById(id).value='';});}
 
