@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GO$PEL Laufplan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+/* Layout: Plakat. Eine Spalte, riesige Uhrzeiten, Orte in Versalien, Wege dazwischen klein. */
+:root{
+  color-scheme: dark;
+  --bg:#000000;
+  --fg:#f5f3ef;
+  --mute:#9d998f;
+  --line:#2a2a2a;
+  --gold:#c2a466;
+  --red:#e2483d;
+  --ink:#000000;
+  --f-display:'Bebas Neue','Oswald',Impact,sans-serif;
+  --f-body:'DM Sans','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);padding-inline:18px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 40px}
+h1,h2{font-family:var(--f-display);font-weight:400;margin:0;line-height:.9;letter-spacing:.01em}
+p{margin:0}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-ap{display:inline-grid;place-items:center;width:26px;height:26px;background:var(--fg);color:var(--ink);font-weight:700;font-size:13px;letter-spacing:-.04em}
+.logo-name{font-family:var(--f-display);font-size:17px;letter-spacing:.16em}
+.top .meta{font-family:var(--f-display);font-size:20px;letter-spacing:.06em;color:var(--mute)}
+
+.title{font-size:clamp(76px,22vw,150px);margin-top:20px}
+
+.now{margin-top:16px;background:var(--fg);color:var(--ink);padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.now b{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,7vw,40px);line-height:1}
+.now span{font-family:var(--f-display);font-size:clamp(22px,6vw,34px);line-height:1}
+.now.hot{background:var(--red);color:#fff}
+
+.plan{margin-top:28px;display:grid}
+.stop{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;align-items:baseline;padding-block:18px;border-top:2px solid var(--fg)}
+.stop .t{font-family:var(--f-display);font-size:clamp(64px,17vw,108px);line-height:.85;font-variant-numeric:tabular-nums}
+.stop h2{font-size:clamp(38px,10vw,64px);line-height:.92;text-wrap:balance}
+.stop .row{grid-column:2;display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.chip{font-family:var(--f-display);font-size:24px;line-height:1;padding:6px 10px 4px;background:var(--fg);color:var(--ink);letter-spacing:.03em}
+.what{font-size:17px;color:var(--mute)}
+.todo{grid-column:2;font-family:var(--f-display);font-size:24px;letter-spacing:.03em;color:var(--gold);margin-top:4px}
+.go{display:flex;align-items:center;gap:14px;padding:10px 0 10px 6px;color:var(--mute);font-family:var(--f-display);font-size:clamp(24px,6vw,32px);letter-spacing:.03em}
+.go .arr{font-size:1.2em;color:var(--fg)}
+.go b{font-weight:400;color:var(--fg)}
+.stop.active{background:#141414;margin-inline:-12px;padding-inline:12px;border-top-color:var(--gold)}
+.stop.active .t{color:var(--gold)}
+.go.active{color:var(--fg)}
+.go.active .arr{color:var(--gold)}
+.stop.past,.go.past{opacity:.35}
+.stop.end{border-top-color:var(--red)}
+.stop.end .t,.stop.end h2{color:var(--red)}
+.stop.end .chip{background:var(--red);color:#fff}
+
+.foot{margin-top:28px;border:2px dashed var(--line);padding:16px;display:grid;gap:8px}
+.foot p{font-size:16px;color:var(--mute)}
+.foot b{color:var(--fg);font-weight:500}
+
+@media (max-width:480px){
+  body{padding-inline:16px}
+  .stop{gap:2px 14px}
+  .chip{font-size:21px}
+  .what{font-size:15px}
+}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{padding-inline:40px}
+  .now{display:none}
+  .stop,.go{break-inside:avoid}
+}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
+    <span class="meta">GO$PEL · So 11.10.</span>
+  </div>
+
+  <h1 class="title">Laufplan</h1>
+
+  <div class="now" id="now" role="status" aria-live="polite"><b>Start 19:00</b><span>Oberbaumbrücke</span></div>
+
+  <div class="plan" id="plan">
+    <div class="stop" data-s="19:00" data-e="19:12">
+      <span class="t">19:00</span>
+      <h2>Oberbaumbrücke</h2>
+      <div class="row"><span class="chip">12 Min</span><span class="what">Bögen · Laternen · U-Bahn</span></div>
+    </div>
+    <div class="go" data-s="19:12" data-e="19:15"><span class="arr">↓</span><span><b>19:12</b> · zu Fuß · 3 Min</span></div>
+
+    <div class="stop" data-s="19:15" data-e="19:28">
+      <span class="t">19:15</span>
+      <h2>Spreeufer hinter der Brücke</h2>
+      <div class="row"><span class="chip">13 Min</span><span class="what">Wasser · Skyline · Skulptur</span></div>
+      <p class="todo">19:20 Taxi bestellen</p>
+    </div>
+    <div class="go" data-s="19:28" data-e="19:40"><span class="arr">↓</span><span><b>19:28</b> · Taxi · 12 Min</span></div>
+
+    <div class="stop" data-s="19:40" data-e="19:55">
+      <span class="t">19:40</span>
+      <h2>Treppen Friedenstraße</h2>
+      <div class="row"><span class="chip">15 Min</span><span class="what">Treppen · Backstein · Graffiti · Stimme</span></div>
+      <p class="todo">19:50 Taxi zum Hbf bestellen</p>
+    </div>
+    <div class="go" data-s="19:55" data-e="20:10"><span class="arr">↓</span><span><b>19:55 Schluss</b> · Taxi · 15 Min</span></div>
+
+    <div class="stop" data-s="20:10" data-e="20:37">
+      <span class="t">20:10</span>
+      <h2>Hauptbahnhof</h2>
+      <div class="row"><span class="chip">27 Min Puffer</span></div>
+    </div>
+
+    <div class="stop end" data-s="20:37" data-e="20:38">
+      <span class="t">20:37</span>
+      <h2>Zug</h2>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p><b>19:55 ist fix.</b> An der Friedenstraße wird nicht verlängert.</p>
+    <p><b>Taxi kommt nicht?</b> Die U5 ab Strausberger Platz fährt direkt zum Hauptbahnhof, ca. 15 Min. Zu Fuß dorthin ca. 10 Min.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('now');
+  var items=[].slice.call(document.querySelectorAll('#plan [data-s]'));
+  function m(s){var p=s.split(':');return (+p[0])*60+(+p[1]);}
+  function name(it){var h=it.querySelector('h2');return h?h.textContent:'Unterwegs';}
+  function tick(){
+    var d=new Date();
+    if(!(d.getFullYear()===2026&&d.getMonth()===9&&d.getDate()===11)) return;
+    var now=d.getHours()*60+d.getMinutes(), cur=null;
+    items.forEach(function(it){
+      var s=m(it.dataset.s), e=m(it.dataset.e);
+      it.classList.toggle('active',now>=s&&now<e);
+      it.classList.toggle('past',now>=e);
+      if(now>=s&&now<e) cur=it;
+    });
+    var b=el.querySelector('b'), sp=el.querySelector('span');
+    el.classList.remove('hot');
+    if(now<m('19:00')){ var w=m('19:00')-now; b.textContent=w>90?'Start 19:00':'Start in '+w+' Min'; sp.textContent='Oberbaumbrücke'; }
+    else if(cur){
+      var left=m(cur.dataset.e)-now;
+      if(cur.classList.contains('go')){ b.textContent='Unterwegs'; sp.textContent='noch '+left+' Min'; }
+      else if(cur.classList.contains('end')){ b.textContent='Zug fährt'; sp.textContent='jetzt'; el.classList.add('hot'); }
+      else { b.textContent=name(cur); sp.textContent='noch '+left+' Min'; if(left<=3) el.classList.add('hot'); }
+    } else { b.textContent='Geschafft'; sp.textContent='Danke!'; }
+  }
+  tick(); setInterval(tick,15000);
+})();
+</script>
+
+</html>
