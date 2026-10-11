@@ -80,6 +80,11 @@ a:focus-visible,input:focus-visible+span{outline:2px solid var(--gold);outline-o
 .blk p b{color:var(--fg);font-weight:500}
 .blk.move h3,.blk.opt h3{color:var(--mute)}
 .blk.opt{border-left-style:dashed}
+.note-line{color:var(--mute);font-size:15px;padding:14px 16px;border:1px dashed var(--line2)}
+.note-line b{color:var(--fg);font-weight:500}
+.ideas{list-style:none;margin:0;padding:0;display:grid}
+.ideas li{padding-block:9px;border-top:1px solid var(--line);font-size:15px;color:var(--fg)}
+.ideas li small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
 .blk.hard{border-left-color:var(--warn)}
 .blk.hard h3,.blk.hard .t{color:var(--warn)}
 .blk.now{border-left-color:var(--gold);background:var(--s1)}
@@ -199,7 +204,7 @@ footer .mono{font-size:11px}
 
 <div class="keys tn">
   <div class="key"><b>18:22</b><span>Sonnenuntergang</span></div>
-  <div class="key"><b>19:00</b><span>Treffen Oberbaumbrücke</span></div>
+  <div class="key"><b>19:00</b><span>Treffen Spreeufer</span></div>
   <div class="key"><b>19:08</b><span>Ende blaue Stunde</span></div>
   <div class="key hard"><b>19:40</b><span>Hard Wrap</span></div>
   <div class="key"><b>19:58</b><span>Letzte sichere S-Bahn</span></div>
@@ -209,106 +214,83 @@ footer .mono{font-size:11px}
 <!-- 01 ZEITPLAN -->
 <section class="sec" aria-labelledby="h1">
   <div class="sec-head"><span class="sec-no">01</span><h2 id="h1">Zeitplan</h2></div>
-  <p class="sub">GO$PEL ist 40 Minuten am Set. Deshalb wird vorher alles ausgeleuchtet, und er muss nur noch reinstellen. Was vor 19:00 liegt, drehst du allein. Der laufende Block wird automatisch markiert.</p>
+  <p class="sub">Nur outdoor, nur grob. Die Uhrzeiten sind Richtwerte, fix ist nur 19:40. Was gut aussieht, wird gedreht. Der laufende Block wird automatisch markiert.</p>
 
   <div class="plan tn" id="plan">
-    <div class="blk" data-s="14:00" data-e="15:15"><div class="t">14:00<small>– 15:15</small></div><div class="c"><h3>Prep</h3><span class="loc">Base</span><p>Akkus laden, Karten formatieren, alle drei Lichter testen. Zeilen an GO$PEL schicken. Bahn-App checken (siehe 05).</p></div></div>
-    <div class="blk opt" data-s="15:30" data-e="16:15"><div class="t">15:30<small>– 16:15</small></div><div class="c"><h3>Solo · Friedenstraße</h3><span class="loc">03 · Friedenstraße 93 · optional</span><p><b>B3</b> Backstein und leere Graffiti-Treppe im Tageslicht. Texturen für Akt III.</p></div></div>
-    <div class="blk opt" data-s="16:30" data-e="17:30"><div class="t">16:30<small>– 17:30</small></div><div class="c"><h3>Solo · Arkaden leer</h3><span class="loc">01 · Oberbaumbrücke · optional</span><p><span class="sun">☀ 16:30–17:15 Gegenlicht</span><b>B2</b> leerer Arkadengang im Gegenlicht, <b>FX</b> U1-Sound. Gleich die Position für S1/S4 aussuchen.</p></div></div>
-    <div class="blk opt" data-s="17:45" data-e="18:40"><div class="t">17:45<small>– 18:40</small></div><div class="c"><h3>Solo · Zeitraffer</h3><span class="loc">02 · Spreeufer Oberbaumstraße 6 · optional</span><p><span class="sun">☀ 18:22 unter</span><b>TL</b> Sonnenuntergang über der Spree. Rückwärts abgespielt wird daraus der Sonnenaufgang.</p></div></div>
-    <div class="blk" data-s="18:40" data-e="19:00"><div class="t">18:40<small>– 19:00</small></div><div class="c"><h3>Vorleuchten</h3><span class="loc">01 · Oberbaumbrücke</span><p><b>Alle drei Setups stehen, bevor GO$PEL kommt.</b> S1/S4-Position mit Tape markieren, Rim-LED, weißes Flutlicht und RGB-Tube bereit. Mit dir selbst als Stand-in testen.</p></div></div>
-    <div class="blk" data-s="19:00" data-e="19:03"><div class="t">19:00<small>– 19:03</small></div><div class="c"><h3>Treffen + Lav</h3><span class="loc">01 · Oberbaumbrücke</span><p>Lav anstecken, Gepäck neben die Kamera. Briefing in einem Satz: „Ruhig, wenig Bewegung, Blick knapp an der Linse vorbei.“</p></div></div>
-    <div class="blk" data-s="19:03" data-e="19:08"><div class="t">19:03<small>– 19:08</small></div><div class="c"><h3>S8 Silhouette</h3><span class="loc">01 · im Bogen gegen den Himmel</span><p>Nur wenn er pünktlich ist. Letztes Blau am Himmel, GO$PEL als schwarze Figur im Brückenbogen. Fällt sonst weg.</p></div></div>
-    <div class="blk" data-s="19:08" data-e="19:18"><div class="t">19:08<small>– 19:18</small></div><div class="c"><h3>S2 + Voice-over</h3><span class="loc">01 · Split-Light</span><p><b>Sichert die Stimme.</b> Alle Zeilen aus 04 in die Kamera, Lav läuft mit. Zwischen zwei U-Bahnen sprechen. Close-up für „Just me.“</p></div></div>
-    <div class="blk" data-s="19:18" data-e="19:28"><div class="t">19:18<small>– 19:28</small></div><div class="c"><h3>S1 → S4 Lock-off</h3><span class="loc">01 · auf den Tape-Marken</span><p><b>Key Shot.</b> Kamera bleibt stehen. Erst nur Rim-Light (S1), dann geht das weiße Flutlicht an (S4). Je 2–3 Takes.</p></div></div>
-    <div class="blk" data-s="19:28" data-e="19:36"><div class="t">19:28<small>– 19:36</small></div><div class="c"><h3>S3 Rotlicht</h3><span class="loc">01 · Arkaden</span><p>RGB-Tube rot von unten, Strobe, Bewegung zum Track. 50 fps. Wird es knapp, übernimmt das Archiv den Peak.</p></div></div>
-    <div class="blk hard" data-s="19:36" data-e="19:40"><div class="t">19:40<small>Hard Wrap</small></div><div class="c"><h3>Drehschluss</h3><span class="loc">01 · Oberbaumbrücke</span><p>19:36–19:40 nur Puffer für einen fehlenden Muss-Shot. Um 19:40 geht GO$PEL mit seinem Gepäck los.</p></div></div>
+    <div class="blk opt" data-s="15:00" data-e="18:40"><div class="t">bis<small>18:40</small></div><div class="c"><h3>Solo · was du schaffst</h3><span class="loc">alle drei Locations · optional</span><p>Leere Orte im Tageslicht, Texturen, Zeitraffer vom Sonnenuntergang (18:22) am Spreeufer. Dabei schon Spots für den Abend suchen.</p></div></div>
+    <div class="blk" data-s="18:40" data-e="19:00"><div class="t">18:40<small>– 19:00</small></div><div class="c"><h3>Bereit machen</h3><span class="loc">Spreeufer Oberbaumstraße 6</span><p>Kamera auf Nacht einstellen, Mikro testen, zwei, drei Spots im Kopf haben.</p></div></div>
+    <div class="blk" data-s="19:00" data-e="19:15"><div class="t">19:00<small>– 19:15</small></div><div class="c"><h3>Spreeufer</h3><span class="loc">mit GO$PEL · letztes Licht</span><p><span class="sun">Blau bis 19:08</span>Zuerst alles, was Himmel braucht: Silhouette, Porträt mit Skyline. Ab 19:08 ist es dunkel.</p></div></div>
+    <div class="blk move" data-s="19:15" data-e="19:18"><div class="t">19:15<small>– 19:18</small></div><div class="c"><h3>Rüber zur Brücke</h3><span class="loc">3 Min zu Fuß</span><p>Unterwegs weiterdrehen, wenn es passt.</p></div></div>
+    <div class="blk" data-s="19:18" data-e="19:30"><div class="t">19:18<small>– 19:30</small></div><div class="c"><h3>Oberbaumbrücke</h3><span class="loc">mit GO$PEL · Nacht</span><p>Bögen, Laternen, U-Bahn. Ideen siehe 02.</p></div></div>
+    <div class="blk" data-s="19:30" data-e="19:36"><div class="t">19:30<small>– 19:36</small></div><div class="c"><h3>Stimme</h3><span class="loc">ruhige Ecke unter den Bögen</span><p><b>Nicht auslassen.</b> Alle Zeilen aus 04, zwischen zwei U-Bahnen.</p></div></div>
+    <div class="blk hard" data-s="19:36" data-e="19:40"><div class="t">19:40<small>Hard Wrap</small></div><div class="c"><h3>Drehschluss</h3><span class="loc">Friedrichshainer Ende der Brücke</span><p>Bis 19:40 nur noch, was bei den Pflicht-Momenten (03) fehlt. Dann geht GO$PEL los.</p></div></div>
     <div class="blk move" data-s="19:40" data-e="19:50"><div class="t">19:40<small>– 19:48</small></div><div class="c"><h3>Fußweg</h3><span class="loc">→ S Warschauer Straße</span><p>Über die Brücke nach Friedrichshain, ca. 5–8 Min.</p></div></div>
     <div class="blk move" data-s="19:50" data-e="20:15"><div class="t">19:50<small>– 20:13</small></div><div class="c"><h3>S-Bahn zum Hauptbahnhof</h3><span class="loc">S3 · S5 · S7 · S9 Richtung Westen</span><p>Fährt alle paar Minuten, ca. 15 Min Fahrzeit. Letzte sichere Abfahrt 19:58.</p></div></div>
     <div class="blk hard" data-s="20:15" data-e="20:37"><div class="t">20:37<small>Abfahrt</small></div><div class="c"><h3>Zug ab Berlin Hbf</h3><span class="loc">Ca. 25 Min Puffer</span><p>S-Bahn kommt oben an. Bis zu den Gleisen im Tiefgeschoss ca. 5–7 Min einplanen.</p></div></div>
   </div>
+  <div class="note-line"><b>Friedenstraße mit GO$PEL?</b> Geht nur, wenn ihr dort um 19:00 startet und danach mit dem Taxi (ca. 10 Min) zur Brücke fahrt. Dann fällt das Spreeufer weg, und auf der Brücke bleiben nur ca. 15 Min.</div>
 </section>
 
 <!-- 02 LOCATIONS -->
 <section class="sec" aria-labelledby="h2">
-  <div class="sec-head"><span class="sec-no">02</span><h2 id="h2">Locations</h2></div>
+  <div class="sec-head"><span class="sec-no">02</span><h2 id="h2">Locations &amp; Ideen</h2></div>
+  <p class="sub">Pro Location ein paar Richtungen, keine feste Liste. Nimm, was das Licht vor Ort hergibt: Laternen, U-Bahn, Skyline, Autoscheinwerfer, Handylicht.</p>
   <div class="locs">
     <div class="lc">
-      <div class="hd"><span class="no">LOC 01 · Treffpunkt</span><span class="when tn">19:00–19:40 mit GO$PEL</span></div>
-      <h3>Oberbaumbrücke</h3>
-      <span class="addr">Arkadengang, untere Ebene, Friedrichshainer Ende</span>
-      <p>Backsteinbögen, U1 rollt oben drüber. Am Friedrichshainer Ende drehen, dann sind es nur 5–8 Min zur S Warschauer Straße.</p>
-      <dl>
-        <div><dt>Mit GO$PEL</dt><dd>S8, S2 + VO, S1/S4, S3</dd></div>
-        <div><dt>Solo vorher</dt><dd>B2 Arkaden leer, FX U1-Sound</dd></div>
-        <div><dt>Achtung</dt><dd>Öffentlicher Gehweg. Stativ an die Pfeiler, Weg nie blockieren. Kein Haze.</dd></div>
-      </dl>
-      <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumbr%C3%BCcke%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
-    </div>
-    <div class="lc">
-      <div class="hd"><span class="no">LOC 02 · solo</span><span class="when tn">17:45–18:40 · optional</span></div>
+      <div class="hd"><span class="no">LOC 01 · Treffpunkt</span><span class="when tn">19:00–19:15 · Dämmerung</span></div>
       <h3>Spreeufer Oberbaumstraße 6</h3>
       <span class="addr">Oberbaumstraße 6, Berlin-Kreuzberg</span>
-      <p>Wiese am Wasser, Stahlskulptur, Skyline gegenüber. 3 Min zu Fuß zur Brücke, ideal direkt vor dem Vorleuchten.</p>
-      <dl>
-        <div><dt>Shots</dt><dd>TL Zeitraffer, B1 Stahlskulptur</dd></div>
-      </dl>
+      <ul class="ideas">
+        <li>Silhouette gegen Himmel und Wasser<small>Totale, GO$PEL schwarz vor dem letzten Blau</small></li>
+        <li>Porträt mit Skyline im Rücken<small>Lichter gegenüber unscharf, Gesicht halb im Schatten</small></li>
+        <li>Laufen am Wasser<small>Kamera geht mit, seitlich oder von hinten</small></li>
+        <li>Stahlskulptur als Rahmen<small>Durch die Skulptur filmen, Industrial-Vordergrund</small></li>
+      </ul>
       <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumstra%C3%9Fe%206%2C%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
     </div>
     <div class="lc">
-      <div class="hd"><span class="no">LOC 03 · solo</span><span class="when tn">15:30–16:15 · optional</span></div>
+      <div class="hd"><span class="no">LOC 02</span><span class="when tn">19:18–19:40 · Nacht</span></div>
+      <h3>Oberbaumbrücke</h3>
+      <span class="addr">Arkadengang, untere Ebene</span>
+      <ul class="ideas">
+        <li>Porträt unter einem Bogen<small>Laterne von hinten als Kantenlicht, Gesicht dunkel</small></li>
+        <li>„Licht an“<small>Kamera bleibt stehen, erst dunkel, dann geht ein Licht an: LED, Handylicht oder vorbeifahrende U-Bahn</small></li>
+        <li>Durch den Gang ins Licht laufen<small>Rückenansicht, am Ende eine Laterne</small></li>
+        <li>U1 fährt oben drüber<small>Flackerndes Licht auf dem Gesicht, Sound mitnehmen</small></li>
+      </ul>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumbr%C3%BCcke%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
+    </div>
+    <div class="lc">
+      <div class="hd"><span class="no">LOC 03</span><span class="when tn">tagsüber · solo</span></div>
       <h3>Friedenstraße 93</h3>
       <span class="addr">Friedenstraße 93, 10249 Berlin-Friedrichshain</span>
-      <p>Backstein-Industriebau mit Graffiti-Treppe. Mit GO$PEL zeitlich nicht machbar, als leerer Ort trotzdem stark.</p>
-      <dl>
-        <div><dt>Shots</dt><dd>B3 Backstein, leere Treppe</dd></div>
-        <div><dt>Achtung</dt><dd>Spielplatz und Anwohner nebenan, Sonntagsruhe.</dd></div>
-      </dl>
+      <ul class="ideas">
+        <li>Backstein und Graffiti-Treppe leer<small>Der Ort am Morgen danach, hell und kühl</small></li>
+        <li>Texturen und Details<small>Ziegel, Fenster, Graffiti, für Übergänge</small></li>
+        <li>Mit GO$PEL, falls ihr hier startet<small>Auf der Treppe sitzen, Porträt im Hauseingang</small></li>
+      </ul>
       <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Friedenstra%C3%9Fe%2093%2C%2010249%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
     </div>
   </div>
 </section>
 
-<!-- 03 SHOTLISTE -->
+<!-- 03 PFLICHT -->
 <section class="sec" aria-labelledby="h3">
-  <div class="sec-head"><span class="sec-no">03</span><h2 id="h3">Shotliste</h2></div>
-  <div class="legend"><span><span class="prio must">MUSS</span> ohne diesen Shot kein Reel</span><span><span class="prio">KANN</span> wenn Zeit bleibt</span><span class="progress tn" id="prog-shots"></span></div>
-
-  <div class="groups" data-list="shots">
-    <div class="group">
-      <h3>Mit GO$PEL</h3>
-      <span class="mono">LOC 01 · 19:00–19:40 · in dieser Reihenfolge</span>
-      <label class="ck"><input type="checkbox" id="n-s8"><span class="box"></span><span class="tx"><b><span class="id">S8</span>Silhouette im Bogen</b><span class="meta"><span class="prio">KANN</span><span class="mono">Akt I · bis 19:08</span></span><small>GO$PEL als schwarze Figur gegen das letzte Blau. Nur wenn er pünktlich ist.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-s2"><span class="box"></span><span class="tx"><b><span class="id">S2</span>Frontal, Split-Light + VO</b><span class="meta"><span class="prio must">MUSS</span><span class="mono">Akt I · Stimme</span></span><small>LED mit Grid von der Seite, eine Gesichtshälfte im Dunkeln. Alle Zeilen in die Kamera, Lav läuft. Close-up für „Just me.“</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-s1"><span class="box"></span><span class="tx"><b><span class="id">S1</span>Lock-off, nur Rim-Light</b><span class="meta"><span class="prio must">MUSS</span><span class="mono">Akt I · Key</span></span><small>Profil, Arme verschränkt, auf den Tape-Marken. Licht nur von hinten oben, Gesicht bleibt im Schatten.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-s4"><span class="box"></span><span class="tx"><b><span class="id">S4</span>Lock-off, Licht an</b><span class="meta"><span class="prio must">MUSS</span><span class="mono">Akt III · Key</span></span><small>Kamera nicht anfassen. Weißes Flutlicht von vorn geht an, wie das Saallicht um 7 Uhr. Vorher Wasser ins Gesicht, Kopfhörer in den Nacken.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-s3"><span class="box"></span><span class="tx"><b><span class="id">S3</span>Rotlicht von unten</b><span class="meta"><span class="prio">KANN</span><span class="mono">Akt II</span></span><small>RGB-Tube rot, Strobe, Bewegung zum Track. 50 fps, Shutter 1/100. Die Lichter der U1 flackern mit.</small></span></label>
-    </div>
-    <div class="group">
-      <h3>Solo vorher</h3>
-      <span class="mono">Felix allein · optional</span>
-      <label class="ck"><input type="checkbox" id="n-b3"><span class="box"></span><span class="tx"><b><span class="id">B3</span>Friedenstraße leer</b><span class="meta"><span class="prio">KANN</span><span class="mono">Akt III</span></span><small>Backsteinfassade, leere Graffiti-Treppe, Details. Hell und kühl.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-b2"><span class="box"></span><span class="tx"><b><span class="id">B2</span>Arkaden leer im Gegenlicht</b><span class="meta"><span class="prio">KANN</span><span class="mono">Akt III · letzter Shot</span></span><small>Der leere Gang, nachdem alle gegangen sind. Bestes Licht ca. 16:30–17:15.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-fx"><span class="box"></span><span class="tx"><b><span class="id">FX</span>U1 + Schritte</b><span class="meta"><span class="prio">KANN</span><span class="mono">Sound</span></span><small>2 Min Wildsound unter den Bögen. Echte Industrial-Impacts für den Schnitt.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-tl"><span class="box"></span><span class="tx"><b><span class="id">TL</span>Zeitraffer Sonnenuntergang</b><span class="meta"><span class="prio">KANN</span><span class="mono">Story-Loops</span></span><small>Spreeufer, 17:45–18:40. Rückwärts abgespielt wird daraus der Sonnenaufgang.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-b1"><span class="box"></span><span class="tx"><b><span class="id">B1</span>Stahlskulptur</b><span class="meta"><span class="prio">KANN</span><span class="mono">B-Roll</span></span><small>Details und Totale am Spreeufer.</small></span></label>
-    </div>
-    <div class="group">
-      <h3>Vorleuchten</h3>
-      <span class="mono">LOC 01 · 18:40–19:00</span>
-      <label class="ck"><input type="checkbox" id="n-p1"><span class="box"></span><span class="tx"><b>Tape-Marken S1/S4</b><small>Stativbeine, Position GO$PEL, Höhe und Brennweite notieren.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-p2"><span class="box"></span><span class="tx"><b>Rim-LED steht</b><small>Hinten oben, mit Grid. Oder eine Laterne nutzen.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-p3"><span class="box"></span><span class="tx"><b>Weißes Flutlicht steht</b><small>Von vorn, kalt, volle Leistung. Einmal an und aus testen.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-p4"><span class="box"></span><span class="tx"><b>RGB-Tube auf Rot + Strobe</b><small>Preset gespeichert, Akku voll.</small></span></label>
-      <label class="ck"><input type="checkbox" id="n-p5"><span class="box"></span><span class="tx"><b>Lav + Recorder bereit</b><small>Pegel mit eigener Stimme getestet.</small></span></label>
-    </div>
+  <div class="sec-head"><span class="sec-no">03</span><h2 id="h3">Pflicht-Momente</h2></div>
+  <p class="sub">Egal wo und wie: Diese vier Dinge braucht das Reel. Alles andere ist Bonus.</p>
+  <span class="progress tn" id="prog-shots"></span>
+  <div class="vo" data-list="shots">
+    <label class="ck"><input type="checkbox" id="m-voice"><span class="box"></span><span class="tx"><b>Die Stimme</b><span class="meta"><span class="prio must">MUSS</span></span><small>Alle Zeilen aus 04. Ohne Voice-over gibt es kein Reel.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-dark"><span class="box"></span><span class="tx"><b>Ein dunkles Porträt</b><span class="meta"><span class="prio must">MUSS</span></span><small>Ruhig, Gesicht halb im Schatten, Blick in oder knapp an der Kamera vorbei. Eröffnet das Reel.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-light"><span class="box"></span><span class="tx"><b>Ein Licht-Moment</b><span class="meta"><span class="prio must">MUSS</span></span><small>Licht geht an, oder er läuft ins Licht. Das ist das Ende der Nacht und der Schluss des Reels.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-energy"><span class="box"></span><span class="tx"><b>Energie</b><span class="meta"><span class="prio must">MUSS</span></span><small>Bewegung zum Track, Laufen, U-Bahn-Flackern. Wird mit Live-Footage für den Drop gemischt.</small></span></label>
   </div>
 </section>
 
 <!-- 04 VOICE-OVER -->
 <section class="sec" aria-labelledby="h4">
   <div class="sec-head"><span class="sec-no">04</span><h2 id="h4">Voice-over</h2></div>
-  <p class="sub">Läuft während S2 über das Lav. Jede Zeile 2 Takes, ruhig und nah. Zwischen zwei U-Bahnen sprechen, Musik aus. Datum und Club echt einsprechen. Reicht die Zeit nicht: GO$PEL schickt die fehlenden Zeilen als Sprachmemo, aufgenommen im Kleiderschrank, Handy 15 cm vor dem Mund.</p>
+  <p class="sub">Per Lav oder Handy ganz nah am Mund. Jede Zeile 2 Takes, ruhig. Zwischen zwei U-Bahnen sprechen, Musik aus. Datum und Club echt einsprechen. Reicht die Zeit nicht: GO$PEL schickt die fehlenden Zeilen als Sprachmemo, aufgenommen im Kleiderschrank, Handy 15 cm vor dem Mund.</p>
   <span class="progress tn" id="prog-vo"></span>
   <div class="vo" data-list="vo">
     <label class="ck"><input type="checkbox" id="vo1"><span class="box"></span><span class="tx"><b class="line">„Usually, I get two hours.“</b><small>Hook · Takt 1–2</small></span></label>
@@ -361,23 +343,23 @@ footer .mono{font-size:11px}
       <label class="ck"><input type="checkbox" id="e1"><span class="box"></span><span class="tx"><b>Sony A7IV + 35 mm</b><small>Optional 85 mm für Details</small></span></label>
       <label class="ck"><input type="checkbox" id="e2"><span class="box"></span><span class="tx"><b>Variabler ND-Filter</b><small>Für die Solo-B-Roll bei Tageslicht</small></span></label>
       <label class="ck"><input type="checkbox" id="e3"><span class="box"></span><span class="tx"><b>4+ Akkus, 2+ Karten, SSD</b><small>Backup direkt nach dem Wrap</small></span></label>
-      <label class="ck"><input type="checkbox" id="e4"><span class="box"></span><span class="tx"><b>Stativ + Gaffer-Tape</b><small>Für die S1/S4-Marken</small></span></label>
+      <label class="ck"><input type="checkbox" id="e4"><span class="box"></span><span class="tx"><b>Stativ + Gaffer-Tape</b><small>Für Standbilder und den Licht-Moment</small></span></label>
       <label class="ck"><input type="checkbox" id="e5"><span class="box"></span><span class="tx"><b>Lav oder Shotgun + Recorder</b><small>Kopfhörer, Windschutz</small></span></label>
       <label class="ck"><input type="checkbox" id="e6"><span class="box"></span><span class="tx"><b>Handy + Mini-Stativ</b><small>Zeitraffer, Track-Playback</small></span></label>
     </div>
     <div class="group">
       <h3>Licht &amp; Set</h3>
-      <label class="ck"><input type="checkbox" id="e7"><span class="box"></span><span class="tx"><b>Akku-LED mit Grid</b><small>Harter Key, Rim-Light</small></span></label>
-      <label class="ck"><input type="checkbox" id="e8"><span class="box"></span><span class="tx"><b>RGB-Tube</b><small>Rot + Strobe für S3</small></span></label>
-      <label class="ck"><input type="checkbox" id="e9"><span class="box"></span><span class="tx"><b>Starkes weißes LED-Panel</b><small>Für S4 „Licht an“, kalt, volle Leistung</small></span></label>
-      <label class="ck"><input type="checkbox" id="e10"><span class="box"></span><span class="tx"><b>Sprühflasche Wasser/Glycerin</b><small>Schweiß-Look für S4</small></span></label>
+      <label class="ck"><input type="checkbox" id="e7"><span class="box"></span><span class="tx"><b>1–2 Akku-LEDs, falls vorhanden</b><small>Für Kantenlicht und den Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e8"><span class="box"></span><span class="tx"><b>RGB-Licht, optional</b><small>Rot für Energie-Shots</small></span></label>
+      <label class="ck"><input type="checkbox" id="e9"><span class="box"></span><span class="tx"><b>Handy-Taschenlampe</b><small>Notlicht und Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e10"><span class="box"></span><span class="tx"><b>Sprühflasche Wasser/Glycerin</b><small>Schweiß-Look für den Licht-Moment</small></span></label>
       <label class="ck"><input type="checkbox" id="e11"><span class="box"></span><span class="tx"><b>Stirnlampe, Powerbank</b><small>Ab 19:00 dunkel</small></span></label>
       <label class="ck"><input type="checkbox" id="e12"><span class="box"></span><span class="tx"><b>Regenschutz Kamera</b><small>Wetter Stand 10:55: 11 °C, bewölkt</small></span></label>
     </div>
     <div class="group">
       <h3>GO$PEL bringt mit</h3>
       <label class="ck"><input type="checkbox" id="a1"><span class="box"></span><span class="tx"><b>Outfit wie After Dark</b><small>Bandana, Ringe, Kette, schwarzes Shirt</small></span></label>
-      <label class="ck"><input type="checkbox" id="a2"><span class="box"></span><span class="tx"><b>Kopfhörer</b><small>Im Nacken für S4</small></span></label>
+      <label class="ck"><input type="checkbox" id="a2"><span class="box"></span><span class="tx"><b>Kopfhörer</b><small>Im Nacken, Look nach dem Set</small></span></label>
             <label class="ck"><input type="checkbox" id="a4"><span class="box"></span><span class="tx"><b>Warme Jacke</b><small>Zwischen den Takes, abends ca. 10 °C</small></span></label>
       <label class="ck"><input type="checkbox" id="a5"><span class="box"></span><span class="tx"><b>Track als WAV</b><small>Unreleased, mit BPM-Angabe</small></span></label>
       <label class="ck"><input type="checkbox" id="a6"><span class="box"></span><span class="tx"><b>Gepäck + Zugticket</b><small>Steht am Set neben der Kamera</small></span></label>
@@ -399,20 +381,20 @@ footer .mono{font-size:11px}
 
 <footer>
   <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
-  <span class="mono">Sonnenzeiten berechnet für Berlin, 11.10.2026 (MESZ) · Stand: Treffen 19:00</span>
+  <span class="mono">Sonnenzeiten berechnet für Berlin, 11.10.2026 (MESZ) · Stand: outdoor, Treffen 19:00</span>
 </footer>
 
 </div>
 
 <script>
 (function(){
-  var KEY='gospel-drehtag-1110-v2';
+  var KEY='gospel-drehtag-1110-v3';
   var state={};
   try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
   var boxes=document.querySelectorAll('.ck input[type=checkbox]');
   function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
   function prog(){
-    [['shots','prog-shots','Shots'],['vo','prog-vo','Zeilen'],['eq','prog-eq','Punkte']].forEach(function(g){
+    [['shots','prog-shots','Momente'],['vo','prog-vo','Zeilen'],['eq','prog-eq','Punkte']].forEach(function(g){
       var list=document.querySelector('[data-list="'+g[0]+'"]'), out=document.getElementById(g[1]);
       if(!list||!out) return;
       var all=list.querySelectorAll('input'), n=0, must=0, mustDone=0;
