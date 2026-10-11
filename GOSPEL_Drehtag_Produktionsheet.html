@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GO$PEL Drehtag 11.10.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: Call Sheet fürs Handy am Set. Sticky Statusleiste mit Countdown, darunter Zeitplan als Hauptachse, dann abhakbare Listen. */
+:root{
+  color-scheme: dark;
+  --bg:#0a0a0a;
+  --s1:#121212;
+  --s2:#1a1a1a;
+  --line:#262626;
+  --line2:#3c3c3c;
+  --fg:#f4f2ee;
+  --mute:#aaa69d;
+  --dim:#6f6c64;
+  --gold:#c2a466;      /* einziger Akzent: Muss-Shots, Jetzt-Markierung */
+  --warn:#e2483d;      /* nur für Hard Wrap / Zug */
+  --ink:#0a0a0a;
+  --f-display:'Bebas Neue','Oswald',Impact,sans-serif;
+  --f-body:'DM Sans','Helvetica Neue',sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:18px}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;line-height:.95;letter-spacing:.01em;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+a{color:var(--fg)}
+a:focus-visible,input:focus-visible+span{outline:2px solid var(--gold);outline-offset:3px}
+.tn{font-variant-numeric:tabular-nums}
+
+/* STATUS */
+.status{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line2);margin-inline:-18px;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.status .now{font-family:var(--f-mono);font-size:13px;font-weight:500}
+.status .left{font-family:var(--f-mono);font-size:13px;font-weight:700;color:var(--fg);background:var(--s2);border:1px solid var(--line2);padding:4px 8px}
+.status .left.hot{background:var(--warn);border-color:var(--warn);color:#fff}
+
+/* HEAD */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:20px 0}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-ap{display:inline-grid;place-items:center;width:28px;height:28px;background:var(--fg);color:var(--ink);font-weight:700;font-size:14px;letter-spacing:-.04em;line-height:1}
+.logo-name{font-family:var(--f-display);font-size:18px;letter-spacing:.16em;line-height:1}
+.top .mono{color:var(--mute)}
+.hero{padding-block:28px 32px;display:grid;gap:12px}
+.hero .mono{color:var(--mute)}
+.hero h1{font-size:clamp(52px,11vw,112px);line-height:.86}
+.hero .date{font-family:var(--f-display);font-size:clamp(26px,4.4vw,40px);letter-spacing:.04em;color:var(--mute)}
+
+.keys{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.key{background:var(--bg);padding:12px 12px 10px;display:grid;gap:2px;min-width:0}
+.key b{font-family:var(--f-display);font-weight:400;font-size:34px;line-height:1}
+.key span{font-family:var(--f-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.key.hard b{color:var(--warn)}
+.key.hard{box-shadow:inset 0 -3px 0 var(--warn)}
+
+/* SECTIONS */
+.sec{border-top:1px solid var(--line);padding-block:40px;display:grid;gap:22px}
+.sec-head{display:flex;align-items:baseline;gap:14px}
+.sec-no{font-family:var(--f-display);font-size:44px;line-height:.8;color:var(--dim)}
+.sec-head h2{font-size:clamp(34px,5vw,48px)}
+.sub{color:var(--mute);font-size:15px;max-width:62ch}
+
+/* ZEITPLAN */
+.plan{display:grid;border-top:1px solid var(--line)}
+.blk{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;padding:14px 0 14px 12px;border-bottom:1px solid var(--line);border-left:3px solid transparent;margin-left:-15px}
+.blk .t{font-family:var(--f-mono);font-size:14px;font-weight:500;padding-top:2px}
+.blk .t small{display:block;color:var(--dim);font-size:11px;font-weight:400}
+.blk .c{display:grid;gap:4px;min-width:0}
+.blk h3{font-size:24px;letter-spacing:.03em}
+.blk .loc{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.blk p{color:var(--mute);font-size:15px}
+.blk p b{color:var(--fg);font-weight:500}
+.blk.move h3,.blk.opt h3{color:var(--mute)}
+.blk.opt{border-left-style:dashed}
+.note-line{color:var(--mute);font-size:15px;padding:14px 16px;border:1px dashed var(--line2)}
+.note-line b{color:var(--fg);font-weight:500}
+.ideas{list-style:none;margin:0;padding:0;display:grid}
+.ideas li{padding-block:9px;border-top:1px solid var(--line);font-size:15px;color:var(--fg)}
+.ideas li small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.blk.hard{border-left-color:var(--warn)}
+.blk.hard h3,.blk.hard .t{color:var(--warn)}
+.blk.now{border-left-color:var(--gold);background:var(--s1)}
+.blk.now .t::after{content:"JETZT";display:block;margin-top:6px;font-size:10px;letter-spacing:.12em;color:var(--ink);background:var(--gold);padding:2px 6px;width:max-content}
+.blk.done{opacity:.45}
+.sun{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;padding:2px 6px;border:1px solid var(--line2);color:var(--fg);margin-right:6px}
+
+/* LOCATIONS */
+.locs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lc{border:1px solid var(--line2);padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.lc .hd{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.lc .no{font-family:var(--f-mono);font-size:12px;font-weight:700}
+.lc .when{font-family:var(--f-mono);font-size:11px;color:var(--mute)}
+.lc h3{font-size:28px}
+.lc .addr{font-size:14px;color:var(--fg);user-select:all}
+.lc p{color:var(--mute);font-size:14px}
+.lc dl{margin:0;display:grid;gap:8px}
+.lc dt{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.lc dd{margin:0;font-size:14px;color:var(--mute)}
+.btn{justify-self:start;display:inline-block;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--ink);background:var(--fg);padding:9px 12px}
+
+/* CHECKLISTS */
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:13px;align-items:center}
+.prio{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:2px 6px;border:1px solid var(--line2);color:var(--mute)}
+.prio.must{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:700}
+.groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.group{display:grid;gap:0;align-content:start}
+.group h3{font-size:24px;margin-bottom:4px}
+.group > .mono{color:var(--dim);font-size:11px;margin-bottom:10px}
+.ck{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding-block:12px;border-top:1px solid var(--line);cursor:pointer;align-items:start}
+.ck input{position:absolute;opacity:0;width:1px;height:1px}
+.ck .box{width:24px;height:24px;border:1.5px solid var(--line2);display:grid;place-items:center;margin-top:1px}
+.ck input:checked + .box{background:var(--fg);border-color:var(--fg)}
+.ck input:checked + .box::after{content:"";width:10px;height:6px;border-left:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(-45deg) translate(1px,-1px)}
+.ck input:focus-visible + .box{outline:2px solid var(--gold);outline-offset:2px}
+.ck .tx{display:grid;gap:3px;min-width:0}
+.ck .tx b{font-weight:500}
+.ck .tx b .id{font-family:var(--f-mono);font-size:13px;margin-right:6px}
+.ck .tx small{color:var(--mute);font-size:14px;line-height:1.45}
+.ck .tx .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ck .tx .meta .mono{font-size:10px;color:var(--dim)}
+.ck:has(input:checked) .tx{opacity:.5}
+.ck:has(input:checked) .tx b{text-decoration:line-through}
+.reset{justify-self:start;background:none;border:1px solid var(--line2);color:var(--mute);font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;cursor:pointer}
+.reset:hover{color:var(--fg);border-color:var(--fg)}
+.progress{font-family:var(--f-mono);font-size:12px;color:var(--mute)}
+
+/* VO */
+.vo{display:grid}
+.vo .ck .tx b{font-size:17px}
+.vo .line{font-style:italic}
+
+/* RÜCKFAHRT */
+.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.route div{background:var(--bg);padding:14px;display:grid;gap:4px;align-content:start}
+.route b{font-family:var(--f-display);font-weight:400;font-size:32px;line-height:1}
+.route span{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.route p{color:var(--mute);font-size:13px}
+.route .train b{color:var(--warn)}
+.notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.notes ul{list-style:none;margin:0;padding:0;display:grid}
+.notes li{padding-block:11px;border-top:1px solid var(--line);color:var(--mute);font-size:15px}
+.notes li b{color:var(--fg);font-weight:500}
+.notes h3{font-size:24px;margin-bottom:6px}
+
+/* KONTAKT */
+.contacts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.contacts div{background:var(--bg);padding:16px;display:grid;gap:4px;align-content:start;min-width:0}
+.contacts span{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.contacts b{font-weight:500;font-size:16px}
+.contacts .sel{font-family:var(--f-mono);font-size:14px;user-select:all;overflow-wrap:anywhere}
+.ph{border-bottom:1px dashed var(--mute);color:var(--mute)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:24px 36px;border-top:1px solid var(--line);color:var(--dim)}
+footer .mono{font-size:11px}
+
+@media (max-width:900px){
+  .keys{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .locs,.groups{grid-template-columns:minmax(0,1fr)}
+  .route,.contacts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  body{padding-inline:16px;font-size:15px}
+  .status{margin-inline:-16px;padding-inline:16px}
+  .blk{grid-template-columns:78px minmax(0,1fr);gap:10px}
+  .blk .t{font-size:13px}
+  .notes{grid-template-columns:minmax(0,1fr)}
+  .key b{font-size:28px}
+}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{padding-inline:36px}
+  .status{position:static}
+  .reset{display:none}
+  .sec{break-before:page;padding-block:36px}
+  .blk,.lc,.ck,.route,.contacts,.notes li,.key{break-inside:avoid}
+}
+</style>
+
+<div class="wrap">
+
+<div class="status" role="status" aria-live="polite">
+  <span class="now tn" id="now">So 11.10. · Hard Wrap 19:40</span>
+  <span class="left tn" id="left">Zug 20:37 · Berlin Hbf</span>
+</div>
+
+<header class="top">
+  <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
+  <span class="mono">Produktionsheet · Drehtag</span>
+</header>
+
+<section class="hero" aria-labelledby="t">
+  <p class="mono">Promo-Reel · All Night Long · Industrial Techno</p>
+  <h1 id="t">GO$PEL<br>Drehtag</h1>
+  <p class="date">Sonntag, 11. Oktober 2026 · Berlin</p>
+</section>
+
+<div class="keys tn">
+  <div class="key"><b>19:00</b><span>Start Oberbaumbrücke</span></div>
+  <div class="key"><b>19:15</b><span>Spreeufer</span></div>
+  <div class="key"><b>19:40</b><span>Treppen Friedenstraße</span></div>
+  <div class="key hard"><b>19:55</b><span>Schluss · Taxi zum Hbf</span></div>
+  <div class="key"><b>20:10</b><span>Hauptbahnhof</span></div>
+  <div class="key hard"><b>20:37</b><span>Zug ab Berlin Hbf</span></div>
+</div>
+
+<!-- 01 ZEITPLAN -->
+<section class="sec" aria-labelledby="h1">
+  <div class="sec-head"><span class="sec-no">01</span><h2 id="h1">Zeitplan</h2></div>
+  <p class="sub">Nur outdoor, nur grob. Fix ist nur 19:55. Die große Version zum Draufschauen ist der <a href="https://claude.ai/artifact/MmWWrJ4jJn6dZN9PrUA9aS" target="_blank" rel="noopener" style="color:var(--fg)">Laufplan ↗</a>.</p>
+
+  <div class="plan tn" id="plan">
+    <div class="blk opt" data-s="15:00" data-e="18:40"><div class="t">bis<small>18:40</small></div><div class="c"><h3>Solo · was du schaffst</h3><span class="loc">optional</span><p>Leere Orte im Tageslicht, Zeitraffer vom Sonnenuntergang (18:22). Spots für den Abend suchen.</p></div></div>
+    <div class="blk" data-s="19:00" data-e="19:12"><div class="t">19:00<small>– 19:12</small></div><div class="c"><h3>Oberbaumbrücke</h3><span class="loc">12 Min · Start</span><p>Bögen, Laternen, U-Bahn. Bis 19:08 noch etwas Blau am Himmel.</p></div></div>
+    <div class="blk move" data-s="19:12" data-e="19:15"><div class="t">19:12<small>– 19:15</small></div><div class="c"><h3>Zu Fuß</h3><span class="loc">→ Spreeufer hinter der Brücke · 3 Min</span></div></div>
+    <div class="blk" data-s="19:15" data-e="19:28"><div class="t">19:15<small>– 19:28</small></div><div class="c"><h3>Spreeufer</h3><span class="loc">13 Min · Oberbaumstraße 6</span><p>Wasser, Skyline, Skulptur. <b>19:20 Taxi bestellen.</b></p></div></div>
+    <div class="blk move" data-s="19:28" data-e="19:40"><div class="t">19:28<small>– 19:40</small></div><div class="c"><h3>Taxi</h3><span class="loc">→ Friedenstraße 92 · ca. 12 Min</span><p>Ca. 3 km. Zu Fuß wären es 35–40 Min.</p></div></div>
+    <div class="blk" data-s="19:40" data-e="19:55"><div class="t">19:40<small>– 19:55</small></div><div class="c"><h3>Treppen Friedenstraße</h3><span class="loc">15 Min</span><p>Treppen, Backstein, Graffiti. Ruhigste Location, hier die Stimme aufnehmen. <b>19:50 Taxi zum Hbf bestellen.</b></p></div></div>
+    <div class="blk hard" data-s="19:55" data-e="20:10"><div class="t">19:55<small>Schluss</small></div><div class="c"><h3>Taxi zum Hauptbahnhof</h3><span class="loc">ca. 15 Min</span><p>19:55 ist fix. Gepäck ist im Taxi dabei.</p></div></div>
+    <div class="blk hard" data-s="20:10" data-e="20:37"><div class="t">20:37<small>Abfahrt</small></div><div class="c"><h3>Zug ab Berlin Hbf</h3><span class="loc">Ankunft ca. 20:10 · 27 Min Puffer</span><p>Plan B: U5 ab Weberwiese oder Strausberger Platz fährt direkt zum Hbf, ca. 15 Min. Zu Fuß dorthin ca. 10 Min.</p></div></div>
+  </div>
+</section>
+
+<!-- 02 LOCATIONS -->
+<section class="sec" aria-labelledby="h2">
+  <div class="sec-head"><span class="sec-no">02</span><h2 id="h2">Locations &amp; Ideen</h2></div>
+  <p class="sub">Pro Location ein paar Richtungen, keine feste Liste. Nimm, was das Licht vor Ort hergibt: Laternen, U-Bahn, Skyline, Autoscheinwerfer, Handylicht.</p>
+  <div class="locs">
+    <div class="lc">
+      <div class="hd"><span class="no">LOC 01 · Start</span><span class="when tn">19:00–19:12 · 12 Min</span></div>
+      <h3>Oberbaumbrücke</h3>
+      <span class="addr">Arkadengang, untere Ebene</span>
+      <ul class="ideas">
+        <li>Porträt unter einem Bogen<small>Laterne von hinten als Kantenlicht, Gesicht dunkel</small></li>
+        <li>„Licht an“<small>Kamera bleibt stehen, erst dunkel, dann geht ein Licht an: LED, Handylicht oder vorbeifahrende U-Bahn</small></li>
+        <li>Durch den Gang ins Licht laufen<small>Rückenansicht, am Ende eine Laterne</small></li>
+        <li>U1 fährt oben drüber<small>Flackerndes Licht auf dem Gesicht, Sound mitnehmen</small></li>
+      </ul>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumbr%C3%BCcke%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
+    </div>
+    <div class="lc">
+      <div class="hd"><span class="no">LOC 02</span><span class="when tn">19:15–19:28 · 13 Min</span></div>
+      <h3>Spreeufer Oberbaumstraße 6</h3>
+      <span class="addr">Oberbaumstraße 6, Berlin-Kreuzberg</span>
+      <ul class="ideas">
+        <li>Silhouette gegen Himmel und Wasser<small>Totale, GO$PEL schwarz vor dem letzten Blau</small></li>
+        <li>Porträt mit Skyline im Rücken<small>Lichter gegenüber unscharf, Gesicht halb im Schatten</small></li>
+        <li>Laufen am Wasser<small>Kamera geht mit, seitlich oder von hinten</small></li>
+        <li>Stahlskulptur als Rahmen<small>Durch die Skulptur filmen, Industrial-Vordergrund</small></li>
+      </ul>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumstra%C3%9Fe%206%2C%20Berlin" target="_blank" rel="noopener">Route öffnen ↗</a>
+    </div>
+    <div class="lc">
+      <div class="hd"><span class="no">LOC 03</span><span class="when tn">19:40–19:55 · 15 Min</span></div>
+      <h3>Friedenstraße 92</h3>
+      <span class="addr">Friedenstraße 92, 10249 Berlin-Friedrichshain</span>
+      <ul class="ideas">
+        <li>Backstein und Graffiti im Laternenlicht<small>Der Ort am Morgen danach</small></li>
+        <li>Texturen und Details<small>Ziegel, Fenster, Graffiti, für Übergänge</small></li>
+        <li>GO$PEL auf der Treppe<small>Sitzen, erschöpft, Kopfhörer im Nacken. Porträt im Hauseingang</small></li>
+        <li>Stimme aufnehmen<small>Ruhigste der drei Locations</small></li>
+      </ul>
+      <a class="btn" href="https://maps.app.goo.gl/pdBfrqshg34U2d3h8" target="_blank" rel="noopener">Route öffnen ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PFLICHT -->
+<section class="sec" aria-labelledby="h3">
+  <div class="sec-head"><span class="sec-no">03</span><h2 id="h3">Pflicht-Momente</h2></div>
+  <p class="sub">Egal wo und wie: Diese vier Dinge braucht das Reel. Alles andere ist Bonus.</p>
+  <span class="progress tn" id="prog-shots"></span>
+  <div class="vo" data-list="shots">
+    <label class="ck"><input type="checkbox" id="m-voice"><span class="box"></span><span class="tx"><b>Die Stimme</b><span class="meta"><span class="prio must">MUSS</span></span><small>Alle Zeilen aus 04. Ohne Voice-over gibt es kein Reel.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-dark"><span class="box"></span><span class="tx"><b>Ein dunkles Porträt</b><span class="meta"><span class="prio must">MUSS</span></span><small>Ruhig, Gesicht halb im Schatten, Blick in oder knapp an der Kamera vorbei. Eröffnet das Reel.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-light"><span class="box"></span><span class="tx"><b>Ein Licht-Moment</b><span class="meta"><span class="prio must">MUSS</span></span><small>Licht geht an, oder er läuft ins Licht. Das ist das Ende der Nacht und der Schluss des Reels.</small></span></label>
+    <label class="ck"><input type="checkbox" id="m-energy"><span class="box"></span><span class="tx"><b>Energie</b><span class="meta"><span class="prio must">MUSS</span></span><small>Bewegung zum Track, Laufen, U-Bahn-Flackern. Wird mit Live-Footage für den Drop gemischt.</small></span></label>
+  </div>
+</section>
+
+<!-- 04 VOICE-OVER -->
+<section class="sec" aria-labelledby="h4">
+  <div class="sec-head"><span class="sec-no">04</span><h2 id="h4">Voice-over</h2></div>
+  <p class="sub">Am besten an der Friedenstraße. Per Lav oder Handy ganz nah am Mund. Jede Zeile 2 Takes, ruhig. Zwischen zwei U-Bahnen sprechen, Musik aus. Datum und Club echt einsprechen. Reicht die Zeit nicht: GO$PEL schickt die fehlenden Zeilen als Sprachmemo, aufgenommen im Kleiderschrank, Handy 15 cm vor dem Mund.</p>
+  <span class="progress tn" id="prog-vo"></span>
+  <div class="vo" data-list="vo">
+    <label class="ck"><input type="checkbox" id="vo1"><span class="box"></span><span class="tx"><b class="line">„Usually, I get two hours.“</b><small>Hook · Takt 1–2</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo2"><span class="box"></span><span class="tx"><b class="line">„On <span class="ph">[DATUM]</span>, I get the whole night.“</b><small>Takt 3–4 · echtes Datum sprechen</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo3"><span class="box"></span><span class="tx"><b class="line">„No warm-up. No closing act. Just me.“</b><small>Takt 5–6 · „Just me.“ zusätzlich einzeln</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo4"><span class="box"></span><span class="tx"><b class="line">„Hardest tracks. Unreleased. As long as it takes.“</b><small>Akt II · läuft über den Drop</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo5"><span class="box"></span><span class="tx"><b class="line">„From the first kick till the lights come on.“</b><small>Akt III</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo6"><span class="box"></span><span class="tx"><b class="line">„My name is GO$PEL.“</b><small>Option für den Einstieg wie bei After Dark</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo7"><span class="box"></span><span class="tx"><b class="line">„All night long. <span class="ph">[DATUM]</span>. <span class="ph">[CLUB]</span>.“</b><small>Teaser und Story-Countdown</small></span></label>
+    <label class="ck"><input type="checkbox" id="vo8"><span class="box"></span><span class="tx"><b class="line">„All night long.“ · „Open to close.“</b><small>Wildtrack, je 3× mit unterschiedlicher Energie</small></span></label>
+  </div>
+</section>
+
+<!-- 05 RÜCKFAHRT -->
+<section class="sec" aria-labelledby="h5">
+  <div class="sec-head"><span class="sec-no">05</span><h2 id="h5">Rückfahrt GO$PEL</h2></div>
+  <div class="route tn">
+    <div><b>19:50</b><span>Taxi bestellen</span><p>An der Friedenstraße.</p></div>
+    <div><b>19:55</b><span>Schluss · Abfahrt</span><p>Taxi zum Hauptbahnhof, ca. 15 Min.</p></div>
+    <div><b>~20:10</b><span>Ankunft Hbf</span><p>Runter zum Gleis.</p></div>
+    <div class="train"><b>20:37</b><span>Zug ab</span><p>Ca. 27 Min Puffer.</p></div>
+  </div>
+  <div class="notes">
+    <div>
+      <h3>Vor 19:00 prüfen</h3>
+      <ul>
+        <li><b>Taxi-App:</b> Bolt, Uber oder FreeNow installiert und eingeloggt. Zwei Fahrten heute: 19:20 und 19:50.</li>
+        <li><b>Gleis:</b> Abfahrtsgleis des 20:37-Zugs nachsehen. Tief-Gleise brauchen ein paar Minuten mehr.</li>
+        <li><b>Route:</b> Weg von der Friedenstraße zur U Weberwiese oder Strausberger Platz einmal in Maps ansehen, falls Plan B nötig wird.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Plan B</h3>
+      <ul>
+        <li><b>Kein Taxi zur Friedenstraße:</b> Friedenstraße streichen. Bis 19:40 an der Brücke weiterdrehen, dann S-Bahn ab Warschauer Straße (letzte sichere 19:58).</li>
+        <li><b>Kein Taxi zum Hbf:</b> U5 ab Weberwiese oder Strausberger Platz fährt direkt zum Hauptbahnhof, ca. 15 Min. Zu Fuß dorthin ca. 10 Min, also spätestens 19:55 losgehen.</li>
+        <li><b>Gepäck:</b> Fährt in beiden Taxis mit, nie unbeaufsichtigt.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 06 EQUIPMENT -->
+<section class="sec" aria-labelledby="h6">
+  <div class="sec-head"><span class="sec-no">06</span><h2 id="h6">Equipment &amp; Mitbringen</h2></div>
+  <span class="progress tn" id="prog-eq"></span>
+  <div class="groups" data-list="eq">
+    <div class="group">
+      <h3>Kamera &amp; Ton</h3>
+      <label class="ck"><input type="checkbox" id="e1"><span class="box"></span><span class="tx"><b>Sony A7IV + 35 mm</b><small>Optional 85 mm für Details</small></span></label>
+      <label class="ck"><input type="checkbox" id="e2"><span class="box"></span><span class="tx"><b>Variabler ND-Filter</b><small>Für die Solo-B-Roll bei Tageslicht</small></span></label>
+      <label class="ck"><input type="checkbox" id="e3"><span class="box"></span><span class="tx"><b>4+ Akkus, 2+ Karten, SSD</b><small>Backup direkt nach dem Wrap</small></span></label>
+      <label class="ck"><input type="checkbox" id="e4"><span class="box"></span><span class="tx"><b>Stativ + Gaffer-Tape</b><small>Für Standbilder und den Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e5"><span class="box"></span><span class="tx"><b>Lav oder Shotgun + Recorder</b><small>Kopfhörer, Windschutz</small></span></label>
+      <label class="ck"><input type="checkbox" id="e6"><span class="box"></span><span class="tx"><b>Handy + Mini-Stativ</b><small>Zeitraffer, Track-Playback</small></span></label>
+    </div>
+    <div class="group">
+      <h3>Licht &amp; Set</h3>
+      <label class="ck"><input type="checkbox" id="e7"><span class="box"></span><span class="tx"><b>1–2 Akku-LEDs, falls vorhanden</b><small>Für Kantenlicht und den Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e8"><span class="box"></span><span class="tx"><b>RGB-Licht, optional</b><small>Rot für Energie-Shots</small></span></label>
+      <label class="ck"><input type="checkbox" id="e9"><span class="box"></span><span class="tx"><b>Handy-Taschenlampe</b><small>Notlicht und Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e10"><span class="box"></span><span class="tx"><b>Sprühflasche Wasser/Glycerin</b><small>Schweiß-Look für den Licht-Moment</small></span></label>
+      <label class="ck"><input type="checkbox" id="e11"><span class="box"></span><span class="tx"><b>Stirnlampe, Powerbank</b><small>Ab 19:00 dunkel</small></span></label>
+      <label class="ck"><input type="checkbox" id="e12"><span class="box"></span><span class="tx"><b>Regenschutz Kamera</b><small>Wetter Stand 10:55: 11 °C, bewölkt</small></span></label>
+    </div>
+    <div class="group">
+      <h3>GO$PEL bringt mit</h3>
+      <label class="ck"><input type="checkbox" id="a1"><span class="box"></span><span class="tx"><b>Outfit wie After Dark</b><small>Bandana, Ringe, Kette, schwarzes Shirt</small></span></label>
+      <label class="ck"><input type="checkbox" id="a2"><span class="box"></span><span class="tx"><b>Kopfhörer</b><small>Im Nacken, Look nach dem Set</small></span></label>
+            <label class="ck"><input type="checkbox" id="a4"><span class="box"></span><span class="tx"><b>Warme Jacke</b><small>Zwischen den Takes, abends ca. 10 °C</small></span></label>
+      <label class="ck"><input type="checkbox" id="a5"><span class="box"></span><span class="tx"><b>Track als WAV</b><small>Unreleased, mit BPM-Angabe</small></span></label>
+      <label class="ck"><input type="checkbox" id="a6"><span class="box"></span><span class="tx"><b>Gepäck + Zugticket</b><small>Steht am Set neben der Kamera</small></span></label>
+    </div>
+  </div>
+  <button class="reset" type="button" id="reset">Alle Haken zurücksetzen</button>
+</section>
+
+<!-- 07 KONTAKTE -->
+<section class="sec" aria-labelledby="h7">
+  <div class="sec-head"><span class="sec-no">07</span><h2 id="h7">Kontakte</h2></div>
+  <div class="contacts">
+    <div><span>Regie · Kamera</span><b>Felix Adam</b><span class="sel">+49 179 5207803</span></div>
+    <div><span>Artist</span><b>GO$PEL</b><span class="sel ph">[Nummer eintragen]</span></div>
+    <div><span>Assistenz</span><b class="ph">[falls dabei]</b><span class="sel ph">[Nummer]</span></div>
+    <div><span>Notruf</span><b>Feuerwehr · Rettung</b><span class="sel">112</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
+  <span class="mono">Sonnenzeiten berechnet für Berlin, 11.10.2026 (MESZ) · Stand: Brücke → Spreeufer → Friedenstraße</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY='gospel-drehtag-1110-v4';
+  var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
+  var boxes=document.querySelectorAll('.ck input[type=checkbox]');
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function prog(){
+    [['shots','prog-shots','Momente'],['vo','prog-vo','Zeilen'],['eq','prog-eq','Punkte']].forEach(function(g){
+      var list=document.querySelector('[data-list="'+g[0]+'"]'), out=document.getElementById(g[1]);
+      if(!list||!out) return;
+      var all=list.querySelectorAll('input'), n=0, must=0, mustDone=0;
+      all.forEach(function(i){
+        if(i.checked) n++;
+        var isMust=i.closest('.ck').querySelector('.prio.must');
+        if(isMust){must++; if(i.checked) mustDone++;}
+      });
+      out.textContent=n+' / '+all.length+' '+g[2]+(must?' · Muss: '+mustDone+' / '+must:'');
+    });
+  }
+  boxes.forEach(function(b){
+    if(state[b.id]) b.checked=true;
+    b.addEventListener('change',function(){state[b.id]=b.checked; save(); prog();});
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    boxes.forEach(function(b){b.checked=false;}); state={}; save(); prog();
+  });
+  prog();
+
+  var nowEl=document.getElementById('now'), leftEl=document.getElementById('left');
+  var blocks=document.querySelectorAll('#plan .blk');
+  function mins(s){var p=s.split(':');return (+p[0])*60+(+p[1]);}
+  function pad(n){return (n<10?'0':'')+n;}
+  function tick(){
+    var d=new Date();
+    var today=d.getFullYear()===2026&&d.getMonth()===9&&d.getDate()===11;
+    var m=d.getHours()*60+d.getMinutes();
+    nowEl.textContent='Jetzt '+pad(d.getHours())+':'+pad(d.getMinutes())+(today?' · Drehtag':' · Drehtag So 11.10.');
+    if(today){
+      var wrap=19*60+40, left=wrap-m;
+      if(left>0){
+        leftEl.textContent='Noch '+Math.floor(left/60)+':'+pad(left%60)+' bis Hard Wrap';
+        leftEl.classList.toggle('hot',left<=45);
+      } else {
+        var train=20*60+37, t=train-m;
+        leftEl.textContent=t>0?'Zug in '+t+' Min':'Zug ist weg';
+        leftEl.classList.add('hot');
+      }
+      blocks.forEach(function(b){
+        var s=mins(b.dataset.s), e=mins(b.dataset.e);
+        b.classList.toggle('now',m>=s&&m<e);
+        b.classList.toggle('done',m>=e);
+      });
+    } else {
+      leftEl.textContent='Hard Wrap 19:40 · Zug 20:37';
+      leftEl.classList.remove('hot');
+    }
+  }
+  tick();
+  setInterval(tick,20000);
+})();
+</script>
+
+</html>
