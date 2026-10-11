@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GO$PEL All Night Long</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=EB+Garamond:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: ein Schnitt-Timeline-Dokument. Nummerierte Sektionen links, Inhalt rechts, die Nacht als Farbverlauf zieht sich als Leitmotiv durch. */
+:root{
+  color-scheme: dark;
+  --bg:#0a0a0a;
+  --s1:#111111;
+  --s2:#191919;
+  --line:#242424;
+  --line2:#3a3a3a;
+  --fg:#f2f0ec;
+  --mute:#a3a097;
+  --dim:#6b6860;
+  --gold:#c2a466;          /* einziger Akzent: GO$PELs Untertitel-Gold */
+  --night:#0f171b;
+  --peak:#9b1517;
+  --dawn:#d9dfe1;
+  --ink:#0a0a0a;
+  --f-display:'Bebas Neue', 'Oswald', Impact, sans-serif;
+  --f-body:'DM Sans', 'Helvetica Neue', sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --f-serif:'EB Garamond', Garamond, 'Times New Roman', serif;
+  --night-grad:linear-gradient(90deg,#040506 0%,#0f171b 20%,#2a0809 34%,#9b1517 50%,#3a0c0d 64%,#6f7b80 80%,#d9dfe1 100%);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-inline:20px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;letter-spacing:.01em;text-wrap:balance;line-height:.95}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.ph{border-bottom:1px dashed var(--mute);white-space:nowrap}
+.vo{font-family:var(--f-serif);font-style:italic;color:var(--gold);font-size:1.12em;line-height:1.35}
+a{color:var(--fg)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* TOP BAR */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:24px;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ap{display:inline-grid;place-items:center;width:30px;height:30px;background:var(--fg);color:var(--ink);font-family:var(--f-body);font-weight:700;font-size:15px;letter-spacing:-.04em;line-height:1}
+.logo-name{font-family:var(--f-display);font-size:19px;letter-spacing:.16em;line-height:1}
+.top .mono{color:var(--mute)}
+
+/* HERO */
+.hero{padding-block:64px 72px;display:grid;gap:28px}
+.eyebrow{color:var(--mute)}
+.artist{font-family:var(--f-display);font-size:clamp(28px,4vw,40px);letter-spacing:.12em;line-height:1}
+.hero h1{font-size:clamp(76px,15.5vw,208px);line-height:.84;letter-spacing:-.005em}
+.claim{font-family:var(--f-serif);font-style:italic;color:var(--gold);font-size:clamp(22px,2.6vw,30px);line-height:1.2}
+.night{display:grid;gap:10px;margin-top:12px}
+.night-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tc{font-family:var(--f-mono);font-size:clamp(18px,2.4vw,24px);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.night-top .mono{color:var(--dim)}
+.night-bar{position:relative;height:56px;background:var(--night-grad);border:1px solid var(--line2)}
+.playhead{position:absolute;top:-8px;bottom:-8px;left:100%;width:2px;margin-left:-1px;background:var(--fg)}
+.playhead::before{content:"";position:absolute;top:-6px;left:-5px;border:6px solid transparent;border-top:8px solid var(--fg);border-bottom:0}
+.night-ticks{display:flex;justify-content:space-between;color:var(--mute)}
+.night-ticks span{font-size:11px}
+.night-acts{display:grid;grid-template-columns:37.5fr 31.25fr 31.25fr;color:var(--dim);border-top:1px solid var(--line);padding-top:8px}
+.night-acts span{font-size:11px}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.meta div{background:var(--bg);padding:14px 16px;display:grid;gap:4px;min-width:0}
+.meta .mono{color:var(--dim);font-size:11px}
+.meta strong{font-weight:500;font-size:15px}
+.intro{max-width:62ch;font-size:18px;color:var(--mute)}
+.intro b{color:var(--fg);font-weight:500}
+
+/* SECTIONS */
+.sec{border-top:1px solid var(--line);padding-block:72px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px 40px}
+.sec-no{font-family:var(--f-display);font-size:72px;line-height:.8;color:var(--dim)}
+.sec-body{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;min-width:0}
+.sec-body > *{min-width:0}
+.sec-head{display:grid;gap:10px}
+.sec-head .mono{color:var(--mute)}
+.sec-head h2{font-size:clamp(44px,6vw,72px)}
+.lead{font-size:clamp(19px,2vw,23px);line-height:1.5;max-width:60ch}
+.sub{color:var(--mute);max-width:62ch}
+h3{font-size:28px;letter-spacing:.03em}
+.label{color:var(--dim);font-size:11px}
+
+/* 01 REFERENZ */
+.ref{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;align-items:start}
+.ref figure{margin:0;display:grid;gap:10px}
+.ref img{width:100%;max-width:200px;aspect-ratio:9/16;object-fit:cover;display:block;border:1px solid var(--line2);filter:contrast(1.05)}
+.ref figcaption{color:var(--dim);font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat{background:var(--bg);padding:14px 14px 12px;display:grid;gap:2px;min-width:0}
+.stat b{font-family:var(--f-display);font-weight:400;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{color:var(--dim);font-size:11px}
+.strip-wrap{display:grid;gap:8px}
+.strip{display:flex;height:44px;gap:2px}
+.strip i{display:block;min-width:0}
+.strip .st{background:var(--s2);border:1px solid var(--line2)}
+.strip .lv{background:var(--fg)}
+.strip-scale{display:flex;justify-content:space-between;color:var(--dim)}
+.strip-scale span{font-size:11px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:8px;font-size:11px}
+.legend i{width:14px;height:14px;display:inline-block}
+.scenes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 28px;margin:0;padding:0;list-style:none}
+.scenes li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:10px;font-size:14px;color:var(--mute);padding-block:6px;border-bottom:1px solid var(--line)}
+.scenes .mono{font-size:11px;color:var(--fg);padding-top:2px}
+.scenes em{font-style:normal;color:var(--dim);font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;margin-left:6px}
+.vo-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.vo-list li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:10px;align-items:baseline}
+.vo-list .mono{color:var(--dim);font-size:11px}
+.verdict{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.verdict h3{margin-bottom:16px}
+.points{list-style:none;margin:0;padding:0;display:grid}
+.points li{padding-block:14px;border-top:1px solid var(--line);display:grid;gap:4px}
+.points b{font-weight:500}
+.points p{color:var(--mute);font-size:15px}
+.points .new{color:var(--fg)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:2px 6px;border:1px solid var(--line2);color:var(--mute);margin-right:6px;vertical-align:1px}
+
+/* 02 KONZEPT */
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.pillar{border-top:2px solid var(--fg);padding-top:16px;display:grid;gap:10px;align-content:start}
+.pillar .mono{color:var(--dim)}
+.pillar p{color:var(--mute);font-size:15px}
+.tagline{border:1px solid var(--line2);padding:36px 32px;display:grid;gap:10px;background:var(--s1)}
+.tagline p:first-child{font-family:var(--f-display);font-size:clamp(40px,6vw,76px);line-height:.92}
+.tagline .mono{color:var(--dim)}
+
+/* 03 SKRIPT */
+.acts{display:flex;height:64px;gap:2px}
+.act{display:flex;flex-direction:column;justify-content:space-between;padding:8px 10px;min-width:0;overflow:hidden}
+.act span{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a1{flex:9.6;background:linear-gradient(90deg,#040506,#131c20);color:var(--fg);border:1px solid var(--line2)}
+.a2{flex:8;background:linear-gradient(90deg,#3a0a0b,#9b1517 55%,#5a0e0f);color:var(--fg)}
+.a3{flex:4.8;background:linear-gradient(90deg,#7c888d,#d9dfe1);color:var(--ink)}
+.a4{flex:3.2;background:var(--ink);border:1px solid var(--fg);color:var(--fg)}
+.acts-scale{display:flex;justify-content:space-between;color:var(--dim);margin-top:8px}
+.acts-scale span{font-size:11px}
+.script{display:grid;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:120px minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);gap:20px;padding-block:20px;border-bottom:1px solid var(--line)}
+.row > div{display:grid;gap:6px;align-content:start;min-width:0}
+.row .t b{font-family:var(--f-mono);font-weight:500;font-size:14px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.row .t span{color:var(--dim);font-size:11px}
+.row .t .act-pill{justify-self:start;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:3px 7px;border:1px solid var(--line2);color:var(--mute)}
+.row p{font-size:15px;color:var(--mute)}
+.row p.vo{color:var(--gold);font-size:18px}
+.row strong{color:var(--fg);font-weight:500}
+.note{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline;color:var(--mute);font-size:15px;padding:16px 18px;border:1px dashed var(--line2)}
+.note .mono{color:var(--fg);font-size:11px}
+
+/* 04 LOOK */
+.grades{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.grade{display:grid;gap:12px;align-content:start}
+.sw{display:flex;height:72px}
+.sw i{flex:1}
+.grade p{color:var(--mute);font-size:15px}
+.frames{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:28px;align-items:start}
+.phone{position:relative;width:180px;max-width:100%;aspect-ratio:9/16;border:1px solid var(--line2);overflow:hidden}
+.phone .burn{position:absolute;top:13%;left:8%;font-family:var(--f-mono);font-size:10px;color:rgba(242,240,236,.72);letter-spacing:.04em}
+.phone .subt{position:absolute;left:0;right:0;bottom:22%;text-align:center;font-family:var(--f-serif);color:var(--gold);font-size:15px}
+.phone.peak{background:radial-gradient(120% 60% at 50% 100%,#9b1517 0%,#3a0a0b 45%,#050505 80%)}
+.phone.peak::after{content:"";position:absolute;left:50%;top:30%;width:34%;aspect-ratio:3/4;transform:translateX(-50%);background:radial-gradient(closest-side,#000 70%,transparent);border-radius:45% 45% 20% 20%}
+.phone.end{background:var(--ink);display:grid;place-content:center;text-align:center;gap:6px;padding:12px}
+.phone.end .n{font-family:var(--f-display);font-size:16px;letter-spacing:.18em}
+.phone.end .t1{font-family:var(--f-display);font-size:38px;line-height:.86}
+.phone.end .d{font-family:var(--f-mono);font-size:9px;letter-spacing:.08em;color:var(--mute)}
+.phone.end .c{font-family:var(--f-mono);font-size:8px;letter-spacing:.12em;color:var(--dim);margin-top:8px}
+.frame-cap{display:grid;gap:8px}
+.frame-cap .mono{color:var(--dim);font-size:11px}
+.rules{list-style:none;margin:0;padding:0;display:grid}
+.rules li{padding-block:12px;border-top:1px solid var(--line);display:grid;gap:3px}
+.rules b{font-weight:500}
+.rules p{color:var(--mute);font-size:15px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.grid-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.grid-nums div{background:var(--bg);padding:14px;display:grid;gap:2px}
+.grid-nums b{font-family:var(--f-display);font-weight:400;font-size:40px;line-height:1}
+.grid-nums span{color:var(--dim);font-size:11px}
+.beats{display:grid;gap:10px;margin-top:4px}
+.beat-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center}
+.beat-row .mono{font-size:10px;color:var(--mute)}
+.ticks{display:grid;grid-template-columns:repeat(16,1fr);gap:3px}
+.ticks i{height:22px;background:var(--s2);border:1px solid var(--line)}
+.ticks i:nth-child(4n+1){border-left-color:var(--line2)}
+.ticks i.c{background:var(--fg);border-color:var(--fg)}
+
+/* 05 DREHPLAN */
+.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.shot-group{display:grid;gap:4px;align-content:start}
+.shot-group > p{color:var(--dim);font-size:11px;margin-bottom:8px}
+.shot{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;padding-block:12px;border-top:1px solid var(--line)}
+.shot .id{font-family:var(--f-mono);font-size:13px;font-weight:500}
+.shot b{font-weight:500;display:block}
+.shot p{color:var(--mute);font-size:14px}
+.shot .key{color:var(--gold);font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.tech{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.tech div{background:var(--bg);padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.tech .mono{color:var(--dim);font-size:11px}
+.tech p{font-size:14px}
+
+
+/* LOCATIONS */
+.sub a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line2)}
+.locs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.loc{border:1px solid var(--line2);padding:20px;display:grid;gap:10px;align-content:start;min-width:0}
+.loc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.loc-no{font-family:var(--f-mono);font-size:13px;font-weight:500;letter-spacing:.06em}
+.loc-top .mono{color:var(--dim);font-size:11px}
+.loc p{color:var(--mute);font-size:14px}
+.loc .need{display:grid;gap:2px;color:var(--fg)}
+.loc .need .mono{color:var(--dim);font-size:10px}
+.loc a{font-size:11px;color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line2);justify-self:start;padding-bottom:2px}
+.loc a:hover{border-bottom-color:var(--fg)}
+
+/* 06 ROLLOUT */
+.deliv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.dv{display:grid;gap:8px;align-content:start;border-top:2px solid var(--fg);padding-top:14px}
+.dv.opt{border-top-style:dashed;border-top-color:var(--mute)}
+.dv .mono{color:var(--dim);font-size:11px}
+.dv p{color:var(--mute);font-size:14px}
+.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:relative}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:11px;height:1px;background:var(--line2)}
+.ts{display:grid;gap:8px;padding-right:12px;position:relative;align-content:start}
+.ts .dot{width:23px;height:23px;border-radius:50%;background:var(--bg);border:1px solid var(--fg);display:block}
+.ts.main .dot{background:var(--fg)}
+.ts.opt .dot{border-style:dashed;border-color:var(--mute)}
+.ts b{font-family:var(--f-display);font-weight:400;font-size:26px;line-height:1}
+.ts p{color:var(--mute);font-size:14px}
+.caption{border:1px solid var(--line2);background:var(--s1);padding:24px;display:grid;gap:12px}
+.caption .mono{color:var(--dim);font-size:11px}
+.caption pre{margin:0;font-family:var(--f-body);font-size:16px;white-space:pre-wrap;line-height:1.6}
+.caption .hash{color:var(--mute);font-size:14px}
+
+/* 07 BUDGET */
+.pks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.pk{border:1px solid var(--line2);padding:28px;display:grid;gap:14px;align-content:start}
+.pk.opt{border-style:dashed}
+.pk .mono{color:var(--dim);font-size:11px}
+.price{font-family:var(--f-display);font-size:56px;line-height:.9}
+.pk ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.pk li{color:var(--mute);font-size:15px;padding-left:16px;position:relative}
+.pk li::before{content:"";position:absolute;left:0;top:.72em;width:8px;height:1px;background:var(--mute)}
+.pk small{color:var(--dim);font-size:13px}
+.addons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.addons div{background:var(--bg);padding:16px;display:grid;gap:4px;align-content:start}
+.addons b{font-family:var(--f-display);font-weight:400;font-size:28px;line-height:1}
+.addons p{color:var(--mute);font-size:13px}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;padding-block:18px;border-top:2px solid var(--fg);border-bottom:1px solid var(--line)}
+.total span{color:var(--mute)}
+.total b{font-family:var(--f-display);font-weight:400;font-size:40px;line-height:1}
+
+/* 08 KONTAKT */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;counter-reset:s}
+.steps li{display:grid;gap:6px;align-content:start;border-top:1px solid var(--line2);padding-top:14px;counter-increment:s}
+.steps li::before{content:"0" counter(s);font-family:var(--f-mono);font-size:11px;color:var(--dim)}
+.steps b{font-weight:500}
+.steps p{color:var(--mute);font-size:14px}
+.contact{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end;padding:40px 32px;background:var(--fg);color:var(--ink)}
+.contact h3{font-size:clamp(48px,7vw,88px);line-height:.86}
+.contact dl{margin:0;display:grid;gap:12px}
+.contact dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b6860}
+.contact dd{margin:0;font-size:18px;font-weight:500;user-select:all;overflow-wrap:anywhere}
+.contact a{color:var(--ink)}
+footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:28px 40px;color:var(--dim);border-top:1px solid var(--line);margin-top:72px}
+footer .mono{font-size:11px}
+
+/* RESPONSIVE */
+@media (max-width:900px){
+  .sec{grid-template-columns:minmax(0,1fr);gap:16px}
+  .sec-no{font-size:56px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pillars,.grades,.shots,.locs{grid-template-columns:minmax(0,1fr)}
+  .deliv,.tech,.addons,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 20px}
+  .row .t{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+  .row .bild{grid-column:1/-1}
+  .frames{grid-template-columns:auto auto}
+  .frames .frame-cap{grid-column:1/-1}
+  .contact{grid-template-columns:minmax(0,1fr)}
+  .timeline{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:28px}
+  .timeline::before{display:none}
+}
+@media (max-width:640px){
+  body{font-size:15px;padding-inline:16px}
+  .hero{padding-block:40px 48px}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ref{grid-template-columns:minmax(0,1fr)}
+  .ref figure{grid-template-columns:120px minmax(0,1fr);align-items:end;gap:16px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats .stat:last-child{grid-column:1/-1}
+  .scenes,.verdict,.two,.pks{grid-template-columns:minmax(0,1fr)}
+  .row{grid-template-columns:minmax(0,1fr)}
+  .deliv,.tech,.addons,.steps{grid-template-columns:minmax(0,1fr)}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .beat-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .acts .act span:last-child{display:none}
+  .contact{padding:28px 20px}
+  .tagline{padding:28px 20px}
+  .phone{width:150px}
+  .frames{gap:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{padding-inline:40px}
+  .sec{break-before:page;padding-block:48px}
+  .row,.pillar,.grade,.shot,.loc,.dv,.pk,.ts,.points li,.scenes li,.tagline,.caption,.contact,.steps li,.frames,.stats,.strip-wrap,.beats,.tech,.addons,.total,.note,figure{break-inside:avoid}
+  .sec-head{break-after:avoid}
+  footer{margin-top:24px}
+}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
+  <span class="mono">Video-Konzept · Oktober 2026</span>
+</header>
+
+<section class="hero" aria-labelledby="h-hero">
+  <p class="mono eyebrow">AP × GO$PEL · Promo-Reel · Industrial Techno</p>
+  <p class="artist">GO$PEL</p>
+  <h1 id="h-hero">ALL NIGHT<br>LONG</h1>
+  <p class="claim">Bis das Licht angeht.</p>
+
+  <div class="night" aria-label="Die Nacht als Zeitleiste: Akt I dunkel, Akt II Peak, Akt III Tageslicht">
+    <div class="night-top">
+      <span class="tc" id="tc">07:00:00:00 · CLOSE</span>
+      <span class="mono">Timecode · Beispielzeiten</span>
+    </div>
+    <div class="night-bar"><div class="playhead" id="ph"></div></div>
+    <div class="night-ticks mono"><span>23:00</span><span>01:00</span><span>03:00</span><span>05:00</span><span>07:00</span><span>Close</span></div>
+    <div class="night-acts mono"><span>Akt I · Dunkel</span><span>Akt II · Peak</span><span>Akt III · Licht</span></div>
+  </div>
+
+  <div class="meta">
+    <div><span class="mono">Künstler</span><strong>GO$PEL</strong></div>
+    <div><span class="mono">Genre</span><strong>Industrial Techno</strong></div>
+    <div><span class="mono">Hero Reel</span><strong>9:16 · 25,6 s · 16 Takte</strong></div>
+    <div><span class="mono">Dreh</span><strong>So 11.10. · 3 Locations</strong></div>
+  </div>
+
+  <p class="intro">Das After-Dark-Reel hat ein klares GO$PEL-Format gesetzt. Dunkles Studio, ruhige Stimme, harte Live-Bilder. <b>Für das All Night Long behalten wir dieses Format und erzählen damit eine komplette Nacht in 16 Takten.</b></p>
+</section>
+
+<!-- 01 -->
+<section class="sec" id="referenz" aria-labelledby="h1">
+  <div class="sec-no">01</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Referenz-Analyse</p>
+      <h2 id="h1">After Dark · 19 Sekunden</h2>
+      <p class="sub">GO$PELs Ansage für sein After-Dark-Set am 5. September. Vertikal, 1080 × 1920, Voice-over mit Untertiteln, geschnitten auf die Kick.</p>
+    </div>
+
+    <div class="ref">
+      <figure>
+        <img src="data:image/jpeg;base64,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" alt="GO$PEL mit Bandana und verschränkten Armen im dunklen Studio, Untertitel: My name is GOSPEL">
+        <figcaption class="mono">Frame 00:00 · Hook</figcaption>
+      </figure>
+      <div style="display:grid;gap:28px;min-width:0">
+        <div class="stats">
+          <div class="stat"><b>19,4</b><span class="mono">Sekunden</span></div>
+          <div class="stat"><b>~14</b><span class="mono">Schnitte</span></div>
+          <div class="stat"><b>~1,0</b><span class="mono">Sek. / Shot</span></div>
+          <div class="stat"><b>~155</b><span class="mono">BPM</span></div>
+          <div class="stat"><b>5 : 3</b><span class="mono">Studio : Live</span></div>
+        </div>
+
+        <div class="strip-wrap">
+          <div class="strip" role="img" aria-label="Schnittfolge: Studio und Live wechseln sich achtmal ab">
+            <i class="st" style="flex:1"></i><i class="st" style="flex:1"></i><i class="lv" style="flex:3"></i><i class="st" style="flex:2"></i><i class="lv" style="flex:3"></i><i class="st" style="flex:2"></i><i class="lv" style="flex:4"></i><i class="st" style="flex:3.4"></i>
+          </div>
+          <div class="strip-scale mono"><span>0 s</span><span>5</span><span>10</span><span>15</span><span>19,4</span></div>
+          <div class="legend"><span class="mono"><i style="background:var(--s2);border:1px solid var(--line2)"></i>Studio · Kontrolle</span><span class="mono"><i style="background:var(--fg)"></i>Live · Chaos</span></div>
+        </div>
+
+        <ul class="scenes">
+          <li><span class="mono">00–01</span><span>Porträt, verschränkte Arme, Rim-Light<em>Studio</em></span></li>
+          <li><span class="mono">01–02</span><span>Invert-Flash, Close-up aus Untersicht<em>Studio</em></span></li>
+          <li><span class="mono">02–05</span><span>Rücken-Shot vor Crowd, Club-Gang<em>Live</em></span></li>
+          <li><span class="mono">05–07</span><span>Blick in die Kamera, Split-Light<em>Studio</em></span></li>
+          <li><span class="mono">07–10</span><span>Festival-Drop, Dutch Angles, Strobe<em>Live</em></span></li>
+          <li><span class="mono">10–12</span><span>Detail: Hände mit Ringen<em>Studio</em></span></li>
+          <li><span class="mono">12–16</span><span>Climax: CDJs, rote Laser, Flashes<em>Live</em></span></li>
+          <li><span class="mono">16–19</span><span>Outro, Fäuste, Cut to Black<em>Studio</em></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid;gap:14px">
+      <p class="mono label">Voice-over · Untertitel</p>
+      <ul class="vo-list">
+        <li><span class="mono">00:00</span><span class="vo">My name is GOSPEL.</span></li>
+        <li><span class="mono">00:02</span><span class="vo">On September 5th, I’ll be doing my set for After Dark.</span></li>
+        <li><span class="mono">00:10</span><span class="vo">I’m bringing some of my hardest, unreleased tracks …</span></li>
+        <li><span class="mono">00:13</span><span class="vo">… with the craziest kicks and the most aggressive sound you guys know me for.</span></li>
+        <li><span class="mono">00:16</span><span class="vo">Can’t wait to see you guys there.</span></li>
+      </ul>
+    </div>
+
+    <div class="verdict">
+      <div>
+        <h3>Das bleibt</h3>
+        <ul class="points">
+          <li><b>Kontrolle gegen Chaos</b><p>Ruhige Studio-Shots wechseln mit harten Live-Bildern. Das Studio gibt Autorität, die Live-Shots liefern den Beweis.</p></li>
+          <li><b>Gesicht im Schatten</b><p>Low-Key mit Rim- und Split-Light. Wirkt im Industrial-Kontext glaubwürdig und hält die Figur geheimnisvoll.</p></li>
+          <li><b>Konkretes Versprechen</b><p>„Hardest unreleased tracks“, „craziest kicks“. Fans wissen genau, was sie bekommen. Das erzeugt FOMO.</p></li>
+          <li><b>Schnitt auf die Kick</b><p>Rund eine Sekunde pro Shot, Invert-Flashes auf den Impacts, ein Low-Pass, der sich zum Live-Teil öffnet.</p></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Das entwickeln wir weiter</h3>
+        <ul class="points">
+          <li><b>Event-Daten fehlen im Bild</b><p>Datum und Event stehen nur im Voice-over. Wer ohne Ton schaut, bekommt sie nicht mit.</p><p class="new"><span class="tag">NEU</span>End Card, die 3 Sekunden steht.</p></li>
+          <li><b>Kein Bogen</b><p>Das Reel ist eine Ansage ohne Verlauf. Ein All Night Long braucht Anfang, Peak und Morgen.</p><p class="new"><span class="tag">NEU</span>Drei Akte, die einer Nacht folgen.</p></li>
+          <li><b>Archiv ohne Ordnung</b><p>Festival bei Tag und Club bei Nacht wechseln ohne erkennbare Logik.</p><p class="new"><span class="tag">NEU</span>Footage nach Uhrzeit sortiert: dunkel, Peak, hell.</p></li>
+          <li><b>Die Hook ist schon bekannt</b><p>„My name is GOSPEL“ funktioniert als Vorstellung. Beim zweiten Reel muss die Hook die Neuigkeit tragen.</p><p class="new"><span class="tag">NEU</span>„Usually, I get two hours.“</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="sec" id="konzept" aria-labelledby="h2">
+  <div class="sec-no">02</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Konzept</p>
+      <h2 id="h2">Bis das Licht angeht</h2>
+    </div>
+    <p class="lead">Normalerweise spielt GO$PEL zwei Stunden. Beim All Night Long gehört ihm die ganze Nacht, ohne Warm-up und ohne Closing-Act. Genau diesen Unterschied erzählt das Reel: eine komplette Nacht von der ersten Kick bis zum Morgenlicht, verdichtet auf 16 Takte. Gedreht wird an der Oberbaumbrücke in Berlin, dazu B-Roll an zwei weiteren Locations.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="mono">Zeit</span>
+        <h3>Laufender Timecode</h3>
+        <p>Ein Timecode oben links zeigt die Uhrzeit der Nacht. Er startet bei 23:00, springt mit jedem Schnitt weiter und endet bei CLOSE. So sieht man die Nacht vergehen, auch ohne Ton.</p>
+      </div>
+      <div class="pillar">
+        <span class="mono">Licht</span>
+        <h3>Das Licht ist die Uhr</h3>
+        <p>Auf der Oberbaumbrücke steht die Kamera an einer festen Stelle. Erst gibt es nur Rim-Light, dann geht hartes, kaltes Flutlicht an, wie das Saallicht um sieben Uhr morgens. Dazwischen liegt der Peak in Rot.</p>
+      </div>
+      <div class="pillar">
+        <span class="mono">Stimme</span>
+        <h3>Das GO$PEL-Format</h3>
+        <p>Voice-over und Untertitel bleiben wie bei After Dark: tiefe, ruhige Stimme, Serif in gedämpftem Gold. Jede GO$PEL-Ansage wird so sofort wiedererkannt und das Format zur Serie.</p>
+      </div>
+    </div>
+
+    <div class="tagline">
+      <p>One DJ. One night.<br>Open to close.</p>
+      <span class="mono">Claim für End Card und Caption</span>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec" id="skript" aria-labelledby="h3">
+  <div class="sec-no">03</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Skript · Hero Reel</p>
+      <h2 id="h3">16 Takte, drei Akte</h2>
+      <p class="sub">Gebaut auf 150 BPM. Ein Takt dauert 1,6 Sekunden, das ganze Reel ist eine 16-Takt-Phrase. Der Hintergrund jedes Akts zeigt sein Grading.</p>
+    </div>
+
+    <div>
+      <div class="acts" role="img" aria-label="Akt I 0 bis 9,6 Sekunden, Akt II bis 17,6, Akt III bis 22,4, End Card bis 25,6">
+        <div class="act a1"><span>Akt I · Dunkel</span><span>Takt 1–6</span></div>
+        <div class="act a2"><span>Akt II · Peak</span><span>Takt 7–11</span></div>
+        <div class="act a3"><span>Akt III · Licht</span><span>Takt 12–14</span></div>
+        <div class="act a4"><span>End</span><span>15–16</span></div>
+      </div>
+      <div class="acts-scale mono"><span>0,0 s</span><span>9,6</span><span>17,6</span><span>22,4</span><span>25,6</span></div>
+    </div>
+
+    <div class="script">
+      <div class="row">
+        <div class="t"><b>0,0–3,2 s</b><span class="mono">Takt 1–2</span><span class="act-pill">AKT I</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p><strong>Schwarz.</strong> Timecode 23:00 blendet ein. Auf Takt 2 dann S1: GO$PEL im Profil, nur Rim-Light, leichte Untersicht.</p></div>
+        <div><span class="mono label">Ton</span><p>Ein einzelner Metall-Hit. Track mit Low-Pass, nur Sub und Kick.</p></div>
+        <div><span class="mono label">Voice-over</span><p class="vo">Usually, I get two hours.</p></div>
+      </div>
+      <div class="row">
+        <div class="t"><b>3,2–6,4 s</b><span class="mono">Takt 3–4</span><span class="act-pill">AKT I</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p><strong>S2</strong> frontal, Split-Light, Blick in die Kamera, langsamer Push-in. Ab Takt 4 S8 (Silhouette im Brückenbogen) und Archiv A1: Nebel, Silhouetten. Timecode 23:40 → 00:30.</p></div>
+        <div><span class="mono label">Ton</span><p>Low-Pass öffnet sich langsam.</p></div>
+        <div><span class="mono label">Voice-over</span><p class="vo">On <span class="ph">[DATUM]</span>, I get the whole night.</p></div>
+      </div>
+      <div class="row">
+        <div class="t"><b>6,4–9,6 s</b><span class="mono">Takt 5–6</span><span class="act-pill">AKT I</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p>Archiv A1, ein Schnitt pro Takt. Auf dem letzten Beat <strong>S2 Close-up</strong> mit Invert-Flash. Timecode 01:15.</p></div>
+        <div><span class="mono label">Ton</span><p>Die letzten 6 Frames vor dem Drop: komplette Stille.</p></div>
+        <div><span class="mono label">Voice-over</span><p class="vo">No warm-up. No closing act. Just me.</p></div>
+      </div>
+      <div class="row">
+        <div class="t"><b>9,6–17,6 s</b><span class="mono">Takt 7–11</span><span class="act-pill">AKT II</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p><strong>Drop.</strong> Archiv A2 im Wechsel mit S3 (Rotlicht an LOC 02): Laser, Strobe, Shake am CDJ, Ringe, Crowd-Hände. Schnitt alle 2 Beats, in Takt 11 auf jeden Beat. Timecode springt 02:10 → 03:33 → 04:20 → 05:02.</p></div>
+        <div><span class="mono label">Ton</span><p>Track voll offen. Invert-Flash auf jeder Eins.</p></div>
+        <div><span class="mono label">Voice-over</span><p class="vo">Hardest tracks. Unreleased. As long as it takes.</p></div>
+      </div>
+      <div class="row">
+        <div class="t"><b>17,6–22,4 s</b><span class="mono">Takt 12–14</span><span class="act-pill">AKT III</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p><strong>S4:</strong> gleiche Position und Pose wie S1, dann geht das weiße Flutlicht an. Schweiß, Kopfhörer im Nacken. <strong>B3</strong> leere Graffiti-Treppe, zuletzt <strong>B2</strong>: der leere Arkadengang im Gegenlicht. Timecode 06:48 → 07:00 → CLOSE.</p></div>
+        <div><span class="mono label">Ton</span><p>Klack des Lichtschalters auf S4. Track filtert weg, leises Ohrenpfeifen, dann Vögel und Wind.</p></div>
+        <div><span class="mono label">Voice-over</span><p class="vo">From the first kick till the lights come on.</p></div>
+      </div>
+      <div class="row">
+        <div class="t"><b>22,4–25,6 s</b><span class="mono">Takt 15–16</span><span class="act-pill">END</span></div>
+        <div class="bild"><span class="mono label">Bild</span><p><strong>End Card</strong> auf Schwarz: GO$PEL · ALL NIGHT LONG · <span class="ph">[DATUM]</span> · <span class="ph">[CLUB]</span> · Tickets: Link in Bio. Steht 3 Sekunden ohne Bewegung.</p></div>
+        <div><span class="mono label">Ton</span><p>Ein letzter Hit auf Takt 15, dann Stille.</p></div>
+        <div><span class="mono label">Voice-over</span><p>–</p></div>
+      </div>
+    </div>
+
+    <div class="note"><span class="mono">Option</span><span>Falls GO$PEL lieber mit seiner bekannten Vorstellung startet, wird Takt 1–2 zu <span class="vo">„My name is GO$PEL. Usually, I get two hours.“</span> Kostet einen Takt mehr. Die Zeile mit den zwei Stunden passen wir an seine üblichen Slot-Längen an.</span></div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="sec" id="look" aria-labelledby="h4">
+  <div class="sec-no">04</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Look &amp; Sound</p>
+      <h2 id="h4">Drei Uhrzeiten, drei Gradings</h2>
+      <p class="sub">Über allen Akten liegen 35-mm-Grain und leichte Halation auf den Lichtquellen, wie im After-Dark-Reel. Das hält die drei Looks zusammen.</p>
+    </div>
+
+    <div class="grades">
+      <div class="grade">
+        <div class="sw" role="img" aria-label="Farbpalette Akt I: Schwarz bis kühles Teal"><i style="background:#040506"></i><i style="background:#0f171b"></i><i style="background:#2b3a40"></i><i style="background:#7d8f96"></i></div>
+        <span class="mono">Akt I · Dunkel · 23:00</span>
+        <p>Entsättigt, kühles Teal in den Schatten, Crushed Blacks. Das Gesicht ist fast nur über die Kanten lesbar.</p>
+      </div>
+      <div class="grade">
+        <div class="sw" role="img" aria-label="Farbpalette Akt II: Schwarz, Tiefrot, Weiß"><i style="background:#000000"></i><i style="background:#3d0a0b"></i><i style="background:#9b1517"></i><i style="background:#f4f1ec"></i></div>
+        <span class="mono">Akt II · Peak · 03:00</span>
+        <p>Tiefrot gegen Schwarz, weiße Flash-Frames, Halation auf Lasern und Strobes.</p>
+      </div>
+      <div class="grade">
+        <div class="sw" role="img" aria-label="Farbpalette Akt III: kühles Grau bis Weiß"><i style="background:#6f7b80"></i><i style="background:#a9b3b7"></i><i style="background:#d9dfe1"></i><i style="background:#f2f4f5"></i></div>
+        <span class="mono">Akt III · Licht · 07:00</span>
+        <p>Bleach-Bypass, kaltes Weiß, leicht überbelichtet. Flutlicht und Nachmittagslicht werden kühl zum Morgen gegradet, ohne Golden-Hour-Look. Die Haut wirkt müde und echt.</p>
+      </div>
+    </div>
+
+    <div class="frames">
+      <div class="frame-cap">
+        <div class="phone peak" role="img" aria-label="Beispiel-Frame aus Akt II mit Timecode oben links und Untertitel unten">
+          <span class="burn">03:33:12:07</span>
+          <span class="subt">Just me.</span>
+        </div>
+        <span class="mono">Frame · Takt 6</span>
+      </div>
+      <div class="frame-cap">
+        <div class="phone end" role="img" aria-label="Beispiel der End Card">
+          <span class="n">GO$PEL</span>
+          <span class="t1">ALL NIGHT<br>LONG</span>
+          <span class="d">[DATUM] · [CLUB]</span>
+          <span class="c">TICKETS · LINK IN BIO</span>
+        </div>
+        <span class="mono">End Card · Takt 15</span>
+      </div>
+      <div class="frame-cap">
+        <p class="mono label">Typografie im Video</p>
+        <ul class="rules">
+          <li><b>Untertitel</b><p>Serif, gedämpftes Gold, unteres Drittel. Exakt wie bei After Dark.</p></li>
+          <li><b>Timecode</b><p>Mono, Weiß mit 70 % Deckkraft, oben links unterhalb der Reels-Oberfläche. Format HH:MM:SS:FF.</p></li>
+          <li><b>End Card</b><p>Condensed-Versalien, Weiß auf Schwarz. Das $ im Namen bleibt immer erhalten.</p></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two">
+      <div style="display:grid;gap:16px;align-content:start">
+        <h3>Schnitt-Raster</h3>
+        <div class="grid-nums">
+          <div><b>150</b><span class="mono">BPM</span></div>
+          <div><b>10</b><span class="mono">Frames / Beat</span></div>
+          <div><b>40</b><span class="mono">Frames / Takt</span></div>
+        </div>
+        <p class="sub" style="font-size:15px">Bei 25 fps fällt jeder Beat exakt auf 10 Frames. Liegt der gewählte Track schneller (After Dark hatte ca. 155 BPM), schneiden wir auf Beat-Marker statt aufs Frame-Raster.</p>
+        <div class="beats" aria-label="Schnittpunkte über 4 Takte">
+          <div class="beat-row"><span class="mono">Akt I · pro Takt</span><div class="ticks"><i class="c"></i><i></i><i></i><i></i><i class="c"></i><i></i><i></i><i></i><i class="c"></i><i></i><i></i><i></i><i class="c"></i><i></i><i></i><i></i></div></div>
+          <div class="beat-row"><span class="mono">Akt II · alle 2 Beats</span><div class="ticks"><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i><i class="c"></i><i></i></div></div>
+          <div class="beat-row"><span class="mono">Takt 11 · jeder Beat</span><div class="ticks"><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i></div></div>
+        </div>
+      </div>
+      <div style="display:grid;gap:16px;align-content:start">
+        <h3>Sound-Design</h3>
+        <ul class="rules">
+          <li><b>Intro mit Low-Pass</b><p>Nur Sub und Kick. Der Filter öffnet sich bis Takt 6.</p></li>
+          <li><b>6 Frames Stille vor dem Drop</b><p>Die kurze Lücke macht den Drop härter als jeder Riser.</p></li>
+          <li><b>Industrial-Impacts</b><p>Metall-Hits und Sub-Drops auf den Schnitten. Keine Kino-Whooshes.</p></li>
+          <li><b>Outro: Ohrenpfeifen und Vögel</b><p>Das Licht geht an, der Track filtert weg. Jeder, der mal bis morgens geblieben ist, kennt diesen Moment.</p></li>
+          <li><b>Voice-over</b><p>Trocken und nah aufgenommen, die Musik darunter um ca. 6 dB geduckt.</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="sec" id="drehplan" aria-labelledby="h5">
+  <div class="sec-no">05</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Drehplan · Sonntag, 11.10.2026</p>
+      <h2 id="h5">40 Minuten, ein Bogen</h2>
+      <p class="sub">GO$PEL ist von 19:00 bis 19:40 am Set und nimmt um 20:37 den Zug ab Berlin Hbf. Mit ihm drehen wir nur an der Oberbaumbrücke, alle Setups sind vorher ausgeleuchtet. Die Tageslicht-Bilder entstehen vorher ohne ihn. Zeitplan, Shotliste und Rückfahrt stehen im <a href="https://claude.ai/artifact/7XvkiGSfQ1v6E3kUNvFBvh" target="_blank" rel="noopener">Produktionsheet ↗</a>.</p>
+    </div>
+
+    <div class="locs">
+      <div class="loc">
+        <div class="loc-top"><span class="loc-no">LOC 01</span><span class="mono">19:00–19:40 · mit GO$PEL</span></div>
+        <h3>Oberbaumbrücke</h3>
+        <p>Arkadengang unter der U1, Friedrichshainer Ende. Von dort sind es 5–8 Minuten zur S Warschauer Straße.</p>
+        <p class="need"><span class="mono">Davor solo</span>Leerer Gang im Gegenlicht (16:30–17:15) und U1-Sound.</p>
+        <a class="mono" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumbr%C3%BCcke%20Berlin" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>
+      </div>
+      <div class="loc">
+        <div class="loc-top"><span class="loc-no">LOC 02</span><span class="mono">17:45–18:40 · solo</span></div>
+        <h3>Spreeufer Oberbaumstraße 6</h3>
+        <p>Wiese am Wasser, Stahlskulptur, Skyline gegenüber. Zeitraffer vom Sonnenuntergang um 18:22.</p>
+        <p class="need"><span class="mono">Danach</span>3 Minuten zu Fuß zur Brücke, rechtzeitig zum Vorleuchten.</p>
+        <a class="mono" href="https://www.google.com/maps/search/?api=1&amp;query=Oberbaumstra%C3%9Fe%206%2C%20Berlin" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>
+      </div>
+      <div class="loc">
+        <div class="loc-top"><span class="loc-no">LOC 03</span><span class="mono">15:30–16:15 · solo</span></div>
+        <h3>Friedenstraße 93</h3>
+        <p>Backstein-Industriebau mit Graffiti-Treppe in Friedrichshain. Als leerer Ort für Akt III.</p>
+        <p class="need"><span class="mono">Hinweis</span>Mit GO$PEL zeitlich nicht machbar.</p>
+        <a class="mono" href="https://www.google.com/maps/search/?api=1&amp;query=Friedenstra%C3%9Fe%2093%2C%2010249%20Berlin" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>
+      </div>
+    </div>
+
+    <div class="shots">
+      <div class="shot-group">
+        <h3>Mit GO$PEL</h3>
+        <p class="mono">LOC 01 · 19:00–19:40</p>
+        <div class="shot"><span class="id">S8</span><div><span class="key">bis 19:08</span><b>Silhouette im Bogen</b><p>Schwarze Figur gegen das letzte Blau. Fällt weg, wenn es später wird.</p></div></div>
+        <div class="shot"><span class="id">S2</span><div><span class="key">Stimme</span><b>Frontal, Split-Light + VO</b><p>Alle Zeilen in die Kamera, das Lav nimmt die VO mit auf. Close-up für „Just me.“</p></div></div>
+        <div class="shot"><span class="id">S1</span><div><span class="key">Key Shot</span><b>Lock-off, nur Rim-Light</b><p>Profil, Arme verschränkt, auf Tape-Marken. Gesicht bleibt im Schatten.</p></div></div>
+        <div class="shot"><span class="id">S4</span><div><span class="key">Key Shot</span><b>Lock-off, Licht an</b><p>Kamera bleibt stehen, kaltes Flutlicht von vorn geht an. Schweiß, Kopfhörer im Nacken.</p></div></div>
+        <div class="shot"><span class="id">S3</span><div><b>Rotlicht von unten</b><p>RGB-Tube, Strobe, 50 fps. Wird es knapp, trägt das Archiv den Peak.</p></div></div>
+      </div>
+      <div class="shot-group">
+        <h3>Solo vorher</h3>
+        <p class="mono">Felix allein · optional</p>
+        <div class="shot"><span class="id">B3</span><div><span class="key">LOC 03</span><b>Friedenstraße leer</b><p>Backstein, leere Graffiti-Treppe, hell und kühl.</p></div></div>
+        <div class="shot"><span class="id">B2</span><div><span class="key">LOC 01</span><b>Arkaden leer im Gegenlicht</b><p>Der leere Gang, nachdem alle gegangen sind. Letzter Shot vor der End Card.</p></div></div>
+        <div class="shot"><span class="id">TL</span><div><span class="key">LOC 02</span><b>Zeitraffer</b><p>Sonnenuntergang über der Spree, rückwärts als Sonnenaufgang für die Story-Loops.</p></div></div>
+        <div class="shot"><span class="id">FX</span><div><span class="key">LOC 01</span><b>U1 + Schritte</b><p>Wildsound unter den Arkaden für die Industrial-Impacts.</p></div></div>
+      </div>
+      <div class="shot-group">
+        <h3>Archiv</h3>
+        <p class="mono">Rohmaterial früherer Gigs</p>
+        <div class="shot"><span class="id">A1</span><div><b>Dunkel</b><p>Nebel, Silhouetten, ruhige Crowd, Warm-up-Momente.</p></div></div>
+        <div class="shot"><span class="id">A2</span><div><b>Peak</b><p>Laser, Strobe, Shots am CDJ, springende Crowd. Trägt Akt II.</p></div></div>
+        <div class="shot"><span class="id">A3</span><div><b>Licht</b><p>Festival bei Tag, Morgenstunden. Optional für Akt III.</p></div></div>
+      </div>
+    </div>
+
+    <div class="tech">
+      <div><span class="mono">Kamera</span><p>Sony A7IV · 35 mm als Hauptoptik, optional 85 mm · variabler ND für die Solo-B-Roll</p></div>
+      <div><span class="mono">Framerate</span><p>25 fps, Slow-Mo in 50 fps. Shutter 1/50 bzw. 1/100 gegen Flackern von Laternen und Strobes</p></div>
+      <div><span class="mono">Licht</span><p>Akku-LED mit Grid für Rim und Split, starkes weißes Panel für „Licht an“, RGB-Tube für Rot. Kein Haze im öffentlichen Raum</p></div>
+      <div><span class="mono">Ton</span><p>VO per Lav während S2, zwischen zwei U-Bahnen. Fehlende Zeilen als Sprachmemo nachliefern</p></div>
+    </div>
+
+    <div class="note"><span class="mono">Wetter</span><span>Bleibt es bewölkt, fehlt der Solo-B-Roll das Gegenlicht. Die Nacht-Session ist davon unabhängig. Regen hilft sogar: nasser Asphalt spiegelt Rotlicht und Laternen.</span></div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="sec" id="rollout" aria-labelledby="h6">
+  <div class="sec-no">06</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Deliverables &amp; Rollout</p>
+      <h2 id="h6">Vier Formate, drei Wochen</h2>
+    </div>
+
+    <div class="deliv">
+      <div class="dv"><span class="mono">D1 · 9:16 · 25,6 s</span><h3>Hero Reel</h3><p>Die Ankündigung. Skript siehe 03.</p></div>
+      <div class="dv"><span class="mono">D2 · 9:16 · 6,4 s</span><h3>Teaser</h3><p>4 Takte: „Usually, I get two hours.“, Schwarz, dann ALL NIGHT LONG mit Datum.</p></div>
+      <div class="dv"><span class="mono">D3 · 3 × 9:16 · Loop</span><h3>Story-Countdown</h3><p>Zeitraffer vom Spreeufer, Sonnenuntergang rückwärts als Sonnenaufgang, mit Timecode: 7 DAYS, 3 DAYS, TONIGHT.</p></div>
+      <div class="dv opt"><span class="mono">D4 · optional · ca. 30 s</span><h3>Recap-Reel</h3><p>Gedreht in der Nacht selbst, mit den echten Uhrzeiten als Timecode. Das Hero Reel gibt das Versprechen, der Recap liefert den Beweis.</p></div>
+    </div>
+
+    <div class="timeline">
+      <div class="ts"><span class="dot"></span><b>T–21</b><p>Teaser als Collab-Post GO$PEL × Club</p></div>
+      <div class="ts main"><span class="dot"></span><b>T–14</b><p>Hero Reel als Collab-Post, optional als Ad</p></div>
+      <div class="ts"><span class="dot"></span><b>T–7</b><p>Story: 7 DAYS</p></div>
+      <div class="ts"><span class="dot"></span><b>T–3</b><p>Story: 3 DAYS</p></div>
+      <div class="ts main"><span class="dot"></span><b>T–0</b><p>Story: TONIGHT · Open to close</p></div>
+      <div class="ts opt"><span class="dot"></span><b>T+2</b><p>Recap-Reel</p></div>
+    </div>
+
+    <div class="caption">
+      <span class="mono">Caption-Vorschlag · Hero Reel</span>
+<pre>Usually I get two hours. On [DATUM] I get the whole night.
+GO$PEL · All Night Long · [CLUB]
+Open to close. Tickets in bio.</pre>
+      <span class="hash">#industrialtechno #hardtechno #allnightlong #techno</span>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec" id="budget" aria-labelledby="h7">
+  <div class="sec-no">07</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Produktion &amp; Budget</p>
+      <h2 id="h7">Pakete</h2>
+    </div>
+
+    <div class="pks">
+      <div class="pk">
+        <span class="mono">Paket A · vor dem Event</span>
+        <h3>Promo · Dreh + Schnitt</h3>
+        <p class="price">€800–1.200</p>
+        <ul>
+          <li>Drehtag am 11.10.: Solo-B-Roll und Nacht-Session mit GO$PEL (Tagesgage)</li>
+          <li>Hero Reel, Teaser, 3 Story-Loops</li>
+          <li>Zeitraffer, Grading und Sound-Design wie beschrieben</li>
+        </ul>
+        <small>Finaler Preis je nach Deliverable-Umfang.</small>
+      </div>
+      <div class="pk opt">
+        <span class="mono">Paket B · optional · in der Nacht</span>
+        <h3>Event-Doku · All Night Long</h3>
+        <p class="price">€900</p>
+        <ul>
+          <li>Event Nacht Full, bis 8 h vor Ort</li>
+          <li>5–8 Clips + Recap-Reel</li>
+          <li>Echte Uhrzeiten als Timecode</li>
+        </ul>
+        <small>Geht das Set über 8 Stunden, Verlängerung nach Absprache.</small>
+      </div>
+    </div>
+
+    <div class="addons">
+      <div><b>+25 %</b><span class="mono label">Ads-Lizenz</span><p>Wenn Club oder Künstler das Reel als Anzeige schalten.</p></div>
+      <div><b>+€300</b><span class="mono label">Drohne</span><p>Das Club-Gebäude im Morgengrauen für Akt III.</p></div>
+      <div><b>+€150</b><span class="mono label">Express</span><p>Schnellere Lieferung des Hero Reels.</p></div>
+      <div><b>+€300</b><span class="mono label">Rush</span><p>Lieferung in kürzester Zeit.</p></div>
+    </div>
+
+    <div class="total"><span>Paket A + B zusammen</span><b>€1.700–2.100</b></div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec" id="kontakt" aria-labelledby="h8">
+  <div class="sec-no">08</div>
+  <div class="sec-body">
+    <div class="sec-head">
+      <p class="mono">Nächste Schritte</p>
+      <h2 id="h8">Was wir von dir brauchen</h2>
+    </div>
+
+    <ol class="steps">
+      <li><b>Event-Daten</b><p>Datum, Club und Set-Zeiten. Daraus bauen wir den Timecode.</p></li>
+      <li><b>Track</b><p>Ein unreleased Track für das Hero Reel, als WAV mit BPM-Angabe.</p></li>
+      <li><b>Archiv</b><p>Rohmaterial früherer Gigs, sortiert oder unsortiert.</p></li>
+      <li><b>Voice-over</b><p>Alle Zeilen beim Dreh am 11.10. einsprechen, mit echtem Datum und Club.</p></li>
+    </ol>
+
+    <div class="contact">
+      <h3>Let’s make<br>it loud.</h3>
+      <dl>
+        <div><dt>E-Mail</dt><dd>helloadamcontact@gmail.com</dd></div>
+        <div><dt>Telefon</dt><dd>+49 179 5207803</dd></div>
+        <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/felyxadam/" target="_blank" rel="noopener">@felyxadam</a></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="logo-ap">ap</span><span class="logo-name">ADAM PRODUCTION</span></div>
+  <span class="mono">Felix Adam · Berlin · Konzept für GO$PEL · 2026</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var tc=document.getElementById('tc'), ph=document.getElementById('ph');
+  if(!tc||!ph) return;
+  var reduce=false;
+  try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+  if(reduce) return;
+  var D=6400, NIGHT=8*3600, start=null;
+  function pad(n){return (n<10?'0':'')+n;}
+  function frame(t){
+    if(start===null) start=t;
+    var el=t-start, p=Math.min(el/D,1), s=Math.floor(p*NIGHT);
+    ph.style.left=(p*100)+'%';
+    if(p<1){
+      tc.textContent=pad((23+Math.floor(s/3600))%24)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)+':'+pad(Math.floor(el/40)%25);
+      requestAnimationFrame(frame);
+    } else {
+      tc.textContent='07:00:00:00 · CLOSE';
+    }
+  }
+  ph.style.left='0%';
+  tc.textContent='23:00:00:00';
+  setTimeout(function(){requestAnimationFrame(frame);},500);
+})();
+</script>
+
+</html>
